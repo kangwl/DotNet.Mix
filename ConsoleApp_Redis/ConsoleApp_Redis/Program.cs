@@ -11,17 +11,20 @@ using StackExchange.Redis;
 
 namespace ConsoleApp_Redis {
     class Program {
-        static void Main(string[] args) {
+        private static void Main(string[] args) {
 
-            //ConfigurationOptions options = new ConfigurationOptions {
-            //    AllowAdmin = true,
-            //    EndPoints = {new IPEndPoint(IPAddress.Parse("192.168.3.66"), 6379)},
-            //    Password = "abc123"
-            //};
+            // string host = "192.168.3.66";
+            string host = "192.168.1.78";
+            int port = 6379;
+            ConfigurationOptions options = new ConfigurationOptions {
+                AllowAdmin = true,
+                EndPoints = {new IPEndPoint(IPAddress.Parse(host), port)},
+                Password = ""
+            };
 
-            //ConnectionMultiplexer connection = ConnectionMultiplexer.Connect(options);
-            //IDatabase database = connection.GetDatabase();
-            //string val = database.StringGet("name"); 
+            ConnectionMultiplexer connection = ConnectionMultiplexer.Connect(options);
+            IDatabase database = connection.GetDatabase();
+            //string val = database.StringGet("name");
             //Console.WriteLine(val);
 
 
@@ -30,12 +33,48 @@ namespace ConsoleApp_Redis {
             //    Console.WriteLine(ed);
             //}
 
-            //var server = connection.GetServer(options.EndPoints[0]);
+            var server = connection.GetServer(options.EndPoints[0]);
             //Console.WriteLine(server.Version.ToString());
+            IEnumerable<RedisKey> redisKeys = server.Keys();
+            foreach (RedisKey key in redisKeys) {
 
-            DapperTest();
+                RedisType redisType = database.KeyType(key);
+
+                HashEntry[] hashEntries = database.HashGetAll(key);
+            
+                Console.WriteLine($"{key}----{redisType}");
+                string str = $"{"{"}{string.Join(",", hashEntries)}{"}"}";
+                Console.WriteLine(str);
+            
+                //insert
+                //HashEntry[] insertEntries=new HashEntry[2] {
+                //    new HashEntry("name","kangwl"), 
+                //    new HashEntry("age",12)
+                //};
+                //database.HashSet("user.121212122", insertEntries);
+
+                //database.ListLeftPush("kkk", "sd");
+            }
+
+
+            Student student = new Student() {Name = "kkk", Age = 12};
+
+             
+            
+           // ISubscriber subscriber = connection.GetSubscriber();
+
+
+
+            //DapperTest();
 
             Console.Read();
+        }
+ 
+
+        public class Student {
+            public int ID { get; set; }
+            public string Name { get; set; }
+            public int Age { get; set; }
         }
 
         private static void DapperTest() {
@@ -52,7 +91,7 @@ namespace ConsoleApp_Redis {
                         birthday = DateTime.Now.AddYears(-20)
                     });
 
-                Console.WriteLine(ret>0);
+                Console.WriteLine(ret > 0);
 
             }
         }
