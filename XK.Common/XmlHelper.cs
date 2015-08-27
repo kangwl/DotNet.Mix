@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region
+
+using System;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Xml;
+
+#endregion
 
 namespace XK.Common {
     public class XmlHelper {
-
         #region XML文档节点查询和读取
 
-
-
         public static XmlNode GetXmlDoc(string xmlFileName) {
-            XmlDocument xmlDoc = new XmlDocument();
+            var xmlDoc = new XmlDocument();
             try {
                 xmlDoc.Load(xmlFileName); //加载XML文档
             }
@@ -23,11 +21,11 @@ namespace XK.Common {
             }
             return xmlDoc;
         }
+
         public static XmlDocument GetXmlDoc(Stream xmlStream) {
-            XmlDocument xmlDoc = new XmlDocument();
+            var xmlDoc = new XmlDocument();
             try {
                 xmlDoc.Load(xmlStream); //加载XML文档
-           
             }
             catch (Exception ex) {
                 return null;
@@ -37,14 +35,14 @@ namespace XK.Common {
         }
 
         /// <summary>
-        /// 选择匹配XPath表达式的第一个节点XmlNode.
+        ///     选择匹配XPath表达式的第一个节点XmlNode.
         /// </summary>
         /// <param name="xmlDoc">XML文档</param>
         /// <param name="xpath">要匹配的XPath表达式(例如:"//节点名//子节点名")</param>
         /// <returns>返回XmlNode</returns>
         public static XmlNode GetXmlNodeByXpath(XmlDocument xmlDoc, string xpath) {
-            try { 
-                XmlNode xmlNode = xmlDoc.SelectSingleNode(xpath);
+            try {
+                var xmlNode = xmlDoc.SelectSingleNode(xpath);
                 return xmlNode;
             }
             catch (Exception ex) {
@@ -54,10 +52,10 @@ namespace XK.Common {
         }
 
         public static string GetXmlNodeTextByXpath(XmlDocument xmlDoc, string xpath) {
-            string ret = "";
+            var ret = "";
             try {
-                XmlNode xmlNode = xmlDoc.SelectSingleNode(xpath);
-                if (xmlNode != null) ret= xmlNode.InnerText;
+                var xmlNode = xmlDoc.SelectSingleNode(xpath);
+                if (xmlNode != null) ret = xmlNode.InnerText;
             }
             catch (Exception ex) {
                 return null;
@@ -65,18 +63,19 @@ namespace XK.Common {
             }
             return ret;
         }
+
         /// <summary>
-        /// 选择匹配XPath表达式的节点列表XmlNodeList.
+        ///     选择匹配XPath表达式的节点列表XmlNodeList.
         /// </summary>
         /// <param name="xmlFileName">XML文档完全文件名(包含物理路径)</param>
         /// <param name="xpath">要匹配的XPath表达式(例如:"//节点名//子节点名")</param>
         /// <returns>返回XmlNodeList</returns>
         public static XmlNodeList GetXmlNodeListByXpath(string xmlFileName, string xpath) {
-            XmlDocument xmlDoc = new XmlDocument();
+            var xmlDoc = new XmlDocument();
 
             try {
                 xmlDoc.Load(xmlFileName); //加载XML文档
-                XmlNodeList xmlNodeList = xmlDoc.SelectNodes(xpath);
+                var xmlNodeList = xmlDoc.SelectNodes(xpath);
                 return xmlNodeList;
             }
             catch (Exception ex) {
@@ -86,19 +85,19 @@ namespace XK.Common {
         }
 
         /// <summary>
-        /// 选择匹配XPath表达式的第一个节点的匹配xmlAttributeName的属性XmlAttribute.
+        ///     选择匹配XPath表达式的第一个节点的匹配xmlAttributeName的属性XmlAttribute.
         /// </summary>
         /// <param name="xmlFileName">XML文档完全文件名(包含物理路径)</param>
         /// <param name="xpath">要匹配的XPath表达式(例如:"//节点名//子节点名</param>
         /// <param name="xmlAttributeName">要匹配xmlAttributeName的属性名称</param>
         /// <returns>返回xmlAttributeName</returns>
         public static XmlAttribute GetXmlAttribute(string xmlFileName, string xpath, string xmlAttributeName) {
-            string content = string.Empty;
-            XmlDocument xmlDoc = new XmlDocument();
+            var content = string.Empty;
+            var xmlDoc = new XmlDocument();
             XmlAttribute xmlAttribute = null;
             try {
                 xmlDoc.Load(xmlFileName); //加载XML文档
-                XmlNode xmlNode = xmlDoc.SelectSingleNode(xpath);
+                var xmlNode = xmlDoc.SelectSingleNode(xpath);
                 if (xmlNode != null) {
                     if (xmlNode.Attributes.Count > 0) {
                         xmlAttribute = xmlNode.Attributes[xmlAttributeName];
@@ -116,7 +115,7 @@ namespace XK.Common {
         #region XML文档创建和节点或属性的添加、修改
 
         /// <summary>
-        /// 创建一个XML文档
+        ///     创建一个XML文档
         /// </summary>
         /// <param name="xmlFileName">XML文档完全文件名(包含物理路径)</param>
         /// <param name="rootNodeName">XML文档根节点名称(须指定一个根节点名称)</param>
@@ -126,10 +125,10 @@ namespace XK.Common {
         /// <returns>成功返回true,失败返回false</returns>
         public static bool CreateXmlDocument(string xmlFileName, string rootNodeName, string version, string encoding,
             string standalone) {
-            bool isSuccess = false;
+            var isSuccess = false;
             try {
-                XmlDocument xmlDoc = new XmlDocument();
-                XmlDeclaration xmlDeclaration = xmlDoc.CreateXmlDeclaration(version, encoding, standalone);
+                var xmlDoc = new XmlDocument();
+                var xmlDeclaration = xmlDoc.CreateXmlDeclaration(version, encoding, standalone);
                 XmlNode root = xmlDoc.CreateElement(rootNodeName);
                 xmlDoc.AppendChild(xmlDeclaration);
                 xmlDoc.AppendChild(root);
@@ -143,7 +142,7 @@ namespace XK.Common {
         }
 
         /// <summary>
-        /// 依据匹配XPath表达式的第一个节点来创建它的子节点(如果此节点已存在则追加一个新的同名节点
+        ///     依据匹配XPath表达式的第一个节点来创建它的子节点(如果此节点已存在则追加一个新的同名节点
         /// </summary>
         /// <param name="xmlFileName">XML文档完全文件名(包含物理路径)</param>
         /// <param name="xpath">要匹配的XPath表达式(例如:"//节点名//子节点名</param>
@@ -154,19 +153,19 @@ namespace XK.Common {
         /// <returns>成功返回true,失败返回false</returns>
         public static bool CreateXmlNodeByXPath(string xmlFileName, string xpath, string xmlNodeName, string innerText,
             string xmlAttributeName, string value) {
-            bool isSuccess = false;
-            XmlDocument xmlDoc = new XmlDocument();
+            var isSuccess = false;
+            var xmlDoc = new XmlDocument();
             try {
                 xmlDoc.Load(xmlFileName); //加载XML文档
-                XmlNode xmlNode = xmlDoc.SelectSingleNode(xpath);
+                var xmlNode = xmlDoc.SelectSingleNode(xpath);
                 if (xmlNode != null) {
                     //存不存在此节点都创建
-                    XmlElement subElement = xmlDoc.CreateElement(xmlNodeName);
+                    var subElement = xmlDoc.CreateElement(xmlNodeName);
                     subElement.InnerXml = innerText;
 
                     //如果属性和值参数都不为空则在此新节点上新增属性
                     if (!string.IsNullOrEmpty(xmlAttributeName) && !string.IsNullOrEmpty(value)) {
-                        XmlAttribute xmlAttribute = xmlDoc.CreateAttribute(xmlAttributeName);
+                        var xmlAttribute = xmlDoc.CreateAttribute(xmlAttributeName);
                         xmlAttribute.Value = value;
                         subElement.Attributes.Append(xmlAttribute);
                     }
@@ -183,7 +182,7 @@ namespace XK.Common {
         }
 
         /// <summary>
-        /// 依据匹配XPath表达式的第一个节点来创建或更新它的子节点(如果节点存在则更新,不存在则创建)
+        ///     依据匹配XPath表达式的第一个节点来创建或更新它的子节点(如果节点存在则更新,不存在则创建)
         /// </summary>
         /// <param name="xmlFileName">XML文档完全文件名(包含物理路径)</param>
         /// <param name="xpath">要匹配的XPath表达式(例如:"//节点名//子节点名</param>
@@ -192,12 +191,12 @@ namespace XK.Common {
         /// <returns>成功返回true,失败返回false</returns>
         public static bool CreateOrUpdateXmlNodeByXPath(string xmlFileName, string xpath, string xmlNodeName,
             string innerText) {
-            bool isSuccess = false;
-            bool isExistsNode = false; //标识节点是否存在
-            XmlDocument xmlDoc = new XmlDocument();
+            var isSuccess = false;
+            var isExistsNode = false; //标识节点是否存在
+            var xmlDoc = new XmlDocument();
             try {
                 xmlDoc.Load(xmlFileName); //加载XML文档
-                XmlNode xmlNode = xmlDoc.SelectSingleNode(xpath);
+                var xmlNode = xmlDoc.SelectSingleNode(xpath);
                 if (xmlNode != null) {
                     //遍历xpath节点下的所有子节点
                     foreach (XmlNode node in xmlNode.ChildNodes) {
@@ -210,7 +209,7 @@ namespace XK.Common {
                     }
                     if (!isExistsNode) {
                         //不存在此节点则创建
-                        XmlElement subElement = xmlDoc.CreateElement(xmlNodeName);
+                        var subElement = xmlDoc.CreateElement(xmlNodeName);
                         subElement.InnerXml = innerText;
                         xmlNode.AppendChild(subElement);
                     }
@@ -226,7 +225,7 @@ namespace XK.Common {
 
 
         /// <summary>
-        /// 依据匹配XPath表达式的第一个节点来创建或更新它的属性(如果属性存在则更新,不存在则创建)
+        ///     依据匹配XPath表达式的第一个节点来创建或更新它的属性(如果属性存在则更新,不存在则创建)
         /// </summary>
         /// <param name="xmlFileName">XML文档完全文件名(包含物理路径)</param>
         /// <param name="xpath">要匹配的XPath表达式(例如:"//节点名//子节点名</param>
@@ -235,12 +234,12 @@ namespace XK.Common {
         /// <returns>成功返回true,失败返回false</returns>
         public static bool CreateOrUpdateXmlAttributeByXPath(string xmlFileName, string xpath, string xmlAttributeName,
             string value) {
-            bool isSuccess = false;
-            bool isExistsAttribute = false; //标识属性是否存在
-            XmlDocument xmlDoc = new XmlDocument();
+            var isSuccess = false;
+            var isExistsAttribute = false; //标识属性是否存在
+            var xmlDoc = new XmlDocument();
             try {
                 xmlDoc.Load(xmlFileName); //加载XML文档
-                XmlNode xmlNode = xmlDoc.SelectSingleNode(xpath);
+                var xmlNode = xmlDoc.SelectSingleNode(xpath);
                 if (xmlNode != null) {
                     //遍历xpath节点中的所有属性
                     foreach (XmlAttribute attribute in xmlNode.Attributes) {
@@ -253,7 +252,7 @@ namespace XK.Common {
                     }
                     if (!isExistsAttribute) {
                         //节点中不存在此属性则创建
-                        XmlAttribute xmlAttribute = xmlDoc.CreateAttribute(xmlAttributeName);
+                        var xmlAttribute = xmlDoc.CreateAttribute(xmlAttributeName);
                         xmlAttribute.Value = value;
                         xmlNode.Attributes.Append(xmlAttribute);
                     }
@@ -269,21 +268,20 @@ namespace XK.Common {
 
         #endregion
 
-
         #region XML文档节点或属性的删除
 
         /// <summary>
-        /// 删除匹配XPath表达式的第一个节点(节点中的子元素同时会被删除)
+        ///     删除匹配XPath表达式的第一个节点(节点中的子元素同时会被删除)
         /// </summary>
         /// <param name="xmlFileName">XML文档完全文件名(包含物理路径)</param>
         /// <param name="xpath">要匹配的XPath表达式(例如:"//节点名//子节点名</param>
         /// <returns>成功返回true,失败返回false</returns>
         public static bool DeleteXmlNodeByXPath(string xmlFileName, string xpath) {
-            bool isSuccess = false;
-            XmlDocument xmlDoc = new XmlDocument();
+            var isSuccess = false;
+            var xmlDoc = new XmlDocument();
             try {
                 xmlDoc.Load(xmlFileName); //加载XML文档
-                XmlNode xmlNode = xmlDoc.SelectSingleNode(xpath);
+                var xmlNode = xmlDoc.SelectSingleNode(xpath);
                 if (xmlNode != null) {
                     //删除节点
                     xmlNode.ParentNode.RemoveChild(xmlNode);
@@ -298,19 +296,19 @@ namespace XK.Common {
         }
 
         /// <summary>
-        /// 删除匹配XPath表达式的第一个节点中的匹配参数xmlAttributeName的属性
+        ///     删除匹配XPath表达式的第一个节点中的匹配参数xmlAttributeName的属性
         /// </summary>
         /// <param name="xmlFileName">XML文档完全文件名(包含物理路径)</param>
         /// <param name="xpath">要匹配的XPath表达式(例如:"//节点名//子节点名</param>
         /// <param name="xmlAttributeName">要删除的xmlAttributeName的属性名称</param>
         /// <returns>成功返回true,失败返回false</returns>
         public static bool DeleteXmlAttributeByXPath(string xmlFileName, string xpath, string xmlAttributeName) {
-            bool isSuccess = false;
-            bool isExistsAttribute = false;
-            XmlDocument xmlDoc = new XmlDocument();
+            var isSuccess = false;
+            var isExistsAttribute = false;
+            var xmlDoc = new XmlDocument();
             try {
                 xmlDoc.Load(xmlFileName); //加载XML文档
-                XmlNode xmlNode = xmlDoc.SelectSingleNode(xpath);
+                var xmlNode = xmlDoc.SelectSingleNode(xpath);
                 XmlAttribute xmlAttribute = null;
                 if (xmlNode != null) {
                     //遍历xpath节点中的所有属性
@@ -337,17 +335,17 @@ namespace XK.Common {
         }
 
         /// <summary>
-        /// 删除匹配XPath表达式的第一个节点中的所有属性
+        ///     删除匹配XPath表达式的第一个节点中的所有属性
         /// </summary>
         /// <param name="xmlFileName">XML文档完全文件名(包含物理路径)</param>
         /// <param name="xpath">要匹配的XPath表达式(例如:"//节点名//子节点名</param>
         /// <returns>成功返回true,失败返回false</returns>
         public static bool DeleteAllXmlAttributeByXPath(string xmlFileName, string xpath) {
-            bool isSuccess = false;
-            XmlDocument xmlDoc = new XmlDocument();
+            var isSuccess = false;
+            var xmlDoc = new XmlDocument();
             try {
                 xmlDoc.Load(xmlFileName); //加载XML文档
-                XmlNode xmlNode = xmlDoc.SelectSingleNode(xpath);
+                var xmlNode = xmlDoc.SelectSingleNode(xpath);
                 if (xmlNode != null) {
                     //遍历xpath节点中的所有属性
                     xmlNode.Attributes.RemoveAll();
@@ -362,6 +360,5 @@ namespace XK.Common {
         }
 
         #endregion
-
     }
 }

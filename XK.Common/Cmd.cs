@@ -1,17 +1,21 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Diagnostics;
+
+#endregion
 
 namespace XK.Common {
     public static class Cmd {
         /// <summary>
-        /// 调用cmd命令
+        ///     调用cmd命令
         /// </summary>
         /// <param name="cmdArgs"></param>
         /// <returns></returns>
         public static string InvokeCmd(string cmdArgs) {
-            string str = "";
+            var str = "";
             try {
-                Process p = new Process();
+                var p = new Process();
                 p.StartInfo.FileName = "cmd.exe";
                 p.StartInfo.UseShellExecute = false;
                 p.StartInfo.RedirectStandardInput = true;

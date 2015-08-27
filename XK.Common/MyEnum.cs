@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region
+
+using System;
+
+#endregion
 
 namespace XK.Common {
     public static class MyEnum {
         /// <summary>
-        /// 获取枚举的值
+        ///     获取枚举的值
         /// </summary>
         /// <param name="thEnum"></param>
         /// <returns></returns>

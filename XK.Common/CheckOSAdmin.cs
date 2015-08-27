@@ -1,18 +1,22 @@
-﻿using System.Security.Principal;
+﻿#region
+
+using System.Security.Principal;
+
+#endregion
 
 namespace XK.Common {
     /// <summary>
-    /// OS
+    ///     OS
     /// </summary>
     public static class CheckOSAdmin {
         /// <summary>
-        /// 检查系统是否是以管理员身份运行
+        ///     检查系统是否是以管理员身份运行
         /// </summary>
         /// <returns></returns>
         public static bool IsAdmin() {
-            WindowsIdentity identity = WindowsIdentity.GetCurrent();
+            var identity = WindowsIdentity.GetCurrent();
             if (identity != null) {
-                WindowsPrincipal principal = new WindowsPrincipal(identity);
+                var principal = new WindowsPrincipal(identity);
                 if (principal.IsInRole(WindowsBuiltInRole.Administrator)) {
                     return true;
                 }

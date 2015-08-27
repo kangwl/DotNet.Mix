@@ -1,10 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region
+
+using System;
 using System.IO;
-using System.Linq;
+using System.IO.Compression;
 using System.Net;
 using System.Text;
 using System.Web;
+
+#endregion
 
 namespace XK.Common {
     //string userName = "kangwl";
@@ -16,20 +19,19 @@ namespace XK.Common {
     //     LogingHelper.getPage("https://www.aaaa.com/account/index.action",
     //         "https://www.aaaa.com");
     public class HttpLogin {
-
         public static CookieContainer theCC = new CookieContainer();
 
-        /// <summary>   
-        /// 登录方法(无验证码)   
-        /// </summary>   
-        /// <PARAM name="url">POST请求的地址</PARAM>   
-        /// <PARAM name="paramList">参数列表 例如 name=zhangsan&pass=lisi</PARAM>   
-        /// <PARAM name="referer">来源地址</PARAM>   
-        /// <RETURNS></RETURNS>   
-        public static string Login(String url, String paramList, string referer) {
+        /// <summary>
+        ///     登录方法(无验证码)
+        /// </summary>
+        /// <PARAM name="url">POST请求的地址</PARAM>
+        /// <PARAM name="paramList">参数列表 例如 name=zhangsan&pass=lisi</PARAM>
+        /// <PARAM name="referer">来源地址</PARAM>
+        /// <RETURNS></RETURNS>
+        public static string Login(string url, string paramList, string referer) {
             HttpWebResponse res = null;
             HttpWebRequest req = null;
-            string strResult = "";
+            var strResult = "";
             try {
                 req = (HttpWebRequest) WebRequest.Create(url);
                 //配置请求header   
@@ -48,9 +50,9 @@ namespace XK.Common {
                 req.AllowAutoRedirect = true;
                 //设置cookieContainer用来接收cookie   
                 req.CookieContainer = theCC;
-                StringBuilder UrlEncoded = new StringBuilder();
+                var UrlEncoded = new StringBuilder();
                 //对参数进行encode   
-                Char[] reserved = {'?', '=', '&'};
+                char[] reserved = {'?', '=', '&'};
                 byte[] SomeBytes = null;
                 if (paramList != null) {
                     int i = 0, j;
@@ -66,7 +68,7 @@ namespace XK.Common {
                     }
                     SomeBytes = Encoding.UTF8.GetBytes(UrlEncoded.ToString());
                     req.ContentLength = SomeBytes.Length;
-                    Stream newStream = req.GetRequestStream();
+                    var newStream = req.GetRequestStream();
                     newStream.Write(SomeBytes, 0, SomeBytes.Length);
                     newStream.Close();
                 }
@@ -75,20 +77,20 @@ namespace XK.Common {
                 }
                 //返回请求   
                 res = (HttpWebResponse) req.GetResponse();
-                Encoding encode = System.Text.Encoding.GetEncoding("utf-8");
+                var encode = Encoding.GetEncoding("utf-8");
                 Stream responseStream = null;
                 if (res.ContentEncoding.ToLower() == "gzip") {
-                    responseStream = new System.IO.Compression.GZipStream(res.GetResponseStream(),
-                        System.IO.Compression.CompressionMode.Decompress);
+                    responseStream = new GZipStream(res.GetResponseStream(),
+                        CompressionMode.Decompress);
                 }
                 else if (res.ContentEncoding.ToLower() == "deflate") {
-                    responseStream = new System.IO.Compression.DeflateStream(res.GetResponseStream(),
-                        System.IO.Compression.CompressionMode.Decompress);
+                    responseStream = new DeflateStream(res.GetResponseStream(),
+                        CompressionMode.Decompress);
                 }
                 else {
                     responseStream = res.GetResponseStream();
                 }
-                StreamReader sr = new StreamReader(responseStream, encode);
+                var sr = new StreamReader(responseStream, encode);
                 strResult = sr.ReadToEnd();
             }
             catch (Exception e) {
@@ -100,24 +102,24 @@ namespace XK.Common {
             return strResult;
         }
 
-        /// <summary>  获取页面HTML   
-        ///    
-        /// <PARAM name="url"></PARAM>   
-        /// <PARAM name="paramList"></PARAM>   
-        /// <RETURNS></RETURNS>   
-        public static string getPage(String url, string referer) {
-            HttpWebRequest req = (HttpWebRequest) WebRequest.Create(url);
-            string strResult = string.Empty;
+        /// <summary>
+        ///     获取页面HTML
+        ///     <PARAM name="url"></PARAM>
+        ///     <PARAM name="paramList"></PARAM>
+        ///     <RETURNS></RETURNS>
+        public static string getPage(string url, string referer) {
+            var req = (HttpWebRequest) WebRequest.Create(url);
+            var strResult = string.Empty;
             req.Headers["If-None-Match"] = "36d0ed736e88c71:d9f";
             req.Referer = referer;
             req.CookieContainer = theCC;
-            HttpWebResponse res = (HttpWebResponse) req.GetResponse();
+            var res = (HttpWebResponse) req.GetResponse();
             StreamReader sr = null;
             try {
                 sr = new StreamReader(res.GetResponseStream(), Encoding.UTF8);
                 strResult = sr.ReadToEnd();
             }
-            catch (System.Exception ex) {
+            catch (Exception ex) {
                 //writeLog   
             }
             finally {
@@ -126,19 +128,19 @@ namespace XK.Common {
             return strResult;
         }
 
-        /// <summary>   
-        /// 模仿异步请求POST的方法   
-        /// </summary>   
-        /// <PARAM name="url"></PARAM>   
-        /// <PARAM name="referer"></PARAM>   
-        /// <PARAM name="methed"></PARAM>   
-        /// <PARAM name="paramList"></PARAM>   
-        /// <RETURNS></RETURNS>   
+        /// <summary>
+        ///     模仿异步请求POST的方法
+        /// </summary>
+        /// <PARAM name="url"></PARAM>
+        /// <PARAM name="referer"></PARAM>
+        /// <PARAM name="methed"></PARAM>
+        /// <PARAM name="paramList"></PARAM>
+        /// <RETURNS></RETURNS>
         public static string VisitPage(string url, string referer, string paramList) {
             HttpWebResponse response = null;
-            string strResult = string.Empty;
+            var strResult = string.Empty;
             try {
-                HttpWebRequest request = HttpWebRequest.Create(url) as HttpWebRequest;
+                var request = WebRequest.Create(url) as HttpWebRequest;
                 request.Method = "POST";
                 request.KeepAlive = true;
                 request.Referer = referer;
@@ -152,9 +154,9 @@ namespace XK.Common {
                 request.ContentType = "application/x-www-form-urlencoded";
                 request.CookieContainer = theCC;
                 request.Headers.Add("X-Requested-With", "XMLHttpRequest");
-                StringBuilder UrlEncoded = new StringBuilder();
+                var UrlEncoded = new StringBuilder();
                 //对参数进行encode   
-                Char[] reserved = {'?', '=', '&'};
+                char[] reserved = {'?', '=', '&'};
                 byte[] SomeBytes = null;
                 if (paramList != null) {
                     int i = 0, j;
@@ -170,25 +172,25 @@ namespace XK.Common {
                     }
                     SomeBytes = Encoding.UTF8.GetBytes(UrlEncoded.ToString());
                     request.ContentLength = SomeBytes.Length;
-                    Stream newStream = request.GetRequestStream();
+                    var newStream = request.GetRequestStream();
                     newStream.Write(SomeBytes, 0, SomeBytes.Length);
                     newStream.Close();
                 }
                 response = (HttpWebResponse) request.GetResponse();
-                Encoding encode = System.Text.Encoding.GetEncoding("utf-8");
+                var encode = Encoding.GetEncoding("utf-8");
                 Stream responseStream = null;
                 if (response.ContentEncoding.ToLower() == "gzip") {
-                    responseStream = new System.IO.Compression.GZipStream(response.GetResponseStream(),
-                        System.IO.Compression.CompressionMode.Decompress);
+                    responseStream = new GZipStream(response.GetResponseStream(),
+                        CompressionMode.Decompress);
                 }
                 else if (response.ContentEncoding.ToLower() == "deflate") {
-                    responseStream = new System.IO.Compression.DeflateStream(response.GetResponseStream(),
-                        System.IO.Compression.CompressionMode.Decompress);
+                    responseStream = new DeflateStream(response.GetResponseStream(),
+                        CompressionMode.Decompress);
                 }
                 else {
                     responseStream = response.GetResponseStream();
                 }
-                StreamReader sr = new StreamReader(responseStream, encode);
+                var sr = new StreamReader(responseStream, encode);
                 strResult = sr.ReadToEnd();
             }
             catch {

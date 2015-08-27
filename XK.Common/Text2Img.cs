@@ -1,25 +1,28 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Web;
 
-namespace XK.Common
-{
+#endregion
+
+namespace XK.Common {
     /// <summary>
-    /// 此类用于微信文字转化为图片
+    ///     此类用于微信文字转化为图片
     /// </summary>
-    public static class Text2Img
-    {
+    public static class Text2Img {
         /// <summary>
-        /// 将文本转化为图片（1280*720）
+        ///     将文本转化为图片（1280*720）
         /// </summary>
         /// <param name="text">要转化的文字</param>
         /// <param name="imgName">保存的图片名字</param>
         /// <param name="savePath">保存路径</param>
         public static void DrawTextToImg(string text, string imgName, string savePath) {
             try {
-                Bitmap bmp = DrawLineString(text);
-                string imgSavePath = savePath + imgName;
+                var bmp = DrawLineString(text);
+                var imgSavePath = savePath + imgName;
                 bmp.Save(imgSavePath);
                 bmp.Dispose();
             }
@@ -29,27 +32,30 @@ namespace XK.Common
 
         public static void DrawTextToImgDiy(string text, string imgName, string savePath) {
             try {
-                Bitmap bmp = DrawLineStringDiy(text);
-                string imgSavePath = savePath + imgName;
+                var bmp = DrawLineStringDiy(text);
+                var imgSavePath = savePath + imgName;
                 bmp.Save(imgSavePath);
                 bmp.Dispose();
             }
             catch (Exception ex) {
             }
         }
-        public static void DrawTextToImgDiyColor(string text, string imgName, string savePath, Color backColor, Brush fontColor) {
+
+        public static void DrawTextToImgDiyColor(string text, string imgName, string savePath, Color backColor,
+            Brush fontColor) {
             try {
-                Bitmap bmp = DrawLineStringDiyColor(text, backColor, fontColor);
-                string imgSavePath = savePath + imgName;
+                var bmp = DrawLineStringDiyColor(text, backColor, fontColor);
+                var imgSavePath = savePath + imgName;
                 bmp.Save(imgSavePath);
                 bmp.Dispose();
             }
             catch (Exception ex) {
             }
         }
+
         public static Color CreateRandomBgColor() {
-            List<Color> listColor = new List<Color>();
-            if (System.Web.HttpContext.Current.Cache["list_colors"] == null) {
+            var listColor = new List<Color>();
+            if (HttpContext.Current.Cache["list_colors"] == null) {
                 const int transparent = 220;
                 // List<System.Drawing.Color> listColor = new List<Color>();
                 listColor.Add(Color.FromArgb(transparent, 164, 196, 0));
@@ -64,36 +70,34 @@ namespace XK.Common
                 listColor.Add(Color.FromArgb(transparent, 227, 200, 0));
                 listColor.Add(Color.FromArgb(transparent, 109, 135, 100));
                 listColor.Add(Color.FromArgb(transparent, 101, 118, 136));
-                System.Web.HttpContext.Current.Cache["list_colors"] = listColor;
+                HttpContext.Current.Cache["list_colors"] = listColor;
             }
             else {
-                listColor = (List<Color>)System.Web.HttpContext.Current.Cache["list_colors"];
+                listColor = (List<Color>) HttpContext.Current.Cache["list_colors"];
             }
             //listColor.Sort();
             return NoRepeatColor(listColor);
         }
 
         private static Color NoRepeatColor(List<Color> colors) {
-
-            Color theColor = Color.FromArgb(200, 1, 171, 170);
+            var theColor = Color.FromArgb(200, 1, 171, 170);
             try {
-                Random random = new Random();
-                int c_index = random.Next(1, 12);
+                var random = new Random();
+                var c_index = random.Next(1, 12);
                 theColor = colors[c_index];
-                if (System.Web.HttpContext.Current.Session["wordbgcolor"] != null) {
-                    if (((Color) System.Web.HttpContext.Current.Session["wordbgcolor"]).Name ==
+                if (HttpContext.Current.Session["wordbgcolor"] != null) {
+                    if (((Color) HttpContext.Current.Session["wordbgcolor"]).Name ==
                         theColor.Name) {
-                       // System.Web.HttpContext.Current.Session["wordbgcolor"] = theColor;
+                        // System.Web.HttpContext.Current.Session["wordbgcolor"] = theColor;
                         NoRepeatColor(colors);
                     }
                     else {
-                        System.Web.HttpContext.Current.Session["wordbgcolor"] = theColor;
+                        HttpContext.Current.Session["wordbgcolor"] = theColor;
                     }
                 }
                 else {
-                    System.Web.HttpContext.Current.Session["wordbgcolor"] = theColor;
+                    HttpContext.Current.Session["wordbgcolor"] = theColor;
                 }
-                
             }
             catch (Exception) {
             }
@@ -101,7 +105,7 @@ namespace XK.Common
         }
 
         /// <summary>
-        /// 传入文字，生成图片（图片宽高1280x720（是固定的））
+        ///     传入文字，生成图片（图片宽高1280x720（是固定的））
         /// </summary>
         /// <param name="content">文字内容</param>
         /// <returns></returns>
@@ -109,25 +113,25 @@ namespace XK.Common
             //将内容进行处理
             content = ToSBC(content.Trim());
             //2.绘制背景
-            LinearGradientBrush b_bru = new LinearGradientBrush(
-            new Rectangle(0, 0, 1280, 720), Color.FromArgb(20, 20, 20),
-            Color.FromArgb(60, 60, 60), LinearGradientMode.Horizontal);
+            var b_bru = new LinearGradientBrush(
+                new Rectangle(0, 0, 1280, 720), Color.FromArgb(20, 20, 20),
+                Color.FromArgb(60, 60, 60), LinearGradientMode.Horizontal);
             //设置渐变位置
             b_bru.SetSigmaBellShape(0.5f);
-            Bitmap backgroundimg = new Bitmap(1280, 720);//图片大小转化
-            Graphics g = Graphics.FromImage(backgroundimg);
+            var backgroundimg = new Bitmap(1280, 720); //图片大小转化
+            var g = Graphics.FromImage(backgroundimg);
             g.FillRectangle(b_bru, new Rectangle(0, 0, 1280, 720));
             //两层渐变效果
-            LinearGradientBrush b_bru2 = new LinearGradientBrush(
-            new Rectangle(0, 0, 1280, 720), Color.FromArgb(100, 20, 20, 20),
-            Color.FromArgb(100, 60, 60, 60), LinearGradientMode.Vertical);
+            var b_bru2 = new LinearGradientBrush(
+                new Rectangle(0, 0, 1280, 720), Color.FromArgb(100, 20, 20, 20),
+                Color.FromArgb(100, 60, 60, 60), LinearGradientMode.Vertical);
             b_bru2.SetSigmaBellShape(0.5f);
             g.FillRectangle(b_bru2, new Rectangle(0, 0, 1280, 720));
             g.SmoothingMode = SmoothingMode.HighSpeed;
             //画刷
-            Brush bru = Brushes.White;
+            var bru = Brushes.White;
             //居中的方法
-            StringFormat sf = new StringFormat();
+            var sf = new StringFormat();
             sf.Alignment = StringAlignment.Center;
             sf.LineAlignment = StringAlignment.Center;
             switch (content.Length) {
@@ -350,20 +354,21 @@ namespace XK.Common
             }
             return backgroundimg;
         }
+
         private static Bitmap DrawLineStringDiy(string content) {
             //将内容进行处理
             content = ToSBC(content.Trim());
             //2.绘制背景
-            SolidBrush b = new SolidBrush(Color.FromArgb(200, 205, 205, 60));//修改背景颜色
-            Bitmap backgroundimg = new Bitmap(1280, 720);//图片大小转化
-            Graphics g = Graphics.FromImage(backgroundimg);
+            var b = new SolidBrush(Color.FromArgb(200, 205, 205, 60)); //修改背景颜色
+            var backgroundimg = new Bitmap(1280, 720); //图片大小转化
+            var g = Graphics.FromImage(backgroundimg);
             g.FillRectangle(b, new Rectangle(0, 0, 1280, 720));
             g.SmoothingMode = SmoothingMode.HighSpeed;
             //画刷改成黑色
-            Brush bru = Brushes.Black;
+            var bru = Brushes.Black;
 
             //居中的方法
-            StringFormat sf = new StringFormat();
+            var sf = new StringFormat();
             sf.Alignment = StringAlignment.Center;
             sf.LineAlignment = StringAlignment.Center;
             switch (content.Length) {
@@ -586,20 +591,21 @@ namespace XK.Common
             }
             return backgroundimg;
         }
+
         private static Bitmap DrawLineStringDiyColor(string content, Color backColor, Brush fontColor) {
             //将内容进行处理
             content = ToSBC(content.Trim());
             //2.绘制背景
-            SolidBrush b = new SolidBrush(backColor);//修改背景颜色
-            Bitmap backgroundimg = new Bitmap(1280, 720);//图片大小转化
-            Graphics g = Graphics.FromImage(backgroundimg);
+            var b = new SolidBrush(backColor); //修改背景颜色
+            var backgroundimg = new Bitmap(1280, 720); //图片大小转化
+            var g = Graphics.FromImage(backgroundimg);
             g.FillRectangle(b, new Rectangle(0, 0, 1280, 720));
             g.SmoothingMode = SmoothingMode.HighSpeed;
             //画刷改成黑色
-            Brush bru = fontColor;
+            var bru = fontColor;
 
             //居中的方法
-            StringFormat sf = new StringFormat();
+            var sf = new StringFormat();
             sf.Alignment = StringAlignment.Center;
             sf.LineAlignment = StringAlignment.Center;
             switch (content.Length) {
@@ -822,87 +828,105 @@ namespace XK.Common
             }
             return backgroundimg;
         }
+
         //很棒的绘图算法
-        private static void DrawLines(int LineMode, string content, ref Graphics g, Brush bru, StringFormat sf, int fontsize, int margin) {
-            Font f = new Font("微软雅黑", fontsize, FontStyle.Bold);
+        private static void DrawLines(int LineMode, string content, ref Graphics g, Brush bru, StringFormat sf,
+            int fontsize, int margin) {
+            var f = new Font("微软雅黑", fontsize, FontStyle.Bold);
             //倒数第二行要加入的文字数
-            int addtext = 0;
+            var addtext = 0;
             //需要插入的行数
-            int addline = (int)Math.Ceiling((double)LineMode / 2);
+            var addline = (int) Math.Ceiling((double) LineMode/2);
             //一个算法索引
-            int index = 0;
+            var index = 0;
             //如果余数大于有效行数
-            if (content.Length % LineMode >= addline) {
+            if (content.Length%LineMode >= addline) {
                 addtext = 1;
             }
             //奇数模式下
-            if (LineMode % 2 != 0) {
-                for (int i = 0; i < LineMode; i++) {
+            if (LineMode%2 != 0) {
+                for (var i = 0; i < LineMode; i++) {
                     //判断是否是中间行以后 
-                    if (i >= LineMode / 2) {
+                    if (i >= LineMode/2) {
                         if (i == (LineMode - 1)) {
                             if (addtext != 0) {
-                                g.DrawString(content.Substring(i * (content.Length / LineMode) + addline - 1), f, bru, new PointF(640, 360 + (-LineMode / 2 + i) * margin), sf);
+                                g.DrawString(content.Substring(i*(content.Length/LineMode) + addline - 1), f, bru,
+                                    new PointF(640, 360 + (-LineMode/2 + i)*margin), sf);
                             }
                             else {
-                                g.DrawString(content.Substring(i * (content.Length / LineMode)), f, bru, new PointF(640, 360 + (-LineMode / 2 + i) * margin), sf);
+                                g.DrawString(content.Substring(i*(content.Length/LineMode)), f, bru,
+                                    new PointF(640, 360 + (-LineMode/2 + i)*margin), sf);
                             }
                         }
                         else {
                             if (addtext != 0) {
-                                g.DrawString(content.Substring(i * (content.Length / LineMode) + index++, content.Length / LineMode + addtext), f, bru, new PointF(640, 360 + (-LineMode / 2 + i) * margin), sf);
+                                g.DrawString(
+                                    content.Substring(i*(content.Length/LineMode) + index++,
+                                        content.Length/LineMode + addtext), f, bru,
+                                    new PointF(640, 360 + (-LineMode/2 + i)*margin), sf);
                             }
                             else {
-                                g.DrawString(content.Substring(i * (content.Length / LineMode), content.Length / LineMode), f, bru, new PointF(640, 360 + (-LineMode / 2 + i) * margin), sf);
+                                g.DrawString(content.Substring(i*(content.Length/LineMode), content.Length/LineMode), f,
+                                    bru, new PointF(640, 360 + (-LineMode/2 + i)*margin), sf);
                             }
                         }
                     }
                     else {
-                        g.DrawString(content.Substring(i * (content.Length / LineMode), content.Length / LineMode), f, bru, new PointF(640, 360 + (-LineMode / 2 + i) * margin), sf);
+                        g.DrawString(content.Substring(i*(content.Length/LineMode), content.Length/LineMode), f, bru,
+                            new PointF(640, 360 + (-LineMode/2 + i)*margin), sf);
                     }
                 }
             }
             //偶数模式下
             else {
-                for (int i = 0; i < LineMode; i++) {
+                for (var i = 0; i < LineMode; i++) {
                     //判断是否是中间行以后 
-                    if (i >= LineMode / 2) {
+                    if (i >= LineMode/2) {
                         if (i == (LineMode - 1)) {
                             if (addtext != 0) {
-                                g.DrawString(content.Substring(i * (content.Length / LineMode) + addline - 1), f, bru, new PointF(640, 360 + ((-LineMode / 2 + i + 1) * margin - margin / 2)), sf);
+                                g.DrawString(content.Substring(i*(content.Length/LineMode) + addline - 1), f, bru,
+                                    new PointF(640, 360 + ((-LineMode/2 + i + 1)*margin - margin/2)), sf);
                             }
                             else {
-                                g.DrawString(content.Substring(i * (content.Length / LineMode)), f, bru, new PointF(640, 360 + ((-LineMode / 2 + i + 1) * margin - margin / 2)), sf);
+                                g.DrawString(content.Substring(i*(content.Length/LineMode)), f, bru,
+                                    new PointF(640, 360 + ((-LineMode/2 + i + 1)*margin - margin/2)), sf);
                             }
                         }
                         else {
                             if (addtext != 0) {
-                                g.DrawString(content.Substring(i * (content.Length / LineMode) + index++, content.Length / LineMode + addtext), f, bru, new PointF(640, 360 + ((-LineMode / 2 + i + 1) * margin - margin / 2)), sf);
+                                g.DrawString(
+                                    content.Substring(i*(content.Length/LineMode) + index++,
+                                        content.Length/LineMode + addtext), f, bru,
+                                    new PointF(640, 360 + ((-LineMode/2 + i + 1)*margin - margin/2)), sf);
                             }
                             else {
-                                g.DrawString(content.Substring(i * (content.Length / LineMode), content.Length / LineMode), f, bru, new PointF(640, 360 + ((-LineMode / 2 + i + 1) * margin - margin / 2)), sf);
+                                g.DrawString(content.Substring(i*(content.Length/LineMode), content.Length/LineMode), f,
+                                    bru, new PointF(640, 360 + ((-LineMode/2 + i + 1)*margin - margin/2)), sf);
                             }
                         }
                     }
                     else {
-                        g.DrawString(content.Substring(i * (content.Length / LineMode), content.Length / LineMode), f, bru, new PointF(640, 360 + ((-LineMode / 2 + i) * margin + margin / 2)), sf);
+                        g.DrawString(content.Substring(i*(content.Length/LineMode), content.Length/LineMode), f, bru,
+                            new PointF(640, 360 + ((-LineMode/2 + i)*margin + margin/2)), sf);
                     }
                 }
             }
         }
+
         // 半角转全角：
-        public static String ToSBC(String input) {
-            char[] c = input.ToCharArray();
-            for (int i = 0; i < c.Length; i++) {
+        public static string ToSBC(string input) {
+            var c = input.ToCharArray();
+            for (var i = 0; i < c.Length; i++) {
                 if (c[i] == 32) {
-                    c[i] = (char)12288;
+                    c[i] = (char) 12288;
                     continue;
                 }
                 if (c[i] < 127)
-                    c[i] = (char)(c[i] + 65248);
+                    c[i] = (char) (c[i] + 65248);
             }
-            return new String(c);
+            return new string(c);
         }
+
         //删除首标点符号
         public static string delthePunctuation(string input) {
             if (char.IsPunctuation(input[0])) {

@@ -1,157 +1,51 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿#region
+
+using System;
 using System.Text;
 
+#endregion
+
 namespace XK.Common {
-    /// <summary> 
-    /// 拼音工具类 
-    /// </summary> 
+    /// <summary>
+    ///     拼音工具类
+    /// </summary>
     public static class SpellHelper {
-        /// <summary> 
-        /// 获取汉字拼音[全拼] 
-        /// </summary> 
-        /// <param name="value">汉字串</param> 
-        /// <returns>返回全拼</returns> 
-        public static string GetSpell(string value) {
-            return InnerGetSpell(value);
-        }
-        /// <summary> 
-        /// 获取汉字拼音简码[简拼] 
-        /// </summary> 
-        /// <param name="value">汉字串</param> 
-        /// <returns>返回简拼</returns> 
-        public static string GetSpellFirst(string value) {
-            return InnerGetSpellFirst(value).ToUpper();
-        }
+        private const string CodeData =
+            "cjwgnspgcenegypbtwxzdxykygtpjnmjqmbsgzscyjsyyfpggbzgydywjkgaljswkbjqhyjwpdzlsgmr" +
+            "ybywwccgznkydgttngjeyekzydcjnmcylqlypyqbqrpzslwbdgkjfyxjwcltbncxjjjjcxdtqsqzycdxxhgckbphffss" +
+            "pybgmxjbbyglbhlssmzmpjhsojnghdzcdklgjhsgqzhxqgkezzwymcscjnyetxadzpmdssmzjjqjyzcjjfwqjbdzbjgd" +
+            "nzcbwhgxhqkmwfbpbqdtjjzkqhylcgxfptyjyyzpsjlfchmqshgmmxsxjpkdcmbbqbefsjwhwwgckpylqbgldlcctnma" +
+            "eddksjngkcsgxlhzaybdbtsdkdylhgymylcxpycjndqjwxqxfyyfjlejbzrwccqhqcsbzkymgplbmcrqcflnymyqmsqt" +
+            "rbcjthztqfrxchxmcjcjlxqgjmshzkbswxemdlckfsydsglycjjssjnqbjctyhbftdcyjdgwyghqfrxwckqkxebpdjpx" +
+            "jqsrmebwgjlbjslyysmdxlclqkxlhtjrjjmbjhxhwywcbhtrxxglhjhfbmgykldyxzpplggpmtcbbajjzyljtyanjgbj" +
+            "flqgdzyqcaxbkclecjsznslyzhlxlzcghbxzhznytdsbcjkdlzayffydlabbgqszkggldndnyskjshdlxxbcghxyggdj" +
+            "mmzngmmccgwzszxsjbznmlzdthcqydbdllscddnlkjyhjsycjlkohqasdhnhcsgaehdaashtcplcpqybsdmpjlpcjaql" +
+            "cdhjjasprchngjnlhlyyqyhwzpnccgwwmzffjqqqqxxaclbhkdjxdgmmydjxzllsygxgkjrywzwyclzmcsjzldbndcfc" +
+            "xyhlschycjqppqagmnyxpfrkssbjlyxyjjglnscmhcwwmnzjjlhmhchsyppttxrycsxbyhcsmxjsxnbwgpxxtaybgajc" +
+            "xlypdccwqocwkccsbnhcpdyznbcyytyckskybsqkkytqqxfcwchcwkelcqbsqyjqcclmthsywhmktlkjlychwheqjhtj" +
+            "hppqpqscfymmcmgbmhglgsllysdllljpchmjhwljcyhzjxhdxjlhxrswlwzjcbxmhzqxsdzpmgfcsglsdymjshxpjxom" +
+            "yqknmyblrthbcftpmgyxlchlhlzylxgsssscclsldclepbhshxyyfhbmgdfycnjqwlqhjjcywjztejjdhfblqxtqkwhd" +
+            "chqxagtlxljxmsljhdzkzjecxjcjnmbbjcsfywkbjzghysdcpqyrsljpclpwxsdwejbjcbcnaytmgmbapclyqbclzxcb" +
+            "nmsggfnzjjbzsfqyndxhpcqkzczwalsbccjxpozgwkybsgxfcfcdkhjbstlqfsgdslqwzkxtmhsbgzhjcrglyjbpmljs" +
+            "xlcjqqhzmjczydjwbmjklddpmjegxyhylxhlqyqhkycwcjmyhxnatjhyccxzpcqlbzwwwtwbqcmlbmynjcccxbbsnzzl" +
+            "jpljxyztzlgcldcklyrzzgqtgjhhgjljaxfgfjzslcfdqzlclgjdjcsnclljpjqdcclcjxmyzftsxgcgsbrzxjqqcczh" +
+            "gyjdjqqlzxjyldlbcyamcstylbdjbyregklzdzhldszchznwczcllwjqjjjkdgjcolbbzppglghtgzcygezmycnqcycy" +
+            "hbhgxkamtxyxnbskyzzgjzlqjdfcjxdygjqjjpmgwgjjjpkjsbgbmmcjssclpqpdxcdyykypcjddyygywchjrtgcnyql" +
+            "dkljczzgzccjgdyksgpzmdlcphnjafyzdjcnmwescsglbtzcgmsdllyxqsxsbljsbbsgghfjlwpmzjnlyywdqshzxtyy" +
+            "whmcyhywdbxbtlmswyyfsbjcbdxxlhjhfpsxzqhfzmqcztqcxzxrdkdjhnnyzqqfnqdmmgnydxmjgdhcdycbffallztd" +
+            "ltfkmxqzdngeqdbdczjdxbzgsqqddjcmbkxffxmkdmcsychzcmljdjynhprsjmkmpcklgdbqtfzswtfgglyplljzhgjj" +
+            "gypzltcsmcnbtjbhfkdhbyzgkpbbymtdlsxsbnpdkleycjnycdykzddhqgsdzsctarlltkzlgecllkjljjaqnbdggghf" +
+            "jtzqjsecshalqfmmgjnlyjbbtmlycxdcjpldlpcqdhsycbzsckbzmsljflhrbjsnbrgjhxpdgdjybzgdlgcsezgxlblg" +
+            "yxtwmabchecmwyjyzlljjshlgndjlslygkdzpzxjyyzlpcxszfgwyydlyhcljscmbjhblyjlycblydpdqysxktbytdkd" +
+            "xjypcnrjmfdjgklccjbctbjddbblblcdqrppxjcglzcshltoljnmdddlngkaqakgjgyhheznmshrphqqjchgmfprxcjg" +
+            "dychghlyrzqlcngjnzsqdkqjymszswlcfqjqxgbggxmdjwlmcrnfkkfsyyljbmqammmycctbshcptxxzzsmphfshmclm" +
+            "ldjfyqxsdyjdjjzzhqpdszglssjbckbxyqzjsgpsxjzqznqtbdkwxjkhhgflbcsmdldgdzdblzkycqnncsybzbfglzzx" +
+            "swmsccmqnjqsbdqsjtxxmbldxcclzshzcxrqjgjylxzfjphymzqqydfqjjlcznzjcdgzygcdxmzysctlkphtxhtlbjxj" +
+            "lxscdqccbbqjfqzfsltjbtkqbsxjjljchczdbzjdczjccprnlqcgpfczlclcxzdmxmphgsgzgszzqjxlwtjpfsyaslcj" +
+            "btckwcwmytcsjjljcqlwzmalbxyfbpnlschtgjwejjxxglljstgshjqlzfkcgnndszfdeqfhbsaqdgylbxmmygszldyd" +
+            "jmjjrgbjgkgdhgkblgkbdmbylxwcxyttybkmrjjzxqjbhlmhmjjzmqasldcyxyqdlqcafywyxqhz";
 
-
-        /// <summary> 
-        /// 获取拼音 
-        /// </summary> 
-        /// <param name="value">汉字串</param> 
-        /// <param name="spellfirst">输出拼音简码</param> 
-        /// <returns>返回全拼</returns> 
-        public static string GetSpell(string value, out string spellfirst) {
-            spellfirst = InnerGetSpellFirst(value);
-            string result = InnerGetSpell(value);
-            return result;
-        }
-
-
-        private static string InnerGetSpellFirst(string chineseString) {
-
-            String _Temp = null;
-            for (int i = 0; i < chineseString.Length; i++)
-                _Temp = _Temp + GetOneInnerGetSpellFirst(chineseString.Substring(i, 1));
-            return _Temp;
-        }
-
-        /// <summary> 
-        /// 单个汉字 
-        /// </summary> 
-        /// <param name="OneIndexTxt">汉字</param> 
-        /// <returns>首拼</returns> 
-        private static String GetOneInnerGetSpellFirst(String OneIndexTxt) {
-            if (Convert.ToChar(OneIndexTxt) >= 0 && Convert.ToChar(OneIndexTxt) < 256)
-                return OneIndexTxt;
-            else {
-                Encoding gb2312 = Encoding.GetEncoding("gb2312");
-                byte[] unicodeBytes = Encoding.Unicode.GetBytes(OneIndexTxt);
-                byte[] gb2312Bytes = Encoding.Convert(Encoding.Unicode, gb2312, unicodeBytes);
-                if (gb2312Bytes.Length >= 2 && gb2312Bytes[0] > 160 && gb2312Bytes[1] > 160) {
-                    return GetX(Convert.ToInt32(
-                    String.Format("{0:D2}", Convert.ToInt16(gb2312Bytes[0]) - 160)
-                    + String.Format("{0:D2}", Convert.ToInt16(gb2312Bytes[1]) - 160)
-                    ));
-                }
-                else return string.Empty;
-            }
-        }
-
-
-        /// <summary> 
-        /// 根据区位得到首字母 
-        /// </summary> 
-        /// <param name="GBCode">区位</param> 
-        /// <returns></returns> 
-        private static String GetX(int GBCode) {
-            if (GBCode >= 1601 && GBCode < 1637) return "a";
-            if (GBCode >= 1637 && GBCode < 1833) return "b";
-            if (GBCode >= 1833 && GBCode < 2078) return "c";
-            if (GBCode >= 2078 && GBCode < 2274) return "d";
-            if (GBCode >= 2274 && GBCode < 2302) return "e";
-            if (GBCode >= 2302 && GBCode < 2433) return "f";
-            if (GBCode >= 2433 && GBCode < 2594) return "g";
-            if (GBCode >= 2594 && GBCode < 2787) return "h";
-            if (GBCode >= 2787 && GBCode < 3106) return "j";
-            if (GBCode >= 3106 && GBCode < 3212) return "k";
-            if (GBCode >= 3212 && GBCode < 3472) return "l";
-            if (GBCode >= 3472 && GBCode < 3635) return "m";
-            if (GBCode >= 3635 && GBCode < 3722) return "n";
-            if (GBCode >= 3722 && GBCode < 3730) return "o";
-            if (GBCode >= 3730 && GBCode < 3858) return "p";
-            if (GBCode >= 3858 && GBCode < 4027) return "q";
-            if (GBCode >= 4027 && GBCode < 4086) return "r";
-            if (GBCode >= 4086 && GBCode < 4390) return "s";
-            if (GBCode >= 4390 && GBCode < 4558) return "t";
-            if (GBCode >= 4558 && GBCode < 4684) return "w";
-            if (GBCode >= 4684 && GBCode < 4925) return "x";
-            if (GBCode >= 4925 && GBCode < 5249) return "y";
-            if (GBCode >= 5249 && GBCode <= 5589) return "z";
-            if (GBCode >= 5601 && GBCode <= 8794) {
-
-                String _gbcode = GBCode.ToString();
-                int pos = (Convert.ToInt16(_gbcode.Substring(0, 2)) - 56) * 94 + Convert.ToInt16(_gbcode.Substring(_gbcode.Length - 2, 2));
-                return CodeData.Substring(pos - 1, 1);
-            }
-            return " ";
-        }
-
-
-        /// <summary> 
-        /// 获取汉字的全拼音 
-        /// </summary> 
-        /// <param name="x">传汉字的字符串</param> 
-        /// <returns>汉字的字符串的拼音</returns> 
-        public static string InnerGetSpell(string x) {
-            byte[] B = new byte[2];
-            string s = "";
-            char[] c = x.ToCharArray();
-            for (int j = 0; j < c.Length; j++) {
-                B = System.Text.Encoding.Default.GetBytes(c[j].ToString());
-                if ((int)(B[0]) <= 160 && (int)(B[0]) >= 0) {
-                    s += c[j];
-                }
-                else {
-                    for (int i = (iAFull.Length - 1); i >= 0; i--) {
-                        if (iAFull[i] <= (int)(B[0]) * 256 + (int)(B[1]) - 65536) {
-                            s += GetFirstToUpper(sAFull[i]);
-                            break;
-                        }
-                    }
-                }
-            }
-            return s;
-        }
-
-        /// <summary> 
-        /// 将输入的字符串的第一个字母大写并输出 
-        /// </summary> 
-        /// <param name="instr"></param> 
-        /// <returns></returns> 
-        private static string GetFirstToUpper(string instr) {
-            if (instr.Length > 1) {
-                return (instr.Substring(0, 1)).ToUpper() + instr.Substring(1);
-            }
-            else {
-                return instr.ToUpper();
-            }
-        }
-
-        private const string CodeData = "cjwgnspgcenegypbtwxzdxykygtpjnmjqmbsgzscyjsyyfpggbzgydywjkgaljswkbjqhyjwpdzlsgmr" + "ybywwccgznkydgttngjeyekzydcjnmcylqlypyqbqrpzslwbdgkjfyxjwcltbncxjjjjcxdtqsqzycdxxhgckbphffss" + "pybgmxjbbyglbhlssmzmpjhsojnghdzcdklgjhsgqzhxqgkezzwymcscjnyetxadzpmdssmzjjqjyzcjjfwqjbdzbjgd" + "nzcbwhgxhqkmwfbpbqdtjjzkqhylcgxfptyjyyzpsjlfchmqshgmmxsxjpkdcmbbqbefsjwhwwgckpylqbgldlcctnma" + "eddksjngkcsgxlhzaybdbtsdkdylhgymylcxpycjndqjwxqxfyyfjlejbzrwccqhqcsbzkymgplbmcrqcflnymyqmsqt" + "rbcjthztqfrxchxmcjcjlxqgjmshzkbswxemdlckfsydsglycjjssjnqbjctyhbftdcyjdgwyghqfrxwckqkxebpdjpx" + "jqsrmebwgjlbjslyysmdxlclqkxlhtjrjjmbjhxhwywcbhtrxxglhjhfbmgykldyxzpplggpmtcbbajjzyljtyanjgbj" + "flqgdzyqcaxbkclecjsznslyzhlxlzcghbxzhznytdsbcjkdlzayffydlabbgqszkggldndnyskjshdlxxbcghxyggdj" + "mmzngmmccgwzszxsjbznmlzdthcqydbdllscddnlkjyhjsycjlkohqasdhnhcsgaehdaashtcplcpqybsdmpjlpcjaql" + "cdhjjasprchngjnlhlyyqyhwzpnccgwwmzffjqqqqxxaclbhkdjxdgmmydjxzllsygxgkjrywzwyclzmcsjzldbndcfc" + "xyhlschycjqppqagmnyxpfrkssbjlyxyjjglnscmhcwwmnzjjlhmhchsyppttxrycsxbyhcsmxjsxnbwgpxxtaybgajc" + "xlypdccwqocwkccsbnhcpdyznbcyytyckskybsqkkytqqxfcwchcwkelcqbsqyjqcclmthsywhmktlkjlychwheqjhtj" + "hppqpqscfymmcmgbmhglgsllysdllljpchmjhwljcyhzjxhdxjlhxrswlwzjcbxmhzqxsdzpmgfcsglsdymjshxpjxom" + "yqknmyblrthbcftpmgyxlchlhlzylxgsssscclsldclepbhshxyyfhbmgdfycnjqwlqhjjcywjztejjdhfblqxtqkwhd" + "chqxagtlxljxmsljhdzkzjecxjcjnmbbjcsfywkbjzghysdcpqyrsljpclpwxsdwejbjcbcnaytmgmbapclyqbclzxcb" + "nmsggfnzjjbzsfqyndxhpcqkzczwalsbccjxpozgwkybsgxfcfcdkhjbstlqfsgdslqwzkxtmhsbgzhjcrglyjbpmljs" + "xlcjqqhzmjczydjwbmjklddpmjegxyhylxhlqyqhkycwcjmyhxnatjhyccxzpcqlbzwwwtwbqcmlbmynjcccxbbsnzzl" + "jpljxyztzlgcldcklyrzzgqtgjhhgjljaxfgfjzslcfdqzlclgjdjcsnclljpjqdcclcjxmyzftsxgcgsbrzxjqqcczh" + "gyjdjqqlzxjyldlbcyamcstylbdjbyregklzdzhldszchznwczcllwjqjjjkdgjcolbbzppglghtgzcygezmycnqcycy" + "hbhgxkamtxyxnbskyzzgjzlqjdfcjxdygjqjjpmgwgjjjpkjsbgbmmcjssclpqpdxcdyykypcjddyygywchjrtgcnyql" + "dkljczzgzccjgdyksgpzmdlcphnjafyzdjcnmwescsglbtzcgmsdllyxqsxsbljsbbsgghfjlwpmzjnlyywdqshzxtyy" + "whmcyhywdbxbtlmswyyfsbjcbdxxlhjhfpsxzqhfzmqcztqcxzxrdkdjhnnyzqqfnqdmmgnydxmjgdhcdycbffallztd" + "ltfkmxqzdngeqdbdczjdxbzgsqqddjcmbkxffxmkdmcsychzcmljdjynhprsjmkmpcklgdbqtfzswtfgglyplljzhgjj" + "gypzltcsmcnbtjbhfkdhbyzgkpbbymtdlsxsbnpdkleycjnycdykzddhqgsdzsctarlltkzlgecllkjljjaqnbdggghf" + "jtzqjsecshalqfmmgjnlyjbbtmlycxdcjpldlpcqdhsycbzsckbzmsljflhrbjsnbrgjhxpdgdjybzgdlgcsezgxlblg" + "yxtwmabchecmwyjyzlljjshlgndjlslygkdzpzxjyyzlpcxszfgwyydlyhcljscmbjhblyjlycblydpdqysxktbytdkd" + "xjypcnrjmfdjgklccjbctbjddbblblcdqrppxjcglzcshltoljnmdddlngkaqakgjgyhheznmshrphqqjchgmfprxcjg" + "dychghlyrzqlcngjnzsqdkqjymszswlcfqjqxgbggxmdjwlmcrnfkkfsyyljbmqammmycctbshcptxxzzsmphfshmclm" + "ldjfyqxsdyjdjjzzhqpdszglssjbckbxyqzjsgpsxjzqznqtbdkwxjkhhgflbcsmdldgdzdblzkycqnncsybzbfglzzx" + "swmsccmqnjqsbdqsjtxxmbldxcclzshzcxrqjgjylxzfjphymzqqydfqjjlcznzjcdgzygcdxmzysctlkphtxhtlbjxj" + "lxscdqccbbqjfqzfsltjbtkqbsxjjljchczdbzjdczjccprnlqcgpfczlclcxzdmxmphgsgzgszzqjxlwtjpfsyaslcj" + "btckwcwmytcsjjljcqlwzmalbxyfbpnlschtgjwejjxxglljstgshjqlzfkcgnndszfdeqfhbsaqdgylbxmmygszldyd" + "jmjjrgbjgkgdhgkblgkbdmbylxwcxyttybkmrjjzxqjbhlmhmjjzmqasldcyxyqdlqcafywyxqhz";
-
-        private static readonly int[] iAFull = new int[] {
+        private static readonly int[] iAFull = {
             -20319, -20317, -20304, -20295, -20292, -20283, -20265, -20257, -20242, -20230
             , -20051, -20036, -20032, -20026, -20002, -19990, -19986, -19982, -19976, -19805
             , -19784, -19775, -19774, -19763, -19756, -19751, -19746, -19741, -19739, -19728
@@ -195,70 +89,185 @@ namespace XK.Common {
         };
 
 
-        private static readonly string[] sAFull = new string[] {
+        private static readonly string[] sAFull = {
             "a", "ai", "an", "ang", "ao"
-
             , "ba", "bai", "ban", "bang", "bao", "bei", "ben", "beng", "bi", "bian", "biao", "bie", "bin"
             , "bing", "bo", "bu"
-
             , "ca", "cai", "can", "cang", "cao", "ce", "ceng", "cha", "chai", "chan", "chang", "chao", "che"
             , "chen", "cheng", "chi", "chong", "chou", "chu", "chuai", "chuan", "chuang", "chui", "chun"
             , "chuo", "ci", "cong", "cou", "cu", "cuan", "cui", "cun", "cuo"
-
             , "da", "dai", "dan", "dang", "dao", "de", "deng", "di", "dian", "diao", "die", "ding", "diu"
             , "dong", "dou", "du", "duan", "dui", "dun", "duo"
-
             , "e", "en", "er"
-
             , "fa", "fan", "fang", "fei", "fen", "feng", "fo", "fou", "fu"
-
             , "ga", "gai", "gan", "gang", "gao", "ge", "gei", "gen", "geng", "gong", "gou", "gu", "gua", "guai"
             , "guan", "guang", "gui", "gun", "guo"
-
             , "ha", "hai", "han", "hang", "hao", "he", "hei", "hen", "heng", "hong", "hou", "hu", "hua", "huai"
             , "huan", "huang", "hui", "hun", "huo"
-
             , "ji", "jia", "jian", "jiang", "jiao", "jie", "jin", "jing", "jiong", "jiu", "ju", "juan", "jue"
             , "jun"
-
             , "ka", "kai", "kan", "kang", "kao", "ke", "ken", "keng", "kong", "kou", "ku", "kua", "kuai", "kuan"
             , "kuang", "kui", "kun", "kuo"
-
             , "la", "lai", "lan", "lang", "lao", "le", "lei", "leng", "li", "lia", "lian", "liang", "liao", "lie"
             , "lin", "ling", "liu", "long", "lou", "lu", "lv", "luan", "lue", "lun", "luo"
-
             , "ma", "mai", "man", "mang", "mao", "me", "mei", "men", "meng", "mi", "mian", "miao", "mie", "min"
             , "ming", "miu", "mo", "mou", "mu"
-
             , "na", "nai", "nan", "nang", "nao", "ne", "nei", "nen", "neng", "ni", "nian", "niang", "niao", "nie"
             , "nin", "ning", "niu", "nong", "nu", "nv", "nuan", "nue", "nuo"
-
             , "o", "ou"
-
             , "pa", "pai", "pan", "pang", "pao", "pei", "pen", "peng", "pi", "pian", "piao", "pie", "pin", "ping"
             , "po", "pu"
-
             , "qi", "qia", "qian", "qiang", "qiao", "qie", "qin", "qing", "qiong", "qiu", "qu", "quan", "que"
             , "qun"
-
             , "ran", "rang", "rao", "re", "ren", "reng", "ri", "rong", "rou", "ru", "ruan", "rui", "run", "ruo"
-
             , "sa", "sai", "san", "sang", "sao", "se", "sen", "seng", "sha", "shai", "shan", "shang", "shao", "she"
             , "shen", "sheng", "shi", "shou", "shu", "shua", "shuai", "shuan", "shuang", "shui", "shun", "shuo", "si"
             , "song", "sou", "su", "suan", "sui", "sun", "suo"
-
             , "ta", "tai", "tan", "tang", "tao", "te", "teng", "ti", "tian", "tiao", "tie", "ting", "tong", "tou", "tu"
             , "tuan", "tui", "tun", "tuo"
-
             , "wa", "wai", "wan", "wang", "wei", "wen", "weng", "wo", "wu"
-
             , "xi", "xia", "xian", "xiang", "xiao", "xie", "xin", "xing", "xiong", "xiu", "xu", "xuan", "xue", "xun"
-
             , "ya", "yan", "yang", "yao", "ye", "yi", "yin", "ying", "yo", "yong", "you", "yu", "yuan", "yue", "yun"
-
             , "za", "zai", "zan", "zang", "zao", "ze", "zei", "zen", "zeng", "zha", "zhai", "zhan", "zhang", "zhao"
             , "zhe", "zhen", "zheng", "zhi", "zhong", "zhou", "zhu", "zhua", "zhuai", "zhuan", "zhuang", "zhui"
             , "zhun", "zhuo", "zi", "zong", "zou", "zu", "zuan", "zui", "zun", "zuo"
         };
+
+        /// <summary>
+        ///     获取汉字拼音[全拼]
+        /// </summary>
+        /// <param name="value">汉字串</param>
+        /// <returns>返回全拼</returns>
+        public static string GetSpell(string value) {
+            return InnerGetSpell(value);
+        }
+
+        /// <summary>
+        ///     获取汉字拼音简码[简拼]
+        /// </summary>
+        /// <param name="value">汉字串</param>
+        /// <returns>返回简拼</returns>
+        public static string GetSpellFirst(string value) {
+            return InnerGetSpellFirst(value).ToUpper();
+        }
+
+
+        /// <summary>
+        ///     获取拼音
+        /// </summary>
+        /// <param name="value">汉字串</param>
+        /// <param name="spellfirst">输出拼音简码</param>
+        /// <returns>返回全拼</returns>
+        public static string GetSpell(string value, out string spellfirst) {
+            spellfirst = InnerGetSpellFirst(value);
+            var result = InnerGetSpell(value);
+            return result;
+        }
+
+
+        private static string InnerGetSpellFirst(string chineseString) {
+            string _Temp = null;
+            for (var i = 0; i < chineseString.Length; i++)
+                _Temp = _Temp + GetOneInnerGetSpellFirst(chineseString.Substring(i, 1));
+            return _Temp;
+        }
+
+        /// <summary>
+        ///     单个汉字
+        /// </summary>
+        /// <param name="OneIndexTxt">汉字</param>
+        /// <returns>首拼</returns>
+        private static string GetOneInnerGetSpellFirst(string OneIndexTxt) {
+            if (Convert.ToChar(OneIndexTxt) >= 0 && Convert.ToChar(OneIndexTxt) < 256)
+                return OneIndexTxt;
+            var gb2312 = Encoding.GetEncoding("gb2312");
+            var unicodeBytes = Encoding.Unicode.GetBytes(OneIndexTxt);
+            var gb2312Bytes = Encoding.Convert(Encoding.Unicode, gb2312, unicodeBytes);
+            if (gb2312Bytes.Length >= 2 && gb2312Bytes[0] > 160 && gb2312Bytes[1] > 160) {
+                return GetX(Convert.ToInt32(
+                    string.Format("{0:D2}", Convert.ToInt16(gb2312Bytes[0]) - 160)
+                    + string.Format("{0:D2}", Convert.ToInt16(gb2312Bytes[1]) - 160)
+                    ));
+            }
+            return string.Empty;
+        }
+
+
+        /// <summary>
+        ///     根据区位得到首字母
+        /// </summary>
+        /// <param name="GBCode">区位</param>
+        /// <returns></returns>
+        private static string GetX(int GBCode) {
+            if (GBCode >= 1601 && GBCode < 1637) return "a";
+            if (GBCode >= 1637 && GBCode < 1833) return "b";
+            if (GBCode >= 1833 && GBCode < 2078) return "c";
+            if (GBCode >= 2078 && GBCode < 2274) return "d";
+            if (GBCode >= 2274 && GBCode < 2302) return "e";
+            if (GBCode >= 2302 && GBCode < 2433) return "f";
+            if (GBCode >= 2433 && GBCode < 2594) return "g";
+            if (GBCode >= 2594 && GBCode < 2787) return "h";
+            if (GBCode >= 2787 && GBCode < 3106) return "j";
+            if (GBCode >= 3106 && GBCode < 3212) return "k";
+            if (GBCode >= 3212 && GBCode < 3472) return "l";
+            if (GBCode >= 3472 && GBCode < 3635) return "m";
+            if (GBCode >= 3635 && GBCode < 3722) return "n";
+            if (GBCode >= 3722 && GBCode < 3730) return "o";
+            if (GBCode >= 3730 && GBCode < 3858) return "p";
+            if (GBCode >= 3858 && GBCode < 4027) return "q";
+            if (GBCode >= 4027 && GBCode < 4086) return "r";
+            if (GBCode >= 4086 && GBCode < 4390) return "s";
+            if (GBCode >= 4390 && GBCode < 4558) return "t";
+            if (GBCode >= 4558 && GBCode < 4684) return "w";
+            if (GBCode >= 4684 && GBCode < 4925) return "x";
+            if (GBCode >= 4925 && GBCode < 5249) return "y";
+            if (GBCode >= 5249 && GBCode <= 5589) return "z";
+            if (GBCode >= 5601 && GBCode <= 8794) {
+                var _gbcode = GBCode.ToString();
+                var pos = (Convert.ToInt16(_gbcode.Substring(0, 2)) - 56)*94 +
+                          Convert.ToInt16(_gbcode.Substring(_gbcode.Length - 2, 2));
+                return CodeData.Substring(pos - 1, 1);
+            }
+            return " ";
+        }
+
+
+        /// <summary>
+        ///     获取汉字的全拼音
+        /// </summary>
+        /// <param name="x">传汉字的字符串</param>
+        /// <returns>汉字的字符串的拼音</returns>
+        public static string InnerGetSpell(string x) {
+            var B = new byte[2];
+            var s = "";
+            var c = x.ToCharArray();
+            for (var j = 0; j < c.Length; j++) {
+                B = Encoding.Default.GetBytes(c[j].ToString());
+                if (B[0] <= 160 && B[0] >= 0) {
+                    s += c[j];
+                }
+                else {
+                    for (var i = (iAFull.Length - 1); i >= 0; i--) {
+                        if (iAFull[i] <= B[0]*256 + B[1] - 65536) {
+                            s += GetFirstToUpper(sAFull[i]);
+                            break;
+                        }
+                    }
+                }
+            }
+            return s;
+        }
+
+        /// <summary>
+        ///     将输入的字符串的第一个字母大写并输出
+        /// </summary>
+        /// <param name="instr"></param>
+        /// <returns></returns>
+        private static string GetFirstToUpper(string instr) {
+            if (instr.Length > 1) {
+                return (instr.Substring(0, 1)).ToUpper() + instr.Substring(1);
+            }
+            return instr.ToUpper();
+        }
     }
 }

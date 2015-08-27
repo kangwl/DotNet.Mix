@@ -1,13 +1,16 @@
-﻿using System.Web.UI.WebControls;
+﻿#region
 
-namespace XK.Common.web
-{
+using System.Web.UI.WebControls;
+
+#endregion
+
+namespace XK.Common.web {
     /// <summary>
-    /// 绑定扩展
+    ///     绑定扩展
     /// </summary>
     public static class WebMethods {
         /// <summary>
-        /// 绑定下拉框数据
+        ///     绑定下拉框数据
         /// </summary>
         /// <typeparam name="T">数据类型</typeparam>
         /// <param name="dropDownList">DropDownList实例</param>
@@ -21,8 +24,9 @@ namespace XK.Common.web
             dropDownList.DataSource = tData;
             dropDownList.DataBind();
         }
+
         /// <summary>
-        /// 绑定repeater控件数据
+        ///     绑定repeater控件数据
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="repeater"></param>

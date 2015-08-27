@@ -38,7 +38,7 @@
       <HintPath>..\..\packages\Dapper-Async.1.03\lib\net45\Dapper.dll</HintPath>
     </Reference>
     <Reference Include="StackExchange.Redis, Version=1.0.316.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\StackExchange.Redis.1.0.481\lib\net45\StackExchange.Redis.dll</HintPath>
+      <HintPath>..\..\packages\StackExchange.Redis.1.0.481\lib\net45\StackExchange.Redis.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -62,6 +62,10 @@
     <ProjectReference Include="..\..\XK.Common\XK.Common.csproj">
       <Project>{a49248a4-5a0e-444b-b95d-a13af3d4a572}</Project>
       <Name>XK.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\XK.Redis\XK.Redis.csproj">
+      <Project>{8a05e84b-665c-49c5-82bb-255e1e6d99d9}</Project>
+      <Name>XK.Redis</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,7 +1,7 @@
 ﻿namespace XK.Common {
     public class MyLazy<T> where T : new() {
-        private T value;
         private bool isLoaded;
+        private T value;
 
         public MyLazy() {
             isLoaded = false;

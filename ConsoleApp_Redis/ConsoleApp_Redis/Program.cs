@@ -8,18 +8,19 @@ using System.Text;
 using System.Threading.Tasks;
 using Dapper;
 using StackExchange.Redis;
+using XK.Common;
 
 namespace ConsoleApp_Redis {
     class Program {
         private static void Main(string[] args) {
 
-            // string host = "192.168.3.66";
-            string host = "192.168.1.78";
+             string host = "192.168.3.66";
+            //string host = "192.168.1.78";
             int port = 6379;
             ConfigurationOptions options = new ConfigurationOptions {
                 AllowAdmin = true,
                 EndPoints = {new IPEndPoint(IPAddress.Parse(host), port)},
-                Password = ""
+                Password = "abc123"
             };
 
             ConnectionMultiplexer connection = ConnectionMultiplexer.Connect(options);
@@ -37,14 +38,15 @@ namespace ConsoleApp_Redis {
             //Console.WriteLine(server.Version.ToString());
             IEnumerable<RedisKey> redisKeys = server.Keys();
             foreach (RedisKey key in redisKeys) {
+                Console.WriteLine(key);
 
-                RedisType redisType = database.KeyType(key);
+               // RedisType redisType = database.KeyType(key);
 
-                HashEntry[] hashEntries = database.HashGetAll(key);
+                //HashEntry[] hashEntries = database.HashGetAll(key);
             
-                Console.WriteLine($"{key}----{redisType}");
-                string str = $"{"{"}{string.Join(",", hashEntries)}{"}"}";
-                Console.WriteLine(str);
+                //Console.WriteLine($"{key}----{redisType}");
+                //string str = $"{string.Join(",", hashEntries)}";
+                //Console.WriteLine(str);
             
                 //insert
                 //HashEntry[] insertEntries=new HashEntry[2] {
@@ -54,27 +56,17 @@ namespace ConsoleApp_Redis {
                 //database.HashSet("user.121212122", insertEntries);
 
                 //database.ListLeftPush("kkk", "sd");
+
+              //Console.WriteLine($"{key}---{database.StringGet(key)}");
             }
-
-
-            Student student = new Student() {Name = "kkk", Age = 12};
-
-             
-            
-           // ISubscriber subscriber = connection.GetSubscriber();
-
-
-
-            //DapperTest();
-
+           
             Console.Read();
         }
  
 
-        public class Student {
-            public int ID { get; set; }
-            public string Name { get; set; }
-            public int Age { get; set; }
+        public class Student { 
+            public dynamic Name { get; set; }
+            public dynamic Age { get; set; }
         }
 
         private static void DapperTest() {

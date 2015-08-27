@@ -1,25 +1,22 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Globalization;
 using System.IO;
 using System.Threading;
 
+#endregion
+
 namespace XK.Common {
     public class Log {
-        #region 自定义成员变量
-
-        private readonly int m_maxfilesize;
-        private readonly int m_maxfilecount;
-        private readonly FileInfo m_fileinfo;
-        #endregion
-
         public Log() {
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Log\\Log.txt");
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Log\\Log.txt");
             m_maxfilecount = 100;
             m_maxfilesize = 100;
             try {
                 m_fileinfo = new FileInfo(path);
                 if (m_fileinfo.Exists) {
-                    if (m_fileinfo.Length / 0x400 > m_maxfilesize) {
+                    if (m_fileinfo.Length/0x400 > m_maxfilesize) {
                         Backup();
                         CreatLog();
                     }
@@ -39,7 +36,7 @@ namespace XK.Common {
             try {
                 m_fileinfo = new FileInfo(filepath);
                 if (m_fileinfo.Exists) {
-                    if (m_fileinfo.Length / 0x400 > m_maxfilesize) {
+                    if (m_fileinfo.Length/0x400 > m_maxfilesize) {
                         Backup();
                         CreatLog();
                     }
@@ -54,14 +51,14 @@ namespace XK.Common {
         }
 
         /// <summary>
-        /// 备份日志文件
+        ///     备份日志文件
         /// </summary>
         private void Backup() {
             try {
                 if (m_fileinfo.Directory != null) {
-                    FileInfo[] files = m_fileinfo.Directory.GetFiles(m_fileinfo.Name + ".*");
-                    int filecount = files.Length;
-                    string bakfilename = m_fileinfo.Name + "." + filecount.ToString(CultureInfo.InvariantCulture);
+                    var files = m_fileinfo.Directory.GetFiles(m_fileinfo.Name + ".*");
+                    var filecount = files.Length;
+                    var bakfilename = m_fileinfo.Name + "." + filecount.ToString(CultureInfo.InvariantCulture);
                     if (filecount > m_maxfilecount) {
                         files[1].Delete();
                     }
@@ -76,16 +73,16 @@ namespace XK.Common {
 
 
         /// <summary>
-        /// 创建日志文件
+        ///     创建日志文件
         /// </summary>
         private void CreatLog() {
             TextWriter logwrite = null;
-            ReaderWriterLock writelock = new ReaderWriterLock();
+            var writelock = new ReaderWriterLock();
             try {
                 writelock.AcquireWriterLock(-1);
-                DirectoryInfo directoryInfo = m_fileinfo.Directory;
+                var directoryInfo = m_fileinfo.Directory;
                 if (directoryInfo != null && !directoryInfo.Exists) {
-                    DirectoryInfo directory = m_fileinfo.Directory;
+                    var directory = m_fileinfo.Directory;
                     if (directory != null) directory.Create();
                 }
                 logwrite = TextWriter.Synchronized(m_fileinfo.CreateText());
@@ -110,11 +107,11 @@ namespace XK.Common {
 
 
         /// <summary>
-        /// 写入日志
+        ///     写入日志
         /// </summary>
         /// <param name="content"></param>
         public void WriteLog(string content) {
-            ReaderWriterLock writelock = new ReaderWriterLock();
+            var writelock = new ReaderWriterLock();
             TextWriter logwrite = null;
             try {
                 writelock.AcquireWriterLock(-1);
@@ -133,5 +130,12 @@ namespace XK.Common {
             }
         }
 
+        #region 自定义成员变量
+
+        private readonly int m_maxfilesize;
+        private readonly int m_maxfilecount;
+        private readonly FileInfo m_fileinfo;
+
+        #endregion
     }
 }
