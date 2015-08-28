@@ -647,9 +647,15 @@ namespace XK.Common {
     }
 
     public static class ModelExtension {
-        public static string ToJson<T>(this T tmodel) where T : class, new() {
+        public static string ToJson<T>(this T tmodel) where T : class {
             var jsonStr = JsonConvert.SerializeObject(tmodel);
             return jsonStr;
         }
+
+        public static T ToModel<T>(this string json) where T : class {
+            T tmodel = JsonConvert.DeserializeObject<T>(json);
+            return tmodel;
+        }
     }
+     
 }
