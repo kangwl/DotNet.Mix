@@ -23,3 +23,17 @@
 /packages/StackExchange.Redis.1.0.481
 /packages/StackExchange.Redis.StrongName.1.0.481
 /packages/MySql.Data.6.9.7
+/FreedomDB.Bridge/*.user
+/FreedomDB.Bridge/bin/Debug
+/FreedomDB.Bridge/obj/Debug
+/FreedomDB.Helper/bin/Debug
+/FreedomDB.Helper/obj/Debug
+/MyTestShop.Bll/bin/Debug
+/MyTestShop.Bll/obj/Debug
+/MyTestShop.Dal/bin/Debug
+/MyTestShop.Dal/obj/Debug
+/MyTestShop.IDal/bin/Debug
+/MyTestShop.IDal/obj/Debug
+/MyTestShop.Model/bin/Debug
+/MyTestShop.Model/obj/Debug
+/packages/EntityFramework.6.1.3
