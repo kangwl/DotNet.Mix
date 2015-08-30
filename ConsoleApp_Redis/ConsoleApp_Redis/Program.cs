@@ -1,17 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Net;
-using System.Net.Mime;
-using System.Text;
-using System.Threading.Tasks;
-using Dapper;
-using StackExchange.Redis;
-using XK.Common;
-using XK.Redis;
-using XK.Redis.Extension;
+using FreedomDB.Bridge;
+using MyTestShop.Bll;
 
 namespace ConsoleApp_Redis {
     class Program {
@@ -55,13 +44,73 @@ namespace ConsoleApp_Redis {
             ////    Console.WriteLine(pair.Key.Name + "--" + pair.Value);
             ////}
 
-            RedisHelper redisHelper = new RedisHelper();
-            redisHelper.Db.SortedSetRangeByScoreModels<Student>("users_sort").ForEach(
-                one => Console.WriteLine(one.Name)
-                );
-            
-            Console.Read();
+            //RedisHelper redisHelper = new RedisHelper();
+            //redisHelper.Db.SortedSetRangeByScoreModels<Student>("users_sort").ForEach(
+            //    one => Console.WriteLine(one.Name)
+            //    ); 
+
+            //DapperTest();
+
+            A();
+            Console.Read(); 
         }
+
+        private async static void A() {
+            //Stopwatch stopwatch=new Stopwatch();
+            //stopwatch.Start();
+            //Task<bool> t = userDal.Insert(
+            //    new Test.Model.User {
+            //        UserID = "kangwl",
+            //        UserPass = "1234",
+            //        Name = "weeee",
+            //        Age = 22,
+            //        Birthday = DateTime.Now.AddYears(-10)
+            //    }); 
+            //Console.WriteLine(t.Result);
+
+            //var update= userDal.Update(new Update() {
+            //     Dic = new Dictionary<string, dynamic> { {"UserID","qqq"} },
+            //     WhereCore = new Where().Add(new Where.Item("ID", "=", 2))
+            //                            .Add(new Where.Item("Name", "=", "weeee"))
+            // }); 
+            //Console.WriteLine(update.Result);
+
+
+            //var delete = userDal.Delete(new Where(
+            //    new Where.Item("ID", "=", 2)
+            //    )
+            //    );
+            //Console.WriteLine(delete.Result);
+
+            //Where.Item item = new Where.Item("ID", "=", 1);
+            //var user = userDal.GetOne(new Where(item), "*");
+            //Console.WriteLine(user.Result.Name); 
+            //List<Test.Model.User> userTask =await userDal.GetList("", "", 1, 1);
+
+            var taskelist =await UserBll.GetListUser(new Where().Add(new Where.Item("ID", ">", "0")), "ID,Name,Age", "ID DESC", 1, 2);
+            taskelist.ForEach(one => Console.WriteLine(one.Name));
+
+            //int ret = await userDal.InsertBatch(new List<User>() {
+            //    new User() {
+            //        UserID = "aaa",
+            //        UserPass = "1234",
+            //        Name = "weeee",
+            //        Age = 22,
+            //        Birthday = DateTime.Now.AddYears(-10)
+            //    },
+            //    new User() {
+            //        UserID = "bbb",
+            //        UserPass = "3344",
+            //        Name = "dfeee",
+            //        Age = 33,
+            //        Birthday = DateTime.Now.AddYears(-10)
+            //    }
+            //}, true);
+
+            //Console.WriteLine(ret);
+        }
+
+     
 
 
         public class Student { 
@@ -69,25 +118,9 @@ namespace ConsoleApp_Redis {
             public dynamic Name { get; set; }
             public dynamic Age { get; set; }
         }
+ 
 
-        private static void DapperTest() {
-            using (IDbConnection connection = new SqlConnection("server=192.168.3.66;database=myedu;uid=sa;pwd=abc123;")
-                ) {
 
-                int ret = connection.Execute("insert into eduuser(userid,userpass,name,age,birthday) values" +
-                                             "(@uid,@upass,@name,@age,@birthday)",
-                    new {
-                        uid = "kangwl",
-                        upass = "kangwl123",
-                        name = "康文立",
-                        age = 12,
-                        birthday = DateTime.Now.AddYears(-20)
-                    });
-
-                Console.WriteLine(ret > 0);
-
-            }
-        }
 
 
     }
