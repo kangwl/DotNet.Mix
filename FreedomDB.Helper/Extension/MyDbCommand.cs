@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using FreedomDB.Bridge;
+using MySql.Data.MySqlClient;
 
 namespace FreedomDB.Helper.Extension {
     public static class MyDbCommand {
@@ -16,8 +17,8 @@ namespace FreedomDB.Helper.Extension {
         /// <param name="where"></param>
         /// <returns></returns>
         public static int ExecuteNonQueryExt(this System.Data.Common.DbCommand command, string sql,FreedomDB.Bridge.Where where) {
-            command.CommandText = sql;
-            command.Parameters.AddRange(CreateWhereSqlParameters(where));
+            command.CommandText = sql; 
+            command.Parameters.AddRange(command.CreateWhereSqlParameters(where));
             return command.ExecuteNonQuery();
         }
 
@@ -30,7 +31,7 @@ namespace FreedomDB.Helper.Extension {
         /// <returns></returns>
         public static int ExecuteNonQueryExt(this System.Data.Common.DbCommand command, string sql, FreedomDB.Bridge.Update update) {
             command.CommandText = sql;
-            command.Parameters.AddRange(CreateUpdateSqlParams(update));
+            command.Parameters.AddRange(command.CreateUpdateSqlParams(update));
             return command.ExecuteNonQuery();
         }
 
@@ -43,7 +44,7 @@ namespace FreedomDB.Helper.Extension {
         /// <returns></returns>
         public static IDataReader ExecuteReaderExt(this System.Data.Common.DbCommand command, string sql, Where where) {
             command.CommandText = sql;
-            command.Parameters.AddRange(CreateWhereSqlParameters(where));
+            command.Parameters.AddRange(command.CreateWhereSqlParameters(where));
             return command.ExecuteReader();
         }
 
@@ -88,9 +89,10 @@ namespace FreedomDB.Helper.Extension {
         /// <summary>
         /// 生成 where sqlparameter参数
         /// </summary>
+        /// <param name="command"></param>
         /// <param name="where"></param>
         /// <returns></returns>
-        public static SqlParameter[] CreateWhereSqlParameters(Where where) {
+        public static SqlParameter[] CreateWhereSqlParameters(this IDbCommand command,Where where) {
             List<Where.Item> items = where.WhereItems;
             List<SqlParameter> parameters = items.Select(item => new SqlParameter($"@{item.Field}", item.Value)).ToList();
             return parameters.ToArray();
@@ -99,9 +101,10 @@ namespace FreedomDB.Helper.Extension {
         /// <summary>
         /// 生成 update sqlparameter参数
         /// </summary>
+        /// <param name="command"></param>
         /// <param name="update"></param>
         /// <returns></returns>
-        public static SqlParameter[] CreateUpdateSqlParams(Update update) {
+        public static SqlParameter[] CreateUpdateSqlParams(this IDbCommand command,Update update) {
             Dictionary<string, dynamic> dic = update.Dic;
             List<SqlParameter> parameters = dic.Select(pair => new SqlParameter($"@{pair.Key}", pair.Value)).ToList();
             Where where = update.WhereCore;

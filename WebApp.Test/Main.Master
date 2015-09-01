@@ -1,0 +1,36 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Main.master.cs" Inherits="WebApp.Test.Main" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <link href="/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="/Content/bootstrap-theme.min.css" rel="stylesheet" />
+    <script src="/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="/Scripts/bootstrap.min.js"></script>
+    <script src="/Scripts/bs.alert.js"></script>
+    <script>
+        window.onload = function () {
+            if (window.applicationCache) {
+                //document.write("Yes, your browser can use offline web applications.");
+            } else {
+                var downloadChrome = "你的浏览器不支持，请 <a style=\"font-weight:800\" href=\"http://dlsw.baidu.com/sw-search-sp/soft/9d/14744/ChromeStandalone_v44.0.2403.157_Setup.1440142013.exe\">点此</a> 下载浏览器后浏览";
+                document.write(downloadChrome);
+            }
+        }
+    </script>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div class="container" style="margin-top: 20px">
+        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+        
+        </asp:ContentPlaceHolder>
+    </div>
+    </form>
+</body>
+</html>
