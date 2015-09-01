@@ -46,6 +46,10 @@ namespace FreedomDB.Helper.Extension {
             command.Parameters.AddRange(CreateWhereSqlParameters(where));
             return command.ExecuteReader();
         }
+        public static IDataReader ExecuteReaderExt(this System.Data.Common.DbCommand command, string sql) {
+            command.CommandText = sql;
+            return command.ExecuteReader();
+        }
 
         /// <summary>
         /// 用于执行多个表更新

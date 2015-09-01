@@ -7,7 +7,7 @@ using FreedomDB.Bridge;
 using MySql.Data.MySqlClient;
 
 namespace FreedomDB.Helper {
-    public class DbHelper : IDisposable {
+    public class DbHelper  {
 
         private static string connStr = "server=192.168.3.66;database=myedu;uid=sa;pwd=abc123;";
 
@@ -79,10 +79,6 @@ namespace FreedomDB.Helper {
             /// </summary>
             MySql
         }
-
-
-        public void Dispose() {
-           
-        }
+ 
     }
 }

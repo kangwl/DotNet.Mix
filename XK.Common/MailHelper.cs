@@ -35,7 +35,7 @@ namespace XK.Common {
 
         private const string mailServer = "smtp.163.com";
         private const string mailFromUser = "kangwl2009@163.com";
-        private const string mailFromPwd = "password";
+        private const string mailFromPwd = "";
 
         /// <summary>
         ///     发送邮件
