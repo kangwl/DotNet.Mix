@@ -3,7 +3,6 @@
     <link href="/Content/bs_file_input/fileinput.min.css" rel="stylesheet" />
     <script src="/Scripts/bs_file_input/fileinput.js"></script>
     <script src="/Scripts/bs_file_input/fileinput_locale_zh.js"></script>
-
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="panel panel-success form-group">
@@ -65,7 +64,6 @@
 
         $('#input-id').on('filebatchuploadcomplete', function(event, files, extra) {
             $.bsAlertSuccess("上传成功", "#upload_foot", 3);
-            $('#input-id').fileinput('clear');
         });
  
     </script>

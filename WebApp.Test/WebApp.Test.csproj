@@ -91,6 +91,10 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Main.Master" />
+    <Content Include="Scripts\bootbox.js" />
+    <Content Include="Scripts\bootbox.min.js" />
+    <Content Include="Scripts\bs.alert.js" />
+    <Content Include="Scripts\bs.modal.js" />
     <Content Include="Scripts\bs_file_input\fileinput.js" />
     <Content Include="Scripts\bs_file_input\fileinput.min.js" />
     <Content Include="Scripts\bs_file_input\fileinput_locale_zh.js" />

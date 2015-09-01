@@ -15,8 +15,9 @@ namespace WebApp.Test.xk {
             if (files.Count > 0) {
                 for (int i = 0; i < files.Count; i++) {
                     var file = files[i];
-                    string saveFile = path + Path.GetFileName(file.FileName);
-                    file.SaveAs(saveFile);
+                    string saveFile = path + file.FileNameExt();
+                    //file.SaveAs(saveFile);
+                    file.SaveAsExt(saveFile);
                 }
                 var obj = new {success = "1"};
                 Response.Write(obj.ToJson());

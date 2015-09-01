@@ -168,9 +168,9 @@ namespace XK.Common {
         /// </summary>
         /// <param name="stream"></param>
         /// <param name="filePath">EXP:[d:\aaa.jpg]</param>
-        public static void WriteFile(Stream stream, string filePath) {
-            using (stream) {
-                const int bufferSize = 2048*5;
+        /// <param name="bufferSize"></param>
+        public static void WriteFile(Stream stream, string filePath, int bufferSize = 2048 * 5) {
+            using (stream) { 
                 var bytes = new byte[bufferSize];
                 var readCount = 0;
 
