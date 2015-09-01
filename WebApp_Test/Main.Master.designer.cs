@@ -7,7 +7,7 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace WebApp.Test {
+namespace WebApp_Test {
     
     
     public partial class Main {

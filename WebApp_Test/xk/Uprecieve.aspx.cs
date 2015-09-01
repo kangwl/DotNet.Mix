@@ -1,26 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using XK.Common;
 
-namespace WebApp.Test.xk {
-    public partial class uprecieve : System.Web.UI.Page {
+namespace WebApp_Test.xk {
+    public partial class UpRecieve : System.Web.UI.Page {
         protected void Page_Load(object sender, EventArgs e) {
             HttpFileCollection files = Request.Files;
             var path = Server.MapPath("~/Files/");
             if (files.Count > 0) {
+                if (!System.IO.Directory.Exists(path)) {
+                    System.IO.Directory.CreateDirectory(path);
+                }
                 for (int i = 0; i < files.Count; i++) {
                     var file = files[i];
                     string saveFile = path + file.FileNameExt();
                     //file.SaveAs(saveFile);
-                    file.SaveAsExt(saveFile);
+                    //file.SaveAsExt(saveFile);
+                    FileHelper.Upload2FileServer("http://localhost:41496/recieve.aspx", file.FileNameExt(),
+                        file.ContentLength, file.InputStream);
                 }
                 var obj = new {success = "1"};
                 Response.Write(obj.ToJson());
+
+                
             }
              
             //

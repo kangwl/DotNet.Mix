@@ -83,3 +83,9 @@
 /packages/jQuery.1.9.1/Tools/jquery-1.9.1.intellisense.js
 /packages/jQuery.1.9.1/Tools/uninstall.ps1
 /packages/jQuery.1.9.1/jQuery.1.9.1.nupkg
+/WebApp_Test/Files
+/WebApp_Test/bin
+/WebApp_File/bin
+/WebApp_Test/obj/Debug
+/WebApp_File/obj/Debug
+/WebApp_File/Files

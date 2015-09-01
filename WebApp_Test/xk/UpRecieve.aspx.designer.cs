@@ -7,9 +7,9 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace WebApp.Test.xk {
+namespace WebApp_Test.xk {
     
     
-    public partial class uprecieve {
+    public partial class UpRecieve {
     }
 }

@@ -2,9 +2,14 @@
 
 using System;
 using System.Collections;
+using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
+using System.Web;
+using XK.Common.web;
 
 #endregion
 
@@ -146,10 +151,10 @@ namespace XK.Common {
         /// <returns></returns>
         public static string GetMd5Hash(string pathName) {
             string strResult;
-            var oMD5Hasher = new MD5CryptoServiceProvider();
+            var oMd5Hasher = new MD5CryptoServiceProvider();
             try {
                 var oFileStream = new FileStream(pathName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                var arrbytHashValue = oMD5Hasher.ComputeHash(oFileStream);
+                var arrbytHashValue = oMd5Hasher.ComputeHash(oFileStream);
                 oFileStream.Close();
                 //由以连字符分隔的十六进制对构成的String，其中每一对表示value 中对应的元素；例如“F-2C-4A”
                 var strHashData = BitConverter.ToString(arrbytHashValue);
@@ -164,12 +169,12 @@ namespace XK.Common {
         }
 
         /// <summary>
-        ///     根据流写入文件
+        /// 根据流写入文件
         /// </summary>
         /// <param name="stream"></param>
         /// <param name="filePath">EXP:[d:\aaa.jpg]</param>
         /// <param name="bufferSize"></param>
-        public static void WriteFile(Stream stream, string filePath, int bufferSize = 2048 * 5) {
+        public static void WriteFile(Stream stream, string filePath, int bufferSize = 20480 * 5) {
             using (stream) { 
                 var bytes = new byte[bufferSize];
                 var readCount = 0;
@@ -228,12 +233,13 @@ namespace XK.Common {
         }
 
         /// <summary>
-        ///     限速下载 100k/s
+        /// 限速下载 
         /// </summary>
         /// <param name="filePath"></param>
         /// <param name="destFilePath"></param>
-        public static void DownControl(string filePath, string destFilePath) {
-            const int bufferSize = 102400; //100k
+        /// <param name="downSpeed">默认速度：100k/s</param>
+        public static void DownControl(string filePath, string destFilePath, int downSpeed = 100) {
+            const int bufferSize = 1024*100; //100k
             var buffer = new byte[bufferSize];
             var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
             var fileLen = fileStream.Length;
@@ -282,5 +288,82 @@ namespace XK.Common {
                 }
             }, null, 0, 200);
         }
+
+        public static bool ResponseFile(HttpResponse response, string fullPath, long speed) {
+ 
+            string strFileName = new FileInfo(fullPath).Name;
+            try {
+                FileStream myFile = new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                BinaryReader br = new BinaryReader(myFile);
+                try {
+                    response.AddHeader("Accept-Ranges", "bytes");
+                    response.Buffer = false;
+                    long fileLength = myFile.Length;
+                    long startBytes = 0;
+
+                    response.AddHeader("Content-Length", (fileLength - startBytes).ToString());
+                    if (startBytes != 0) {
+                        response.AddHeader("Content-Range", string.Format(" bytes {0}-{1}/{2}", startBytes, fileLength - 1, fileLength));
+                    }
+                    response.AddHeader("Connection", "Keep-Alive");
+                    response.ContentType = "application/octet-stream";
+                    response.AddHeader("Content-Disposition", "attachment;filename=" + HttpUtility.UrlEncode(strFileName, System.Text.Encoding.UTF8));
+
+                    int pack = 10240; //10K bytes       进行拆包,每包大小                   
+                    byte[] buff = new byte[pack];
+                    var contentLength = br.Read(buff, 0, pack);
+                    double d = 1000 / (speed / pack); // 限速时每个包的时间
+                    Stopwatch wa = new Stopwatch();
+                    while (contentLength != 0) {
+                        if (response.IsClientConnected) {
+                            wa.Restart();
+                            response.BinaryWrite(buff);
+                            response.Flush();
+                            contentLength = br.Read(buff, 0, pack);
+                            wa.Stop();
+                            if (wa.ElapsedMilliseconds < d) //如果实际带宽小于限制时间就不需要等待
+                            {
+                                Thread.Sleep((int)(d - wa.ElapsedMilliseconds));
+                            }
+                        }
+                        else {
+                            break;
+                        }
+                    }
+                }
+                catch {
+                    return false;
+                }
+                finally {
+                    br.Close();
+                    myFile.Close();
+                }
+            }
+            catch {
+                return false;
+            }
+            return true;
+        }
+
+
+        public static void Upload2FileServer(string serverRecieve,string fileName, int fielLen,Stream stream, int bufferSize = 1024*100) {
+
+            WebClient webClient = new WebClient();
+            webClient.QueryString.Add("name", fileName);
+             //webClient.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
+             //webClient.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+             //webClient.QueryString["fame"] = fileName;
+             var buffer = new byte[fielLen];
+            using (stream) {
+                stream.Read(buffer, 0, fielLen);
+
+                //readCount = stream.Read(buffer, 0, bufferSize);
+                byte[] responseArray = webClient.UploadData(serverRecieve, "POST", buffer);
+                //return Encoding.GetEncoding("gb2312").GetString(responseArray);
+            }
+        }
+ 
+
+
     }
 }

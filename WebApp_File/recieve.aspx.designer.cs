@@ -7,9 +7,9 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace WebApp.Test.xk {
+namespace WebApp_File {
     
     
-    public partial class upload {
+    public partial class recieve {
     }
 }

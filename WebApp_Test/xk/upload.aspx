@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="upload.aspx.cs" Inherits="WebApp.Test.xk.upload" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="Upload.aspx.cs" Inherits="WebApp_Test.xk.Upload" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="/Content/bs_file_input/fileinput.min.css" rel="stylesheet" />
     <script src="/Scripts/bs_file_input/fileinput.js"></script>
@@ -49,7 +49,7 @@
             maxFileCount: 4,
             validateInitialCount: true,
             uploadUrl: "uprecieve.aspx",
-            uploadAsync: false,
+            uploadAsync: true,
             dropZoneEnabled: true,
             maxFileSize: 0 //不限制大小，单位：kb
         });

@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Security;
 using System.Web.SessionState;
 
-namespace WebApp.Test
+namespace WebApp_Test
 {
     public class Global : System.Web.HttpApplication
     {

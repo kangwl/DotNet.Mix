@@ -17,7 +17,7 @@ namespace XK.Common.web {
         /// <param name="tData">数据</param>
         /// <param name="textField">文本字段</param>
         /// <param name="valField">值字段</param>
-        public static void BindEXT<T>(this DropDownList dropDownList, T tData, string textField, string valField) {
+        public static void BindExt<T>(this DropDownList dropDownList, T tData, string textField, string valField) {
             dropDownList.DataTextField = textField;
             dropDownList.DataValueField = valField;
 
@@ -31,7 +31,7 @@ namespace XK.Common.web {
         /// <typeparam name="T"></typeparam>
         /// <param name="repeater"></param>
         /// <param name="tData"></param>
-        public static void BindEXT<T>(this Repeater repeater, T tData) {
+        public static void BindExt<T>(this Repeater repeater, T tData) {
             if (!tData.Equals(default(T))) {
                 repeater.DataSource = tData;
                 repeater.DataBind();
