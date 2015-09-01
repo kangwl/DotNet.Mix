@@ -657,5 +657,34 @@ namespace XK.Common {
             return tmodel;
         }
     }
+
+    public static class FileExtension {
+        /// <summary>
+        /// 判断上传的文件是否是大文件
+        /// 默认5M为大文件
+        /// </summary>
+        /// <param name="postedFile"></param>
+        /// <param name="defaultBig"></param>
+        /// <returns></returns>
+        public static bool IsBigFile(this HttpPostedFile postedFile, int defaultBig = 5*1024*1024) {
+            int fileLen = postedFile.ContentLength;
+            return fileLen > defaultBig;
+        }
+
+        /// <summary>
+        /// 统一取文件名 a.jpg
+        /// IE下为c:\file\a.jpg
+        /// </summary>
+        /// <param name="postedFile"></param>
+        /// <returns></returns>
+        public static string FileNameExt(this HttpPostedFile postedFile) {
+            string fileName = postedFile.FileName;
+            return System.IO.Path.GetFileName(fileName);
+        }
+
+        public static void SaveAsExt(this HttpPostedFile postedFile, string filePath, int bufferSize = 20480 * 5) {
+            FileHelper.WriteFile(postedFile.InputStream, filePath, bufferSize);
+        }
+    }
      
 }

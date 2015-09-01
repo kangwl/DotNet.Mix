@@ -1,7 +1,6 @@
 ﻿using System;
 using FreedomDB.Bridge;
 using MyTestShop.Bll;
-using XK.Common;
 
 namespace ConsoleApp_Redis {
     class Program {
@@ -88,8 +87,8 @@ namespace ConsoleApp_Redis {
             //Console.WriteLine(user.Result.Name); 
             //List<Test.Model.User> userTask =await userDal.GetList("", "", 1, 1);
 
-            // var taskelist =await UserBll.GetListUser(new Where().Add(new Where.Item("ID", ">", "0")), "ID,Name,Age", "ID DESC", 1, 2);
-            // taskelist.ForEach(one => Console.WriteLine(one.Name));
+            var taskelist = await UserBll.GetListUser(new Where().Add(new Where.Item("ID", ">", "0")), "ID,Name,Age", "ID DESC", 1, 2);
+            taskelist.ForEach(one => Console.WriteLine(one.Name));
 
             //int ret = await userDal.InsertBatch(new List<User>() {
             //    new User() {
@@ -109,7 +108,6 @@ namespace ConsoleApp_Redis {
             //}, true);
 
             //Console.WriteLine(ret);
-            
         }
 
      
