@@ -89,3 +89,5 @@
 /WebApp_Test/obj/Debug
 /WebApp_File/obj/Debug
 /WebApp_File/Files
+/packages/log4net.2.0.3/lib/net10-full
+/packages/log4net.2.0.3

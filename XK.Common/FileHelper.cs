@@ -5,6 +5,7 @@ using System.Collections;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
@@ -14,7 +15,7 @@ using XK.Common.web;
 #endregion
 
 namespace XK.Common {
-    public class FileHelper {
+    public static class FileHelper {
         /// <summary>
         ///     写日志文件
         /// </summary>
@@ -174,7 +175,7 @@ namespace XK.Common {
         /// <param name="stream"></param>
         /// <param name="filePath">EXP:[d:\aaa.jpg]</param>
         /// <param name="bufferSize"></param>
-        public static void WriteFile(Stream stream, string filePath, int bufferSize = 20480 * 5) {
+        public static bool WriteFile(Stream stream, string filePath, int bufferSize = 20480 * 5) {
             using (stream) { 
                 var bytes = new byte[bufferSize];
                 var readCount = 0;
@@ -188,6 +189,7 @@ namespace XK.Common {
                         readCount = stream.Read(bytes, 0, bufferSize);
                     }
                 }
+                return true;
             }
         }
 
@@ -214,84 +216,22 @@ namespace XK.Common {
             }
         }
 
-        public static void CopyFilePos(string filePath, string destFilePath) {
-            const int bufferSize = 102400; //100k
-            var buffer = new byte[bufferSize];
-            using (var fileStream = new FileStream(filePath, FileMode.Open)) {
-                var fileLen = fileStream.Length;
-                var readTotal = 0;
-                using (var writeStream = new FileStream(destFilePath, FileMode.Create)) {
-                    while (readTotal < fileLen) {
-                        var readCount = fileStream.Read(buffer, 0, bufferSize);
-
-                        writeStream.Write(buffer, 0, readCount);
-                        writeStream.Flush();
-                        readTotal += readCount;
-                    }
-                }
-            }
-        }
 
         /// <summary>
-        /// 限速下载 
+        /// 通用下载方法
         /// </summary>
-        /// <param name="filePath"></param>
-        /// <param name="destFilePath"></param>
-        /// <param name="downSpeed">默认速度：100k/s</param>
-        public static void DownControl(string filePath, string destFilePath, int downSpeed = 100) {
-            const int bufferSize = 1024*100; //100k
-            var buffer = new byte[bufferSize];
-            var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-            var fileLen = fileStream.Length;
-            var readTotal = 0;
-            var writeStream = new FileStream(destFilePath, FileMode.Create, FileAccess.Write);
-
-            var timer = new Timer(call => {
-                if (readTotal < fileLen) {
-                    var readCount = fileStream.Read(buffer, 0, bufferSize);
-
-                    writeStream.Write(buffer, 0, readCount);
-                    writeStream.Flush();
-                    readTotal += readCount;
-                }
-                else {
-                    fileStream.Close();
-                    writeStream.Close();
-                }
-            }, null, 0, 1000);
-        }
-
-        /// <summary>
-        ///     限速下载 较快 最高下载速度500k/s
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <param name="destFilePath"></param>
-        public static void DownControlVip(string filePath, string destFilePath) {
-            const int bufferSize = 102400; //100k
-            var buffer = new byte[bufferSize];
-            var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-            var fileLen = fileStream.Length;
-            var readTotal = 0;
-            var writeStream = new FileStream(destFilePath, FileMode.Create, FileAccess.Write);
-
-            var timer = new Timer(call => {
-                if (readTotal < fileLen) {
-                    var readCount = fileStream.Read(buffer, 0, bufferSize);
-
-                    writeStream.Write(buffer, 0, readCount);
-                    writeStream.Flush();
-                    readTotal += readCount;
-                }
-                else {
-                    fileStream.Close();
-                    writeStream.Close();
-                }
-            }, null, 0, 200);
-        }
-
-        public static bool ResponseFile(HttpResponse response, string fullPath, long speed) {
+        /// <param name="response">HttpResponse 对象</param>
+        /// <param name="fullPath">文件全路径</param>
+        /// <param name="speed">下载速度</param>
+        /// <param name="fileName">客户端保存的文件名，可空</param>
+        /// <returns></returns>
+        public static bool ResponseFile(this HttpResponse response, string fullPath, long speed, string fileName = "") {
  
-            string strFileName = new FileInfo(fullPath).Name;
+            string strFileName = new FileInfo(fullPath).Name; 
+            if (!string.IsNullOrEmpty(fileName)) {
+                strFileName = fileName;
+            }
+
             try {
                 FileStream myFile = new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 BinaryReader br = new BinaryReader(myFile);
@@ -344,6 +284,64 @@ namespace XK.Common {
             }
             return true;
         }
+        /// <summary>
+        /// 通用下载方法，不限速
+        /// </summary>
+        /// <param name="response">HttpResponse</param>
+        /// <param name="fullPath">文件全路径</param>
+        /// <param name="fileName">保存的文件名，可空</param>
+        /// <returns></returns>
+        public static bool ResponseFile(this HttpResponse response, string fullPath,string fileName="") {
+
+            string strFileName = new FileInfo(fullPath).Name;
+            if (!string.IsNullOrEmpty(fileName)) {
+                strFileName = fileName;
+            }
+            
+            try {
+                FileStream myFile = new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                BinaryReader br = new BinaryReader(myFile);
+                try {
+                    response.AddHeader("Accept-Ranges", "bytes");
+                    response.Buffer = false;
+                    long fileLength = myFile.Length;
+                    long startBytes = 0;
+
+                    response.AddHeader("Content-Length", (fileLength - startBytes).ToString());
+                    if (startBytes != 0) {
+                        response.AddHeader("Content-Range", string.Format(" bytes {0}-{1}/{2}", startBytes, fileLength - 1, fileLength));
+                    }
+                    response.AddHeader("Connection", "Keep-Alive");
+                    response.ContentType = "application/octet-stream";
+                    response.AddHeader("Content-Disposition", "attachment;filename=" + HttpUtility.UrlEncode(strFileName, System.Text.Encoding.UTF8));
+
+                    int pack = 10240; //10K bytes       进行拆包,每包大小                   
+                    byte[] buff = new byte[pack];
+                    var contentLength = br.Read(buff, 0, pack);
+                    while (contentLength != 0) {
+                        if (response.IsClientConnected) {
+                            response.BinaryWrite(buff);
+                            response.Flush();
+                            contentLength = br.Read(buff, 0, pack);
+                        }
+                        else {
+                            break;
+                        }
+                    }
+                }
+                catch {
+                    return false;
+                }
+                finally {
+                    br.Close();
+                    myFile.Close();
+                }
+            }
+            catch {
+                return false;
+            }
+            return true;
+        }
 
 
         public static void Upload2FileServer(string serverRecieve,string fileName, int fielLen,Stream stream, int bufferSize = 1024*100) {
@@ -362,7 +360,16 @@ namespace XK.Common {
                 //return Encoding.GetEncoding("gb2312").GetString(responseArray);
             }
         }
- 
+
+        public static string Upload2Server(string serverRecieve, string fileName, Stream stream) {
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Add("name",HttpUtility.UrlEncode(fileName));
+            var t = client.PostAsync(serverRecieve, new StreamContent(stream));
+            HttpResponseMessage responseMessage = t.Result;
+            string file = responseMessage.Content.ReadAsStringAsync().Result;
+            return file;
+        }
+
 
 
     }

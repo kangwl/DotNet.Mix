@@ -1,33 +1,49 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+using WebApp_File.Core;
 using XK.Common;
 
 namespace WebApp_File {
     public partial class recieve : System.Web.UI.Page {
         protected void Page_Load(object sender, EventArgs e) {
-            if (!string.IsNullOrEmpty(Request.QueryString["name"])) {
-                SaveFile();
+            AppStart.Log4net.logger.Info("sart");
+            SaveFile();
+        }
+
+
+        public string FileName
+        {
+            get
+            {
+                string filename = "";
+                if (!string.IsNullOrEmpty(Request.QueryString["name"])) {
+                    filename = Request.QueryString["name"].Trim();
+                }
+                else if (!string.IsNullOrEmpty(Request.Headers["name"])) {
+                    filename = Request.Headers["name"].Trim();
+                }
+                return filename;
             }
         }
 
         private void SaveFile() {
-            string filename = Request.QueryString["name"].Trim();
-            Stream stream = Request.InputStream;
-            int fileLen = Request.ContentLength;
-            using (stream) {
+            if (string.IsNullOrEmpty(FileName)) return;
 
-                var path = Server.MapPath("~/Files/");
+            string msg = "0";//失败返回0
+            try {
+                string filename = HttpUtility.UrlDecode(FileName);
+                Stream stream = Request.InputStream;
+                 //成功返回文件
+                msg = FileStore.Save(Server, stream, filename);
 
-                if (!System.IO.Directory.Exists(path)) {
-                    System.IO.Directory.CreateDirectory(path);
-                }
-                FileHelper.WriteFile(stream, path + filename);
+                AppStart.Log4net.logger.Info(msg);
             }
+            catch (Exception ex) {
+                AppStart.Log4net.logger.Error(ex);
+            }
+
+            Response.Write(msg);
         }
 
     }

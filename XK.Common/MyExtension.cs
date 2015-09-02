@@ -661,10 +661,10 @@ namespace XK.Common {
     public static class FileExtension {
         /// <summary>
         /// 判断上传的文件是否是大文件
-        /// 默认5M为大文件
+        /// 默认5M以上为大文件
         /// </summary>
-        /// <param name="postedFile"></param>
-        /// <param name="defaultBig"></param>
+        /// <param name="postedFile">HttpPostedFile</param>
+        /// <param name="defaultBig">单位byte</param>
         /// <returns></returns>
         public static bool IsBigFile(this HttpPostedFile postedFile, int defaultBig = 5*1024*1024) {
             int fileLen = postedFile.ContentLength;

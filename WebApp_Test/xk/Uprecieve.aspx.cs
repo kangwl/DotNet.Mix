@@ -4,30 +4,62 @@ using XK.Common;
 
 namespace WebApp_Test.xk {
     public partial class UpRecieve : System.Web.UI.Page {
+
+
         protected void Page_Load(object sender, EventArgs e) {
-            HttpFileCollection files = Request.Files;
-            var path = Server.MapPath("~/Files/");
-            if (files.Count > 0) {
-                if (!System.IO.Directory.Exists(path)) {
-                    System.IO.Directory.CreateDirectory(path);
-                }
-                for (int i = 0; i < files.Count; i++) {
-                    var file = files[i];
-                    string saveFile = path + file.FileNameExt();
-                    //file.SaveAs(saveFile);
-                    //file.SaveAsExt(saveFile);
-                    FileHelper.Upload2FileServer("http://localhost:41496/recieve.aspx", file.FileNameExt(),
-                        file.ContentLength, file.InputStream);
-                }
-                var obj = new {success = "1"};
-                Response.Write(obj.ToJson());
 
-                
-            }
-             
-            //
-
-
+            RecieveFile();
         }
+
+        /// <summary>
+        /// 文件上传
+        /// </summary>
+        private void RecieveFile() {
+            HttpFileCollection files = Request.Files;
+            if (files.Count > 0) {
+                if (files.Count == 1) {
+                    //异步批量上传
+                    for (int i = 0; i < files.Count; i++) {
+                        var file = files[i];
+                        string retFile = FileHelper.Upload2Server(
+                            "http://localhost:41496/recieve.aspx",
+                            file.FileNameExt(),
+                            file.InputStream);
+                        if (retFile.Length == 0) {
+                            //失败
+                        }
+                        else {
+                            //成功
+                            var obj = new { success = "1" };
+                            Response.Write(obj.ToJson());
+                        }
+                    }
+                }
+                else if (files.Count > 1) {
+                    //同步批量上传
+                    int errCount = 0;
+                    for (int i = 0; i < files.Count; i++) {
+                        var file = files[i];
+                        string retFile = FileHelper.Upload2Server(
+                            "http://localhost:41496/recieve.aspx",
+                            file.FileNameExt(),
+                            file.InputStream);
+                        if (retFile.Length == 0) {
+                            //失败
+                            errCount++;
+                        } 
+                    }
+
+                    if (errCount == 0) {
+                        //成功
+                        var obj = new { success = "1" };
+                        Response.Write(obj.ToJson());
+                    }
+
+                }
+            }
+        }
+
+
     }
 }
