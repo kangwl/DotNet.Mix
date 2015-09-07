@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Data;
+using System.Data.SqlClient;
 using FreedomDB.Bridge;
 using MyTestShop.Bll;
 
@@ -51,7 +53,9 @@ namespace ConsoleApp_Redis {
 
             //DapperTest();
 
-            A();
+           // A();
+
+            
             Console.Read(); 
         }
 

@@ -73,6 +73,7 @@
     <Content Include="Content\img\loading-sm.gif" />
     <Content Include="Content\img\loading.gif" />
     <Content Include="Main.Master" />
+    <Content Include="Scripts\alertMessageBS.js" />
     <Content Include="Scripts\jquery-1.9.1.min.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -80,6 +81,11 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+    <Content Include="Scripts\jquery.pagination.js" />
+    <Content Include="Scripts\myJQDialog.js" />
+    <Content Include="Scripts\myJQDrag.js" />
+    <Content Include="Scripts\myJQUtils.js" />
+    <Content Include="Scripts\replaceElementUtil.js" />
     <Content Include="WebControls\Test\html5upload.aspx" />
     <Content Include="WebControls\Html5UploadControl.ascx" />
     <Content Include="WebControls\Html5Upload\css\fileinput.css" />
@@ -379,6 +385,7 @@
     <Content Include="WebControls\ueditor\ueditor.parse.min.js" />
     <Content Include="WebControls\ueditor\说明.txt" />
     <Content Include="WebControls\Test\ueeditor.aspx" />
+    <Content Include="xk\replace\test.aspx" />
     <Content Include="xk\Upload.aspx" />
     <Content Include="xk\UpRecieve.aspx" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
@@ -440,6 +447,13 @@
     </Compile>
     <Compile Include="WebControls\Test\ueeditor.aspx.designer.cs">
       <DependentUpon>ueeditor.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="xk\replace\test.aspx.cs">
+      <DependentUpon>test.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="xk\replace\test.aspx.designer.cs">
+      <DependentUpon>test.aspx</DependentUpon>
     </Compile>
     <Compile Include="xk\Upload.aspx.cs">
       <DependentUpon>Upload.aspx</DependentUpon>
