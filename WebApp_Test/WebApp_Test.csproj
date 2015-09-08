@@ -9,7 +9,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{ED647521-DE95-468B-8816-A5CBA8341F4E}</ProjectGuid>
+    <ProjectGuid>{80D9A15F-8FD6-4603-9C6B-AEF00C65360E}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -50,7 +50,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\DLL\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -70,9 +70,14 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\img\loading-sm.gif" />
-    <Content Include="Content\img\loading.gif" />
+    <Content Include="packages.config" />
     <Content Include="Main.Master" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Scripts\jquery-1.9.1.min.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -80,7 +85,22 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
-    <Content Include="WebControls\Test\html5upload.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\img\loading-sm.gif" />
+    <Content Include="Content\img\loading.gif" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="Scripts\bootbox.js" />
+    <Content Include="Scripts\bootbox.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\bs.alert.js" />
+    <Content Include="Scripts\bs.modal.js" />
     <Content Include="WebControls\Html5UploadControl.ascx" />
     <Content Include="WebControls\Html5Upload\css\fileinput.css" />
     <Content Include="WebControls\Html5Upload\css\fileinput.min.css" />
@@ -90,27 +110,8 @@
     <Content Include="WebControls\Html5Upload\js\fileinput.min.js" />
     <Content Include="WebControls\Html5Upload\js\fileinput_locale_zh-TW.js" />
     <Content Include="WebControls\Html5Upload\js\fileinput_locale_zh.js" />
-    <Content Include="WebControls\ueditor\net\config.json" />
-    <Content Include="WebControls\ueditor\net\controller.ashx" />
-    <Content Include="WebControls\ueditor\net\Web.config" />
-    <Content Include="WebControls\ueditor\third-party\jquery-1.10.2.min.map" />
-    <Content Include="WebControls\ueditor\third-party\video-js\font\vjs.eot" />
-    <Content Include="WebControls\ueditor\third-party\video-js\font\vjs.ttf" />
-    <Content Include="WebControls\ueditor\third-party\video-js\font\vjs.woff" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\bootstrap-theme.css" />
-    <Content Include="Content\bootstrap-theme.min.css" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="Global.asax" />
-    <Content Include="Scripts\bootbox.js" />
-    <Content Include="Scripts\bootbox.min.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\bs.alert.js" />
-    <Content Include="Scripts\bs.modal.js" />
+    <Content Include="WebControls\Test\html5upload.aspx" />
+    <Content Include="WebControls\Test\ueeditor.aspx" />
     <Content Include="WebControls\UEditor.ascx" />
     <Content Include="WebControls\ueditor\dialogs\anchor\anchor.html" />
     <Content Include="WebControls\ueditor\dialogs\attachment\attachment.css" />
@@ -378,21 +379,22 @@
     <Content Include="WebControls\ueditor\ueditor.parse.js" />
     <Content Include="WebControls\ueditor\ueditor.parse.min.js" />
     <Content Include="WebControls\ueditor\说明.txt" />
-    <Content Include="WebControls\Test\ueeditor.aspx" />
-    <Content Include="xk\Upload.aspx" />
+    <Content Include="xk\upload.aspx" />
     <Content Include="xk\UpRecieve.aspx" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="Content\bootstrap-theme.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Web.config" />
+    <Content Include="WebControls\ueditor\net\config.json" />
+    <Content Include="WebControls\ueditor\net\controller.ashx" />
+    <Content Include="WebControls\ueditor\net\Web.config" />
+    <Content Include="WebControls\ueditor\third-party\jquery-1.10.2.min.map" />
+    <Content Include="WebControls\ueditor\third-party\video-js\font\vjs.eot" />
+    <Content Include="WebControls\ueditor\third-party\video-js\font\vjs.ttf" />
+    <Content Include="WebControls\ueditor\third-party\video-js\font\vjs.woff" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App\UploadHelper.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -404,13 +406,6 @@
       <DependentUpon>Main.Master</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WebControls\Test\html5upload.aspx.cs">
-      <DependentUpon>html5upload.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="WebControls\Test\html5upload.aspx.designer.cs">
-      <DependentUpon>html5upload.aspx</DependentUpon>
-    </Compile>
     <Compile Include="WebControls\Html5UploadControl.ascx.cs">
       <DependentUpon>Html5UploadControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -419,6 +414,20 @@
       <DependentUpon>Html5UploadControl.ascx</DependentUpon>
     </Compile>
     <Compile Include="WebControls\Html5Upload\Core\UploadModel.cs" />
+    <Compile Include="WebControls\Test\html5upload.aspx.cs">
+      <DependentUpon>html5upload.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebControls\Test\html5upload.aspx.designer.cs">
+      <DependentUpon>html5upload.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebControls\Test\ueeditor.aspx.cs">
+      <DependentUpon>ueeditor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebControls\Test\ueeditor.aspx.designer.cs">
+      <DependentUpon>ueeditor.aspx</DependentUpon>
+    </Compile>
     <Compile Include="WebControls\UEditor.ascx.cs">
       <DependentUpon>UEditor.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -434,21 +443,14 @@
     <Compile Include="WebControls\ueditor\net\App_Code\NotSupportedHandler.cs" />
     <Compile Include="WebControls\ueditor\net\App_Code\PathFormater.cs" />
     <Compile Include="WebControls\ueditor\net\App_Code\UploadHandler.cs" />
-    <Compile Include="WebControls\Test\ueeditor.aspx.cs">
-      <DependentUpon>ueeditor.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="WebControls\Test\ueeditor.aspx.designer.cs">
-      <DependentUpon>ueeditor.aspx</DependentUpon>
-    </Compile>
     <Compile Include="xk\Upload.aspx.cs">
-      <DependentUpon>Upload.aspx</DependentUpon>
+      <DependentUpon>upload.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="xk\Upload.aspx.designer.cs">
-      <DependentUpon>Upload.aspx</DependentUpon>
+    <Compile Include="xk\upload.aspx.designer.cs">
+      <DependentUpon>upload.aspx</DependentUpon>
     </Compile>
-    <Compile Include="xk\UpRecieve.aspx.cs">
+    <Compile Include="xk\Uprecieve.aspx.cs">
       <DependentUpon>UpRecieve.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -479,7 +481,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>38724</DevelopmentServerPort>
+          <DevelopmentServerPort>21872</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:38724/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

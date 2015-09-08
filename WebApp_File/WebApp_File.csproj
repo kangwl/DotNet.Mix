@@ -9,7 +9,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{F8A825FE-89A0-4AB1-B422-093DB7541DC5}</ProjectGuid>
+    <ProjectGuid>{61704FDF-59A5-4594-A009-2B6FECBD023E}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -43,9 +43,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="log4net">
+      <HintPath>..\packages\DLL\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
@@ -70,9 +69,6 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AppStart\程序启动时执行.txt" />
-    <Content Include="Config\log4net_n.xml" />
-    <Content Include="Config\log4net_s.xml" />
     <Content Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -82,6 +78,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AppStart\程序启动时执行.txt" />
+    <Content Include="Config\log4net_n.xml" />
+    <Content Include="Config\log4net_s.xml" />
     <Content Include="Global.asax" />
     <Content Include="recieve.aspx" />
     <Content Include="Web.config" />
@@ -124,7 +123,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>41496</DevelopmentServerPort>
+          <DevelopmentServerPort>21525</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:41496/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
