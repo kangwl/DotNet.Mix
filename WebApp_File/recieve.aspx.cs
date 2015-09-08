@@ -7,11 +7,12 @@ using XK.Common;
 namespace WebApp_File {
     public partial class recieve : System.Web.UI.Page {
         protected void Page_Load(object sender, EventArgs e) {
-            AppStart.Log4net.logger.Info("sart");
             SaveFile();
         }
 
-
+        /// <summary>
+        /// 获取传递过来文件的文件名
+        /// </summary>
         public string FileName
         {
             get
