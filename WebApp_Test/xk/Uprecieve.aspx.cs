@@ -15,13 +15,15 @@ namespace WebApp_Test.xk {
         /// 文件上传
         /// </summary>
         private void RecieveFile() {
-    
+
             HttpFileCollection files = Request.Files;
+
             if (files.Count > 0) {
-               
+
                 int errCount = 0;
 
                 if (files.Count == 1) {
+                    //如果文件数量是1，就当成异步上传
                     //异步批量上传
                     var file = files[0];
                     errCount += Upload(file);
@@ -31,6 +33,7 @@ namespace WebApp_Test.xk {
                         var obj = new {success = "1"};
                         Response.Write(obj.ToJson());
                     }
+                    //失败不用返回
                 }
                 else if (files.Count > 1) {
                     //同步批量上传
@@ -45,14 +48,22 @@ namespace WebApp_Test.xk {
                         var obj = new {success = "1"};
                         Response.Write(obj.ToJson());
                     }
-
+                    //失败不用返回
                 }
             }
         }
 
+        private readonly string fileServer = System.Configuration.ConfigurationManager.AppSettings["FileServer"];
+
+        /// <summary>
+        /// do upload
+        /// </summary>
+        /// <param name="postedFile"></param>
+        /// <returns></returns>
         private int Upload(HttpPostedFile postedFile) {
+
             string retFile = FileHelper.Upload2Server(
-                "http://localhost:8082/recieve.aspx",
+                fileServer,
                 postedFile.FileNameExt(),
                 postedFile.InputStream);
 
