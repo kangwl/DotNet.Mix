@@ -12,7 +12,8 @@ namespace WebApp_File.Core {
     public class FileStore {
         private const string RootFileName = "Files"; 
         private const string Unknow = "unknow";
-        public const string Address = "http://localhost:41496/";
+
+        public static readonly string Address = System.Configuration.ConfigurationManager.AppSettings["FileServerAddress"];
 
         public static string Save(HttpServerUtility server, Stream stream, string fileName) {
 

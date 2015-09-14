@@ -17,7 +17,7 @@ namespace WebApp_Test.WebControls {
 
         protected void Page_Load(object sender, EventArgs e) {
             if (string.IsNullOrEmpty(UploadUrl)) {
-                throw new Exception("UploadUrl 不能为空");
+                throw new ArgumentNullException("UploadUrl", "UploadUrl 不能为空");
             }
             UploadJson = UploadModel.ToJson();
         }

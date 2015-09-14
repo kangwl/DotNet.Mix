@@ -85,6 +85,160 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+    <Content Include="WebControls\FlashUploadify.ascx" />
+    <Content Include="WebControls\JPlayer\dist\add-on\jplayer.playlist.js" />
+    <Content Include="WebControls\JPlayer\dist\add-on\jplayer.playlist.min.js" />
+    <Content Include="WebControls\JPlayer\dist\add-on\jquery.jplayer.inspector.js" />
+    <Content Include="WebControls\JPlayer\dist\add-on\jquery.jplayer.inspector.min.js" />
+    <Content Include="WebControls\JPlayer\dist\jplayer\jquery.jplayer.js" />
+    <Content Include="WebControls\JPlayer\dist\jplayer\jquery.jplayer.min.js" />
+    <Content Include="WebControls\JPlayer\dist\jplayer\jquery.jplayer.swf" />
+    <Content Include="WebControls\JPlayer\dist\popcorn\popcorn.jplayer.js" />
+    <Content Include="WebControls\JPlayer\dist\popcorn\popcorn.jplayer.min.js" />
+    <Content Include="WebControls\JPlayer\dist\skin\blue.monday\css\jplayer.blue.monday.css" />
+    <Content Include="WebControls\JPlayer\dist\skin\blue.monday\css\jplayer.blue.monday.min.css" />
+    <Content Include="WebControls\JPlayer\dist\skin\blue.monday\image\jplayer.blue.monday.jpg" />
+    <Content Include="WebControls\JPlayer\dist\skin\blue.monday\image\jplayer.blue.monday.seeking.gif" />
+    <Content Include="WebControls\JPlayer\dist\skin\blue.monday\image\jplayer.blue.monday.video.play.png" />
+    <Content Include="WebControls\JPlayer\dist\skin\blue.monday\mustache\jplayer.blue.monday.audio.playlist.html" />
+    <Content Include="WebControls\JPlayer\dist\skin\blue.monday\mustache\jplayer.blue.monday.audio.single.html" />
+    <Content Include="WebControls\JPlayer\dist\skin\blue.monday\mustache\jplayer.blue.monday.audio.stream.html" />
+    <Content Include="WebControls\JPlayer\dist\skin\blue.monday\mustache\jplayer.blue.monday.video.playlist.html" />
+    <Content Include="WebControls\JPlayer\dist\skin\blue.monday\mustache\jplayer.blue.monday.video.single.html" />
+    <Content Include="WebControls\JPlayer\dist\skin\pink.flag\css\jplayer.pink.flag.css" />
+    <Content Include="WebControls\JPlayer\dist\skin\pink.flag\css\jplayer.pink.flag.min.css" />
+    <Content Include="WebControls\JPlayer\dist\skin\pink.flag\image\jplayer.pink.flag.jpg" />
+    <Content Include="WebControls\JPlayer\dist\skin\pink.flag\image\jplayer.pink.flag.seeking.gif" />
+    <Content Include="WebControls\JPlayer\dist\skin\pink.flag\image\jplayer.pink.flag.video.play.png" />
+    <Content Include="WebControls\JPlayer\dist\skin\pink.flag\mustache\jplayer.pink.flag.audio.playlist.html" />
+    <Content Include="WebControls\JPlayer\dist\skin\pink.flag\mustache\jplayer.pink.flag.audio.single.html" />
+    <Content Include="WebControls\JPlayer\dist\skin\pink.flag\mustache\jplayer.pink.flag.audio.stream.html" />
+    <Content Include="WebControls\JPlayer\dist\skin\pink.flag\mustache\jplayer.pink.flag.video.playlist.html" />
+    <Content Include="WebControls\JPlayer\dist\skin\pink.flag\mustache\jplayer.pink.flag.video.single.html" />
+    <Content Include="WebControls\JPlayer\examples\blue.monday\demo-01-android.html" />
+    <Content Include="WebControls\JPlayer\examples\blue.monday\demo-01-solution-flash-html.html" />
+    <Content Include="WebControls\JPlayer\examples\blue.monday\demo-01-supplied-mp3.html" />
+    <Content Include="WebControls\JPlayer\examples\blue.monday\demo-01-video-solution-flash-html.html" />
+    <Content Include="WebControls\JPlayer\examples\blue.monday\demo-01-video-supplied-m4v.html" />
+    <Content Include="WebControls\JPlayer\examples\blue.monday\demo-01-video-supplied-rtmpv.html" />
+    <Content Include="WebControls\JPlayer\examples\blue.monday\demo-01-video.html" />
+    <Content Include="WebControls\JPlayer\examples\blue.monday\demo-01.html" />
+    <Content Include="WebControls\JPlayer\examples\blue.monday\demo-02-jPlayerPlaylist.html" />
+    <Content Include="WebControls\JPlayer\examples\blue.monday\demo-02-media-solution-flash-html.html" />
+    <Content Include="WebControls\JPlayer\examples\blue.monday\demo-02-media.html" />
+    <Content Include="WebControls\JPlayer\examples\blue.monday\demo-02-multi.html" />
+    <Content Include="WebControls\JPlayer\examples\blue.monday\demo-02-video.html" />
+    <Content Include="WebControls\JPlayer\examples\blue.monday\demo-02.html" />
+    <Content Include="WebControls\JPlayer\examples\blue.monday\demo-03-together.html" />
+    <Content Include="WebControls\JPlayer\examples\blue.monday\demo-03-video.html" />
+    <Content Include="WebControls\JPlayer\examples\blue.monday\demo-03.html" />
+    <Content Include="WebControls\JPlayer\examples\blue.monday\demo-08.html" />
+    <Content Include="WebControls\JPlayer\examples\blue.monday\demo-09-popcorn-video-solution-flash-html.html" />
+    <Content Include="WebControls\JPlayer\examples\blue.monday\demo-09-popcorn-video.html" />
+    <Content Include="WebControls\JPlayer\examples\blue.monday\jPlayer-tester.html" />
+    <Content Include="WebControls\JPlayer\examples\other\demo-04.html" />
+    <Content Include="WebControls\JPlayer\examples\other\demo-05.html" />
+    <Content Include="WebControls\JPlayer\examples\other\demo-07.html" />
+    <Content Include="WebControls\JPlayer\examples\pink.flag\demo-01-android.html" />
+    <Content Include="WebControls\JPlayer\examples\pink.flag\demo-01-solution-flash-html.html" />
+    <Content Include="WebControls\JPlayer\examples\pink.flag\demo-01-supplied-mp3.html" />
+    <Content Include="WebControls\JPlayer\examples\pink.flag\demo-01-video-solution-flash-html.html" />
+    <Content Include="WebControls\JPlayer\examples\pink.flag\demo-01-video-supplied-m4v.html" />
+    <Content Include="WebControls\JPlayer\examples\pink.flag\demo-01-video-supplied-rtmpv.html" />
+    <Content Include="WebControls\JPlayer\examples\pink.flag\demo-01-video.html" />
+    <Content Include="WebControls\JPlayer\examples\pink.flag\demo-01.html" />
+    <Content Include="WebControls\JPlayer\examples\pink.flag\demo-02-jPlayerPlaylist.html" />
+    <Content Include="WebControls\JPlayer\examples\pink.flag\demo-02-media-solution-flash-html.html" />
+    <Content Include="WebControls\JPlayer\examples\pink.flag\demo-02-media.html" />
+    <Content Include="WebControls\JPlayer\examples\pink.flag\demo-02-multi.html" />
+    <Content Include="WebControls\JPlayer\examples\pink.flag\demo-02-video.html" />
+    <Content Include="WebControls\JPlayer\examples\pink.flag\demo-02.html" />
+    <Content Include="WebControls\JPlayer\examples\pink.flag\demo-03-together.html" />
+    <Content Include="WebControls\JPlayer\examples\pink.flag\demo-03-video.html" />
+    <Content Include="WebControls\JPlayer\examples\pink.flag\demo-03.html" />
+    <Content Include="WebControls\JPlayer\examples\pink.flag\demo-08.html" />
+    <Content Include="WebControls\JPlayer\examples\pink.flag\demo-09-popcorn-video-solution-flash-html.html" />
+    <Content Include="WebControls\JPlayer\examples\pink.flag\demo-09-popcorn-video.html" />
+    <Content Include="WebControls\JPlayer\examples\pink.flag\jPlayer-tester.html" />
+    <Content Include="WebControls\JPlayer\Gruntfile.js" />
+    <Content Include="WebControls\JPlayer\lib\aurora\aac.js" />
+    <Content Include="WebControls\JPlayer\lib\aurora\aurora.js" />
+    <Content Include="WebControls\JPlayer\lib\aurora\flac.js" />
+    <Content Include="WebControls\JPlayer\lib\aurora\mp3.js" />
+    <Content Include="WebControls\JPlayer\lib\aurora\ogg.js" />
+    <Content Include="WebControls\JPlayer\lib\aurora\opus.js" />
+    <Content Include="WebControls\JPlayer\lib\aurora\vorbis.js" />
+    <Content Include="WebControls\JPlayer\lib\circle-player\js\circle.player.js" />
+    <Content Include="WebControls\JPlayer\lib\circle-player\js\jquery.grab.js" />
+    <Content Include="WebControls\JPlayer\lib\circle-player\js\jquery.transform2d.js" />
+    <Content Include="WebControls\JPlayer\lib\circle-player\js\mod.csstransforms.min.js" />
+    <Content Include="WebControls\JPlayer\lib\circle-player\skin\bgr.jpg" />
+    <Content Include="WebControls\JPlayer\lib\circle-player\skin\buffer.png" />
+    <Content Include="WebControls\JPlayer\lib\circle-player\skin\circle.player.css" />
+    <Content Include="WebControls\JPlayer\lib\circle-player\skin\controls.jpg" />
+    <Content Include="WebControls\JPlayer\lib\circle-player\skin\progress.png" />
+    <Content Include="WebControls\JPlayer\lib\circle-player\skin\progress_sprite.jpg" />
+    <Content Include="WebControls\JPlayer\lib\jquery.min.js" />
+    <Content Include="WebControls\JPlayer\lib\popcorn.ie8.js" />
+    <Content Include="WebControls\JPlayer\lib\popcorn.js" />
+    <Content Include="WebControls\JPlayer\lib\popcorn.player.js" />
+    <Content Include="WebControls\JPlayer\lib\popcorn.subtitle.js" />
+    <Content Include="WebControls\JPlayer\MIT-LICENSE.txt" />
+    <Content Include="WebControls\JPlayer\src\javascript\add-on\jplayer.playlist.js" />
+    <Content Include="WebControls\JPlayer\src\javascript\add-on\jquery.jplayer.inspector.js" />
+    <Content Include="WebControls\JPlayer\src\javascript\jplayer\jquery.jplayer.js" />
+    <Content Include="WebControls\JPlayer\src\javascript\popcorn\popcorn.jplayer.js" />
+    <Content Include="WebControls\JPlayer\src\skin\blue.monday\image\jplayer.blue.monday.jpg" />
+    <Content Include="WebControls\JPlayer\src\skin\blue.monday\image\jplayer.blue.monday.seeking.gif" />
+    <Content Include="WebControls\JPlayer\src\skin\blue.monday\image\jplayer.blue.monday.video.play.png" />
+    <Content Include="WebControls\JPlayer\src\skin\blue.monday\mustache\jplayer.blue.monday.audio.playlist.html" />
+    <Content Include="WebControls\JPlayer\src\skin\blue.monday\mustache\jplayer.blue.monday.audio.single.html" />
+    <Content Include="WebControls\JPlayer\src\skin\blue.monday\mustache\jplayer.blue.monday.audio.stream.html" />
+    <Content Include="WebControls\JPlayer\src\skin\blue.monday\mustache\jplayer.blue.monday.video.playlist.html" />
+    <Content Include="WebControls\JPlayer\src\skin\blue.monday\mustache\jplayer.blue.monday.video.single.html" />
+    <Content Include="WebControls\JPlayer\src\skin\pink.flag\image\jplayer.pink.flag.jpg" />
+    <Content Include="WebControls\JPlayer\src\skin\pink.flag\image\jplayer.pink.flag.seeking.gif" />
+    <Content Include="WebControls\JPlayer\src\skin\pink.flag\image\jplayer.pink.flag.video.play.png" />
+    <Content Include="WebControls\JPlayer\src\skin\pink.flag\mustache\jplayer.pink.flag.audio.playlist.html" />
+    <Content Include="WebControls\JPlayer\src\skin\pink.flag\mustache\jplayer.pink.flag.audio.single.html" />
+    <Content Include="WebControls\JPlayer\src\skin\pink.flag\mustache\jplayer.pink.flag.audio.stream.html" />
+    <Content Include="WebControls\JPlayer\src\skin\pink.flag\mustache\jplayer.pink.flag.video.playlist.html" />
+    <Content Include="WebControls\JPlayer\src\skin\pink.flag\mustache\jplayer.pink.flag.video.single.html" />
+    <Content Include="WebControls\JPlayer\.gitignore" />
+    <Content Include="WebControls\JPlayer\.jamignore" />
+    <Content Include="WebControls\JPlayer\bower.json" />
+    <Content Include="WebControls\JPlayer\CHANGELOG.md" />
+    <Content Include="WebControls\JPlayer\CLA.md" />
+    <Content Include="WebControls\JPlayer\composer.json" />
+    <Content Include="WebControls\JPlayer\CONTRIBUTING.md" />
+    <Content Include="WebControls\JPlayer\MIGRATION.md" />
+    <Content Include="WebControls\JPlayer\package.json" />
+    <Content Include="WebControls\JPlayer\README.md" />
+    <Content Include="WebControls\JPlayer\artwork\jplayer.blue.monday.psd" />
+    <Content Include="WebControls\JPlayer\artwork\jplayer.blue.monday.spirites.psd" />
+    <Content Include="WebControls\JPlayer\artwork\jplayer.circle.player.psd" />
+    <Content Include="WebControls\JPlayer\artwork\jplayer.pink.flag.psd" />
+    <Content Include="WebControls\JPlayer\artwork\jplayer.pink.flag.sprites.psd" />
+    <Content Include="WebControls\JPlayer\lib\README.md" />
+    <Content Include="WebControls\JPlayer\src\actionscript\happyworm\jPlayer\ConnectManager.as" />
+    <Content Include="WebControls\JPlayer\src\actionscript\happyworm\jPlayer\JplayerEvent.as" />
+    <Content Include="WebControls\JPlayer\src\actionscript\happyworm\jPlayer\JplayerMp3.as" />
+    <Content Include="WebControls\JPlayer\src\actionscript\happyworm\jPlayer\JplayerMp4.as" />
+    <Content Include="WebControls\JPlayer\src\actionscript\happyworm\jPlayer\JplayerRtmp.as" />
+    <Content Include="WebControls\JPlayer\src\actionscript\happyworm\jPlayer\JplayerStatus.as" />
+    <Content Include="WebControls\JPlayer\src\actionscript\Jplayer.as" />
+    <Content Include="WebControls\JPlayer\src\javascript\add-on\.jshintrc" />
+    <Content Include="WebControls\JPlayer\src\javascript\jplayer\.jshintrc" />
+    <Content Include="WebControls\JPlayer\src\javascript\popcorn\.jshintrc" />
+    <Content Include="WebControls\JPlayer\src\skin\blue.monday\scss\jplayer.blue.monday.scss" />
+    <Content Include="WebControls\JPlayer\src\skin\pink.flag\scss\jplayer.pink.flag.scss" />
+    <Content Include="WebControls\Test\img\upload_img.png" />
+    <Content Include="WebControls\Test\uploadify.aspx" />
+    <Content Include="WebControls\uploadify\check-exists.php" />
+    <Content Include="WebControls\uploadify\index.php" />
+    <Content Include="WebControls\uploadify\jquery.uploadify.zh.min.js" />
+    <Content Include="WebControls\uploadify\jquery.uploadify.zh.js" />
+    <Content Include="WebControls\uploadify\uploadify.php" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -379,7 +533,17 @@
     <Content Include="WebControls\ueditor\ueditor.parse.js" />
     <Content Include="WebControls\ueditor\ueditor.parse.min.js" />
     <Content Include="WebControls\ueditor\说明.txt" />
-    <Content Include="xk\upload.aspx" />
+    <Content Include="WebControls\uploadify\Change Log.txt" />
+    <Content Include="WebControls\uploadify\jquery.uploadify.js" />
+    <Content Include="WebControls\uploadify\jquery.uploadify.min.js" />
+    <Content Include="WebControls\uploadify\license.txt" />
+    <Content Include="WebControls\uploadify\uploadify-cancel.png" />
+    <Content Include="WebControls\uploadify\uploadify.css" />
+    <Content Include="WebControls\uploadify\uploadify.swf" />
+    <Content Include="WebControls\uploadify\__MACOSX\._Change Log.txt" />
+    <Content Include="WebControls\uploadify\__MACOSX\._uploadify.swf" />
+    <Content Include="xk\replace\test.aspx" />
+    <Content Include="xk\Upload.aspx" />
     <Content Include="xk\UpRecieve.aspx" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
@@ -406,6 +570,13 @@
       <DependentUpon>Main.Master</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WebControls\FlashUploadify.ascx.cs">
+      <DependentUpon>FlashUploadify.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebControls\FlashUploadify.ascx.designer.cs">
+      <DependentUpon>FlashUploadify.ascx</DependentUpon>
+    </Compile>
     <Compile Include="WebControls\Html5UploadControl.ascx.cs">
       <DependentUpon>Html5UploadControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -428,6 +599,13 @@
     <Compile Include="WebControls\Test\ueeditor.aspx.designer.cs">
       <DependentUpon>ueeditor.aspx</DependentUpon>
     </Compile>
+    <Compile Include="WebControls\Test\uploadify.aspx.cs">
+      <DependentUpon>uploadify.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebControls\Test\uploadify.aspx.designer.cs">
+      <DependentUpon>uploadify.aspx</DependentUpon>
+    </Compile>
     <Compile Include="WebControls\UEditor.ascx.cs">
       <DependentUpon>UEditor.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -443,12 +621,20 @@
     <Compile Include="WebControls\ueditor\net\App_Code\NotSupportedHandler.cs" />
     <Compile Include="WebControls\ueditor\net\App_Code\PathFormater.cs" />
     <Compile Include="WebControls\ueditor\net\App_Code\UploadHandler.cs" />
-    <Compile Include="xk\Upload.aspx.cs">
-      <DependentUpon>upload.aspx</DependentUpon>
+    <Compile Include="WebControls\uploadify\Core\UploadifyModel.cs" />
+    <Compile Include="xk\replace\test.aspx.cs">
+      <DependentUpon>test.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="xk\upload.aspx.designer.cs">
-      <DependentUpon>upload.aspx</DependentUpon>
+    <Compile Include="xk\replace\test.aspx.designer.cs">
+      <DependentUpon>test.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="xk\Upload.aspx.cs">
+      <DependentUpon>Upload.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="xk\Upload.aspx.designer.cs">
+      <DependentUpon>Upload.aspx</DependentUpon>
     </Compile>
     <Compile Include="xk\Uprecieve.aspx.cs">
       <DependentUpon>UpRecieve.aspx</DependentUpon>

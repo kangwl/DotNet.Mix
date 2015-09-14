@@ -5,7 +5,7 @@ using WebApp_File.Core;
 using XK.Common;
 
 namespace WebApp_File {
-    public partial class recieve : System.Web.UI.Page {
+    public partial class Recieve : System.Web.UI.Page {
         protected void Page_Load(object sender, EventArgs e) {
             SaveFile();
         }
@@ -31,7 +31,7 @@ namespace WebApp_File {
         private void SaveFile() {
             if (string.IsNullOrEmpty(FileName)) return;
 
-            string msg = "0";//失败返回0
+            string msg = "";//失败返回
             try {
                 string filename = HttpUtility.UrlDecode(FileName);
                 Stream stream = Request.InputStream;
