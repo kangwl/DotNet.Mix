@@ -16,7 +16,7 @@
     <RootNamespace>WebApp_File</RootNamespace>
     <AssemblyName>WebApp_File</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -125,7 +125,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>21525</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:41496/</IISUrl>
+          <IISUrl>http://localhost/WebApp_File</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

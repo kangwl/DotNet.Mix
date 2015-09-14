@@ -52,7 +52,7 @@ namespace WebApp_Test.xk {
 
         private int Upload(HttpPostedFile postedFile) {
             string retFile = FileHelper.Upload2Server(
-                "http://localhost:41496/recieve.aspx",
+                "http://localhost:8082/recieve.aspx",
                 postedFile.FileNameExt(),
                 postedFile.InputStream);
 
