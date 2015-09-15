@@ -10,7 +10,7 @@ namespace XK.Common.json {
     ///     json生成
     ///     默认格式：{"data":{},"total":1555}
     /// </summary>
-    public class JsonCreator {
+    public class JsonPagedCreator {
         /// <summary>
         ///     默认json 名字
         /// </summary>
@@ -26,13 +26,13 @@ namespace XK.Common.json {
         /// </summary>
         private const string _dateTimeFormater = "yyyy-MM-dd HH:mm:ss";
 
-        public JsonCreator() {
+        public JsonPagedCreator() {
             JsonName = _defaultJsonName;
             TotalName = _defaultTotalName;
             SerializerSettings = CreateSettings();
         }
 
-        public JsonCreator(string jsonName, string totalName) {
+        public JsonPagedCreator(string jsonName, string totalName) {
             JsonName = jsonName;
             TotalName = totalName;
             SerializerSettings = CreateSettings();

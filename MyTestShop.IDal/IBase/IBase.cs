@@ -12,5 +12,6 @@ namespace MyTestShop.IDal.IBase {
         List<TModel> GetList(Where where, string fields, string orderby, int pageIndex, int pageSize);
         TModel ReaderModel(IDataReader reader, string fields);
         int InsertBatch(List<TModel> tModels, bool tran = false);
+        int GetRecordCount(Where where);
     }
 }

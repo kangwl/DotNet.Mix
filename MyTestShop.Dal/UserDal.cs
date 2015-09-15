@@ -8,6 +8,7 @@ using FreedomDB.Helper;
 using FreedomDB.Helper.Extension;
 using MyTestShop.IDal;
 using MyTestShop.Model;
+using XK.Common;
 
 namespace MyTestShop.Dal {
     public class UserDal : IUser{
@@ -91,26 +92,30 @@ namespace MyTestShop.Dal {
             #endregion
 
             User user = new User();
-            if (flds == "*" || fieldList.Contains("ID")) {
+            if (CheckField(flds, fieldList, "ID")) {
                 user.ID = reader.GetInt32(reader.GetOrdinal("ID"));
             }
-            if (flds == "*" || fieldList.Contains("Age")) {
+            if (CheckField(flds, fieldList, "Age")) {
                 user.Age = reader.GetInt32(reader.GetOrdinal("Age"));
             }
-            if (flds == "*" || fieldList.Contains("Birthday")) {
+            if (CheckField(flds, fieldList, "Birthday")) {
                 user.Birthday = reader.GetDateTime(reader.GetOrdinal("Birthday"));
             }
-            if (flds == "*" || fieldList.Contains("Name")) {
+            if (CheckField(flds, fieldList, "Name")) {
                 user.Name = reader.GetString(reader.GetOrdinal("Name"));
             }
-            if (flds == "*" || fieldList.Contains("UserID")) {
+            if (CheckField(flds, fieldList, "UserID")) {
                 user.UserID = reader.GetString(reader.GetOrdinal("UserID"));
             }
-            if (flds == "*" || fieldList.Contains("UserPass")) {
+            if (CheckField(flds, fieldList, "UserPass")) {
                 user.UserPass = reader.GetString(reader.GetOrdinal("UserPass"));
             }
 
             return user;
+        }
+
+        private bool CheckField(string flds, IEnumerable<string> fieldList, string field) {
+            return flds == "*" || fieldList.Contains(field);
         }
 
 
@@ -163,6 +168,16 @@ namespace MyTestShop.Dal {
                     }
                     return 0;
                 }
+            }
+        }
+
+        public int GetRecordCount(Where @where) {
+            string sql = $"select count(1) from {Table} where {where.Result};";
+            using (SqlCommand command = new DbHelper().Command) {
+                command.CommandText = sql;
+                command.CommandType=CommandType.Text;
+                object objCount = command.ExecuteScalar();
+                return objCount.ToInt();
             }
         }
     }
