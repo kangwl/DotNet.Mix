@@ -71,7 +71,7 @@
     <Compile Include="HardWareInfo.cs" />
     <Compile Include="HttpLogin.cs" />
     <Compile Include="IniHelper.cs" />
-    <Compile Include="json\JsonCreator.cs" />
+    <Compile Include="json\JsonPagedCreator.cs" />
     <Compile Include="json\JsonHelper.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="MailHelper.cs" />

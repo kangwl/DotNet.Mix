@@ -98,3 +98,9 @@
 /WebApp_File/Log/event
 /WebApp_File/Log/error
 /WebApp_File/Log/info
+/.localhistory/WebApp_Test
+/.localhistory/WebApp_File
+/XK.DataApi/bin/Debug
+/XK.DataApi/bin/Release
+/XK.DataApi/obj/Debug
+/XK.DataApi/obj/Release

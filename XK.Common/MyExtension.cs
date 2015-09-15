@@ -573,13 +573,13 @@ namespace XK.Common {
         /// <param name="total">总数量，用于分页</param>
         /// <returns></returns>
         public static string ToJsonCreater<T>(this List<T> list, int total) where T : class {
-            var jsonCreator = new JsonCreator();
+            var jsonCreator = new JsonPagedCreator();
             return jsonCreator.Create(list, total);
         }
 
         public static string ToJsonCreater<T>(this List<T> list, int total, string jsonName, string totalName)
             where T : class {
-            var jsonCreator = new JsonCreator(jsonName, totalName);
+            var jsonCreator = new JsonPagedCreator(jsonName, totalName);
             return jsonCreator.Create(list, total);
         }
 
@@ -610,12 +610,12 @@ namespace XK.Common {
         }
 
         public static string ToJsonCreater(this DataTable dt, int total) {
-            var jsonCreator = new JsonCreator();
+            var jsonCreator = new JsonPagedCreator();
             return jsonCreator.Create(dt, total);
         }
 
         public static string ToJsonCreater(this DataTable dt, int total, string jsonName, string totalName) {
-            var jsonCreator = new JsonCreator(jsonName, totalName);
+            var jsonCreator = new JsonPagedCreator(jsonName, totalName);
             return jsonCreator.Create(dt, total);
         }
     }
@@ -635,13 +635,13 @@ namespace XK.Common {
         }
 
         public static string ToJsonCreater<T>(this Dictionary<string, T> dic, int total) {
-            var jsonCreator = new JsonCreator();
+            var jsonCreator = new JsonPagedCreator();
             return jsonCreator.Create(dic, total);
         }
 
         public static string ToJsonCreater<T>(this Dictionary<string, T> dic, int total, string jsonName,
             string totalName) {
-            var jsonCreator = new JsonCreator(jsonName, totalName);
+            var jsonCreator = new JsonPagedCreator(jsonName, totalName);
             return jsonCreator.Create(dic, total);
         }
     }

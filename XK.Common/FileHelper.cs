@@ -343,7 +343,7 @@ namespace XK.Common {
             return true;
         }
 
-
+        //webclient 方式上传文件
         public static void Upload2FileServer(string serverRecieve,string fileName, int fielLen,Stream stream, int bufferSize = 1024*100) {
 
             WebClient webClient = new WebClient();
@@ -361,6 +361,7 @@ namespace XK.Common {
             }
         }
 
+        //HttpClient方式上传文件
         public static string Upload2Server(string serverRecieve, string fileName, Stream stream) {
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Add("name",HttpUtility.UrlEncode(fileName));

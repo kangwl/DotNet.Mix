@@ -5,7 +5,22 @@
     .upload_button_class{clear: both;background: #3175AF;border: none;}
     /*重写样式*/
     .uploadify-queue-item{ width: 100% !important;max-width: 100% !important}
-
+    .uploadify .uploadify-button {
+        /*background: none*/
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+    }
+    .uploadify:hover .uploadify-button {
+        background-color: #286CA7;
+        background-image: linear-gradient(top, #286CA7 0%, #808080 100%);
+        background-image: -o-linear-gradient(top, #286CA7 0%, #808080 100%);
+        background-image: -moz-linear-gradient(top, #286CA7 0%, #808080 100%);
+        background-image: -webkit-linear-gradient(top, #286CA7 0%, #808080 100%);
+        background-image: -ms-linear-gradient(top, #286CA7 0%, #808080 100%);
+        background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0, #286CA7), color-stop(1, #295A84) );
+        background-position: center bottom;
+    }
 </style>
  
 <div class="panel panel-default">
