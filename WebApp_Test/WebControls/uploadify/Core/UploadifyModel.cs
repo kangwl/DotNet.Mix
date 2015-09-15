@@ -11,7 +11,7 @@ namespace WebApp_Test.WebControls.uploadify.Core {
             uploader = "/xk/uprecieve.aspx";
             auto = false;
             buttonClass = "";
-            buttonText = "选择文件";
+            buttonText = "<span class='glyphicon glyphicon-folder-open'></span> &nbsp;&nbsp;选择文件";
             buttonImage = null;
             fileSizeLimit = "10MB";
             fileTypeDesc = "图片文件";
@@ -28,6 +28,9 @@ namespace WebApp_Test.WebControls.uploadify.Core {
         public string method { get { return "post"; } }
 
         public string swf { get; set; }
+        /// <summary>
+        /// exp:/xk/uprecieve.aspx
+        /// </summary>
         public string uploader { get; set; }
         /// <summary>
         /// 自动上传

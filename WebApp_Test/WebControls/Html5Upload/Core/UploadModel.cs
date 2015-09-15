@@ -23,6 +23,8 @@ namespace WebApp_Test.WebControls.Html5Upload.Core {
             uploadIcon = "<i class=\"glyphicon glyphicon-upload\"></i>&nbsp;";
             minImageWidth = 50;
             minImageHeight = 50;
+            maxImageWidth = null;
+            maxImageHeight = null;
             maxFileCount = 6;
             validateInitialCount = true;
             uploadUrl = "";
@@ -52,6 +54,8 @@ namespace WebApp_Test.WebControls.Html5Upload.Core {
         public string uploadIcon { get; set; }
         public int minImageWidth { get; set; }
         public int minImageHeight { get; set; }
+        public string maxImageWidth { get; set; }
+        public string maxImageHeight { get; set; }
         public int maxFileCount { get; set; }
         public bool validateInitialCount { get; set; }
         /// <summary>

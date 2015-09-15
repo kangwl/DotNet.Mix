@@ -12,8 +12,13 @@
     <script src="/Scripts/bootstrap.min.js"></script>
     <script src="/Scripts/bs.alert.js"></script>
     <script>
-        window.onload = function () {
-            if (window.applicationCache) {
+        
+        function isHtml5() {
+            return window.applicationCache;
+        }
+
+        window.onload = function() {
+            if (isHtml5()) {
                 //document.write("Yes, your browser can use offline web applications.");
             } else {
                 var downloadChrome = "你的浏览器不支持，请 <a style=\"font-weight:800\" href=\"http://dlsw.baidu.com/sw-search-sp/soft/9d/14744/ChromeStandalone_v44.0.2403.157_Setup.1440142013.exe\">点此</a> 下载浏览器后浏览";

@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using WebApp_Test.WebControls.uploadify.Core;
 using XK.Common;
 
@@ -34,7 +30,10 @@ namespace WebApp_Test.WebControls {
             get { return model.swf; }
             set { model.swf = value; }
         }
-
+        /// <summary>
+        /// 必须
+        /// 接收文件上传服务地址
+        /// </summary>
         public string uploader
         {
             get { return model.uploader; }
