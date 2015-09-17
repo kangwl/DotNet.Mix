@@ -117,3 +117,7 @@
 /XK.Web/Log/info
 /XK.Web/bin
 /XK.Web/obj/Debug
+/XK.SearchEngine.Test/bin/Debug
+/XK.SearchEngine.Test/obj/Debug
+/XK.SearchEngine/bin/Debug
+/XK.SearchEngine/obj/Debug
