@@ -9,7 +9,9 @@ using MySql.Data.MySqlClient;
 namespace FreedomDB.Helper {
     public class DbHelper  {
 
-        private static string connStr = "server=192.168.3.66;database=myedu;uid=sa;pwd=abc123;";
+        public static string connStr { get; set; }
+
+       // public static string connStr = "server=192.168.3.66;database=myedu;uid=sa;pwd=abc123;";
 
         public DbHelper() : this(connStr) {
 

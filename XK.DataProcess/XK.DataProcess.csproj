@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{13DE9BFD-A790-481C-BBD1-AD5E4AB3A547}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>XK.DataProcess</RootNamespace>
+    <AssemblyName>XK.DataProcess</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApiModule.cs" />
+    <Compile Include="Core\App.cs" />
+    <Compile Include="Core\SystemCode.cs" />
+    <Compile Include="Enter.cs" />
+    <Compile Include="Logic\ApiInfo.cs" />
+    <Compile Include="Logic\JsonTpl.cs" />
+    <Compile Include="Logic\PageJsonTpl.cs" />
+    <Compile Include="Map\SourceMap.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Source\Act\LoginAct.cs" />
+    <Compile Include="Source\Act\PowerAct.cs" />
+    <Compile Include="Source\Act\UserAct.cs" />
+    <Compile Include="Source\Login.cs" />
+    <Compile Include="Source\Power.cs" />
+    <Compile Include="Source\User.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\XK.Bll\XK.Bll.csproj">
+      <Project>{e6da9b5e-9e70-40f1-bf8d-bf3bb55db8b3}</Project>
+      <Name>XK.Bll</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XK.Common\XK.Common.csproj">
+      <Project>{A49248A4-5A0E-444B-B95D-A13AF3D4A572}</Project>
+      <Name>XK.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XK.Model\XK.Model.csproj">
+      <Project>{cb8cc415-435a-416d-a2bc-da3bc7340040}</Project>
+      <Name>XK.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Constraint\约束条件.txt" />
+    <Content Include="Map\请求资源映射.txt" />
+    <Content Include="Source\Act\执行收到的请求返回json.txt" />
+    <Content Include="Source\请求的资源.txt" />
+    <Content Include="和网站交互返回json.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

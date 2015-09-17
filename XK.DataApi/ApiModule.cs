@@ -7,7 +7,8 @@ using XK.DataApi.Logic;
 namespace XK.DataApi {
     public class ApiModule:IHttpModule {
         public void Init(HttpApplication context) {
-            context.BeginRequest += context_BeginRequest;
+           // context.BeginRequest += context_BeginRequest;
+            context.AuthenticateRequest += context_AuthenticateRequest;
         }
         /// <summary>
         /// api的url标识
@@ -21,7 +22,7 @@ namespace XK.DataApi {
             }
         }
 
-        private void context_BeginRequest(object sender, EventArgs e) {
+        private void context_AuthenticateRequest(object sender, EventArgs e) {
             HttpApplication application = sender as HttpApplication;
             if (application != null) {
                 string json = "";
@@ -47,7 +48,7 @@ namespace XK.DataApi {
                 string source = urlitm[apiSignIndex + 1]; //对应处理的类（XK.DataApi.Source 中）
                 string act = urlitm[apiSignIndex + 2]; //对应处理的类中的方法
                 //处理
-                json = new XK.DataApi.Enter().Init(source, act, context.Request);
+                json = XK.DataApi.Enter.Process(source, act, context);
             }
             catch (Exception ex) {
                 json = XK.Common.json.JsonFac.Serialize2Json(new ApiInfo(-1, ex.ToString()));

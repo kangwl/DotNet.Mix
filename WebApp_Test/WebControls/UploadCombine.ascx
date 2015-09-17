@@ -1,0 +1,2 @@
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="UploadCombine.ascx.cs" Inherits="WebApp_Test.WebControls.UploadCombine" %>
+<asp:PlaceHolder runat="server" ID="UploadPlaceHolder"></asp:PlaceHolder>
