@@ -85,6 +85,7 @@ namespace FreedomDB.Helper.Extension {
                     if (tran) {
                         command.Transaction.Rollback();
                     }
+                    XK.Common.Log4net.Error(ex);
                     return 0;
                 }
             }
