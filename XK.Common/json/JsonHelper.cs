@@ -49,7 +49,7 @@ namespace XK.Common.json {
         /// </summary>
         /// <param name="t"></param>
         /// <param name="ifFormat"></param>
-        /// <param name="dateFormat"></param>
+        /// <param name="isDate"></param>
         /// <returns></returns>
         public static string Serialize2Object(T t, bool ifFormat = true, bool isDate = false) {
             var dateFormat = "yyyy-MM-dd HH:mm:ss";

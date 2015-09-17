@@ -11,22 +11,17 @@ namespace XK.DataApi {
     /// </summary>
     public class Enter {
 
-        //根据Source文件夹下
-        private readonly Dictionary<string, Func<string,HttpRequest, string>> dicReq =
-            new Dictionary<string, Func<string,HttpRequest, string>> {
-                {"user",Source.User.Init},
-                {"news",Source.News.Init}
-            };
+
         /// <summary>
         /// 入口函数
         /// </summary>
         /// <param name="source">要操作的对象</param>
         /// <param name="act">要操作对象的方法</param>
-        /// <param name="request">HttpRequest</param>
+        /// <param name="context">HttpRequest</param>
         /// <returns></returns>
-        public string Init(string source, string act, HttpRequest request) {
-            Func<string, HttpRequest,string> sourceCall = dicReq.FirstOrDefault(dic => dic.Key == source).Value;
-            string json = sourceCall(act,request);
+        public static string Process(string source, string act, HttpContext context) {
+            Func<string, HttpContext, string> sourceCall = Map.SourceMap.Instance.DicFunc.FirstOrDefault(dic => dic.Key == source).Value;
+            string json = sourceCall(act, context);
             return json;
         }
 
