@@ -21,11 +21,11 @@ using Version = Lucene.Net.Util.Version;
 namespace XK.SearchEngine {
     public class IndexManage {
 
-        public static string _luceneDir = @"D:\GITProjects\_DataSearch\_Index";
+        public static string _luceneDir = "DataIndex";
 
         private static FSDirectory _directoryTemp;
 
-        private static FSDirectory _directory {
+        private static FSDirectory Directory {
             get {
                 if (_directoryTemp == null) {
                     _directoryTemp = FSDirectory.Open(new DirectoryInfo(_luceneDir));
@@ -47,7 +47,7 @@ namespace XK.SearchEngine {
             //var analyzer = new StandardAnalyzer(Version.LUCENE_30);
             var analyzer = GetAnalyzer();
 
-            using (var writer = new IndexWriter(_directory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED)) {
+            using (var writer = new IndexWriter(Directory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED)) {
 
                 // add new index entry
                 var doc = new Document();
@@ -69,7 +69,7 @@ namespace XK.SearchEngine {
             //var analyzer = new StandardAnalyzer(Version.LUCENE_30);
             var analyzer = GetAnalyzer();
 
-            using (var writer = new IndexWriter(_directory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED)) {
+            using (var writer = new IndexWriter(Directory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED)) {
                 var doc = new Document();
                 foreach (KeyValuePair<string, dynamic> pair in dic) {
                     // add new index entry
@@ -169,7 +169,7 @@ namespace XK.SearchEngine {
                 total = 0;
                 return documents;
             }
-            using (var searcher = new IndexSearcher(_directory, false)) {
+            using (var searcher = new IndexSearcher(Directory, false)) {
                 var hitsLimit = 1000;
                 //var analyzer = new StandardAnalyzer(Version.LUCENE_30);
                 var analyzer = GetAnalyzer();
