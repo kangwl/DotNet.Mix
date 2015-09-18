@@ -7,14 +7,40 @@ using System.Threading.Tasks;
 namespace XK.SearchEngine.Test {
     class Program {
         static void Main(string[] args) {
-            //XK.SearchEngine.IndexManage.CreateIndex("中秋节快乐", "这是一个节日，中节哦");
-            //Console.WriteLine("ok");
 
-            string[] fields = {"Title" ,"Content" };
-            int total;
-            List<News> news = XK.SearchEngine.IndexManage.Search<News>("快乐", fields, 10, 0, out total);
-            Console.WriteLine(total + "---" + news[0].Content);
-            Console.Read();
+            XK.SearchEngine.IndexManage indexManage=new IndexManage("Test");
+            //indexManage.ClearLuceneIndex();
+           // indexManage.CreateLuceneIndex(new Dictionary<string, string>() { {"ID","1"},{ "Title", "中秋节快乐" }, { "Content", "这是一个节日，中秋节哦" } });
+           // indexManage.CreateLuceneIndex(new Dictionary<string, string>() { { "ID", "2" }, { "Title", "中秋节快乐" }, { "Content", "这是一个节日，中秋节哦" } });
+
+            indexManage.UpdateLuceneIndex(new Dictionary<string, string>() { {"ID","2"} },new Dictionary<string, string>() { { "ID", "2" }, { "Title", "中秋节快乐111" }, { "Content", "这是一个节日，中秋节哦" } });
+            //XK.SearchEngine.test.Run();
+            while (true) {
+
+                Console.WriteLine("请输入关键词：");
+                string keyword = Console.ReadLine();
+
+                Search_Model searchModel = new Search_Model {
+                    Fields = new string[] { "Title","Content" },
+                    Words = keyword
+                };
+                XK.SearchEngine.Doc doc = new Doc("Test", searchModel);
+                //doc.CreateLuceneIndex(new Dictionary<string, dynamic>() { { "Title", "中秋节快乐" }, { "Content", "这是一个节日，中秋节哦" } });
+
+
+                var result = doc.Search<News>();
+                List<News> news = result.Data;
+
+                if (news.Count < 1) {
+                    Console.WriteLine("null");
+                }
+                else {
+                    Console.WriteLine(result.Total + "---" + news[0].Title + Environment.NewLine + news[0].Content);
+                }
+            }
+
+
+
         }
 
         class News {

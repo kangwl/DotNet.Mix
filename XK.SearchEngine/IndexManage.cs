@@ -2,30 +2,28 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Remoting.Contexts;
 using System.Text;
-using System.Threading.Tasks;
 using JiebaNet.Segmenter;
-using Lucene.Net.Analysis; 
-using Lucene.Net.Analysis.Standard;
+using Lucene.Net.Analysis;  
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
-using XK.Common;
-using XK.Common.json;
 using XK.SearchEngine.Util;
-using Version = Lucene.Net.Util.Version;
 
 namespace XK.SearchEngine {
     public class IndexManage {
+        public string BasePath = "LuceneData";
+        public IndexManage(string filePath) {
+            _luceneDir = $"{BasePath}\\{filePath}";
+        }
 
-        public static string _luceneDir = "DataIndex";
+        private readonly string _luceneDir;
 
-        private static FSDirectory _directoryTemp;
+        private  FSDirectory _directoryTemp;
 
-        private static FSDirectory Directory {
+        protected  FSDirectory Directory {
             get {
                 if (_directoryTemp == null) {
                     _directoryTemp = FSDirectory.Open(new DirectoryInfo(_luceneDir));
@@ -43,176 +41,115 @@ namespace XK.SearchEngine {
             }
         }
 
-        public static void CreateIndex(string title, string content) {
+        /// <summary>
+        /// 创建索引文档
+        /// </summary>
+        /// <param name="dic"></param>
+        public  void CreateLuceneIndex(Dictionary<string, string> dic) {
             //var analyzer = new StandardAnalyzer(Version.LUCENE_30);
             var analyzer = GetAnalyzer();
 
             using (var writer = new IndexWriter(Directory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED)) {
-
-                // add new index entry
                 var doc = new Document();
-                doc.Add(new Field("Title", title, Field.Store.YES, Field.Index.ANALYZED));
-                doc.Add(new Field("Content", content, Field.Store.YES, Field.Index.ANALYZED));
-
+                foreach (KeyValuePair<string, string> pair in dic) {
+                    // add new index entry
+                    //Field.Store.YES:表示是否存储原值。
+                    //只有当Field.Store.YES在后面才能用doc.Get("number")取出值来
+                    //Field.Index. NOT_ANALYZED:不进行分词保存
+                    if (NotAnalyzeFields.Contains(pair.Key.ToLower())) {
+                        doc.Add(new Field(pair.Key, pair.Value, Field.Store.YES, Field.Index.NOT_ANALYZED));
+                    }
+                    else {
+                        doc.Add(new Field(pair.Key, pair.Value, Field.Store.YES, Field.Index.ANALYZED));
+                    }
+                }
                 writer.AddDocument(doc);
-
+                writer.Commit();
                 analyzer.Close();
             }
         }
 
+        private static List<string> _notAnalyzeFields = new List<string>() {"id"};
         /// <summary>
-        /// 创建索引文档
+        /// 不进行分词保存
         /// </summary>
-        /// <param name="indexPrefix">EXP:new_ ，book_ 前缀</param>
-        /// <param name="dic"></param>
-        public static void CreateIndex(string indexPrefix, Dictionary<string, dynamic> dic) {
-            //var analyzer = new StandardAnalyzer(Version.LUCENE_30);
-            var analyzer = GetAnalyzer();
-
-            using (var writer = new IndexWriter(Directory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED)) {
-                var doc = new Document();
-                foreach (KeyValuePair<string, dynamic> pair in dic) {
-                    // add new index entry
-                    doc.Add(new Field(indexPrefix + pair.Key, pair.Value, Field.Store.YES, Field.Index.ANALYZED));
-                }
-                writer.AddDocument(doc);
-                analyzer.Close();
-            }
+        public static List<string> NotAnalyzeFields
+        {
+            get { return _notAnalyzeFields; }
         }
 
         /// <summary>
         /// 批量创建
         /// </summary>
-        /// <param name="indexPrefix"></param>
         /// <param name="dicList"></param>
-        public static void CreateIndex(string indexPrefix,List<Dictionary<string,dynamic>> dicList) {
-            foreach (Dictionary<string, dynamic> dictionary in dicList) {
-                CreateIndex(indexPrefix, dictionary);
+        public  void CreateLuceneIndex(List<Dictionary<string,string>> dicList) {
+            foreach (Dictionary<string, string> dictionary in dicList) {
+                CreateLuceneIndex(dictionary);
             }
         }
 
-        public static IEnumerable<Dictionary<string, string>> Search(string searchWord, string[] fieldName, int pageSize,
-            int pageIndex,
-            out int total) {
-            if (string.IsNullOrEmpty(searchWord)) {
-                total = 0;
-                return new List<Dictionary<string, string>>();
+        public void UpdateLuceneIndex(Dictionary<string,string> dicPos,Dictionary<string,string> dic) {
+     
+            DeleteLuceneIndexRecord(dicPos);
+            CreateLuceneIndex(dic);
+        }
+
+        public void DeleteLuceneIndexRecord(string field,string text) {
+            //var analyzer = new StandardAnalyzer(Version.LUCENE_30);
+            var analyzer = GetAnalyzer();
+            using (var writer = new IndexWriter(Directory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED)) {
+                writer.DeleteDocuments(new Term(field, text));
+                writer.Commit();
+                analyzer.Close();
             }
-
-            var kwords = searchWord;
-            kwords = GetKeyWordsSplitBySpace(kwords, new JiebaTokenizer(new JiebaSegmenter(), kwords));
-
-            var terms = kwords.Trim().Replace("-", " ").Split(' ')
-                .Where(x => !string.IsNullOrEmpty(x)).Select(x => x.Trim());
-            searchWord = string.Join(" ", terms);
-
-            List<Document> documents = SearchQuery(searchWord, fieldName, pageSize, pageIndex, out total);
-
-            var dicList = Docs2Dic(documents);
-            return dicList;
         }
 
-        public static List<TModel> Search<TModel>(string searchWord, string[] fieldName, int pageSize,
-            int pageIndex,
-            out int total) {
-            if (string.IsNullOrEmpty(searchWord)) {
-                total = 0;
-                return new List<TModel>();
+        public void DeleteLuceneIndexRecord(Dictionary<string, string> dic) {
+            var analyzer = GetAnalyzer();
+            using (var writer = new IndexWriter(Directory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED)) {
+                foreach (KeyValuePair<string, string> pair in dic) {
+                    Term[] terms = dic.Select(one => new Term(one.Key, one.Value)).ToArray();
+                    writer.DeleteDocuments(terms);
+                }
+                writer.Commit();
+                analyzer.Close();
             }
-
-            var kwords = searchWord;
-            kwords = GetKeyWordsSplitBySpace(kwords, new JiebaTokenizer(new JiebaSegmenter(), kwords));
-
-            var terms = kwords.Trim().Replace("-", " ").Split(' ')
-                .Where(x => !string.IsNullOrEmpty(x)).Select(x => x.Trim());
-            searchWord = string.Join(" ", terms);
-
-            IEnumerable<Document> documents = SearchQuery(searchWord, fieldName, pageSize, pageIndex, out total);
-
-            List<TModel> models = documents.Select(Doc2TModel<TModel>).ToList();
-            return models;
         }
 
-        private static Dictionary<string, string> Doc2Dic(Document document) {
-            Dictionary<string, string> dic = new Dictionary<string, string>();
-            var fields = document.GetFields();
-            foreach (IFieldable field in fields) {
-                string name = field.Name;
-                string value = field.StringValue;
-                dic.Add(name, value);
-            }
-            return dic;
-        }
-
-        private static TModel Doc2TModel<TModel>(Document document) {
-            string json = Doc2Dic(document).ToJson();
-            return JsonHelper<TModel>.DeserializeFromStr(json);
-        }
-
-        private static Document ScoreDoc2Document(IndexSearcher searcher,ScoreDoc scoreDoc) {
-            return searcher.Doc(scoreDoc.Doc);
-        }
-
-
-        private static List<Document> ScoreDocs2Doc(IndexSearcher searcher, IEnumerable<ScoreDoc> scoreDocs) {
-            return scoreDocs.Select(one => ScoreDoc2Document(searcher, one)).ToList();
-        }
-
-        private static IEnumerable<Dictionary<string,string>> Docs2Dic(List<Document> documents) {
-            return documents.Select(Doc2Dic);
-        }
-
-        private static List<Document> SearchQuery(string searchQuery, string[] searchField,
-            int pageSize, int pageIndex, out int total) {
-            List<Document> documents = new List<Document>();
-            if (string.IsNullOrEmpty(searchQuery.Replace("*", "").Replace("?", ""))) {
-                total = 0;
-                return documents;
-            }
-            using (var searcher = new IndexSearcher(Directory, false)) {
-                var hitsLimit = 1000;
+        public bool ClearLuceneIndex() {
+            try {
                 //var analyzer = new StandardAnalyzer(Version.LUCENE_30);
                 var analyzer = GetAnalyzer();
-                var parser = new MultiFieldQueryParser(Version.LUCENE_30, searchField, analyzer);
-                var query = ParseQuery(searchQuery, parser);
-                TopScoreDocCollector collector = TopScoreDocCollector.Create(hitsLimit, true);
-                searcher.Search(query, null, collector);
-                total = collector.TotalHits;
-                //TopDocs 指定0到GetTotalHits() 即所有查询结果中的文档 如果TopDocs(20,10)则意味着获取第20-30之间文档内容 达到分页的效果
-                int start = pageIndex*pageSize;
-                ScoreDoc[] scoreDocs = collector.TopDocs(start, pageSize).ScoreDocs;
-
-                documents = ScoreDocs2Doc(searcher, scoreDocs);
-
-                analyzer.Close();
-
-                return documents;
-            }
-        }
-
-
-        private static string GetKeyWordsSplitBySpace(string keywords, JiebaTokenizer tokenizer) {
-            StringBuilder result = new StringBuilder();
-
-            var words = tokenizer.Tokenize(keywords);
-
-            foreach (var word in words) {
-                if (string.IsNullOrWhiteSpace(word.Word)) {
-                    continue;
+                using (var writer = new IndexWriter(Directory, analyzer, true, IndexWriter.MaxFieldLength.UNLIMITED)) {
+                    writer.DeleteAll();
+                    writer.Commit();
+                    analyzer.Close();
                 }
-
-                result.AppendFormat("{0} ", word.Word);
+            }
+            catch (Exception e) {
+                return false;
             }
 
-            return result.ToString().Trim();
+            return true;
+        }
+
+        public void OptimizeLuceneIndex() {
+            //var analyzer = new StandardAnalyzer(Version.LUCENE_30);
+            var analyzer = GetAnalyzer();
+            using (var writer = new IndexWriter(Directory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED)) {
+                analyzer.Close();
+                writer.Commit();
+                writer.Optimize();
+            }
         }
 
 
-        private static Analyzer GetAnalyzer() {
+        protected static Analyzer GetAnalyzer() {
+ 
             return new JiebaAnalyzer();
         }
 
-        private static Query ParseQuery(string searchQuery, QueryParser parser) {
+        protected static Query ParseQuery(string searchQuery, QueryParser parser) {
             Query query;
             try {
                 query = parser.Parse(searchQuery.Trim());
@@ -223,7 +160,26 @@ namespace XK.SearchEngine {
 
             return query;
         }
-     
+
+        protected string GetKeyWordsSplitBySpace(string keywords) {
+            StringBuilder result = new StringBuilder();
+            var tokenizer = new JiebaTokenizer(new JiebaSegmenter(), keywords);
+            var words = tokenizer.Tokenize(keywords);
+            foreach (var word in words) {
+                if (string.IsNullOrWhiteSpace(word.Word)) {
+                    continue;
+                }
+                result.AppendFormat("{0} ", word.Word);
+            }
+
+            string kwords = result.ToString().Trim();
+            var terms = kwords.Trim().Replace("-", " ").Split(' ')
+                .Where(x => !string.IsNullOrEmpty(x)).Select(x => x.Trim());
+            return string.Join(" ", terms);
+        }
+
+
+       
 
     }
 }
