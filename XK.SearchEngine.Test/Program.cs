@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 namespace XK.SearchEngine.Test {
     class Program {
         static void Main(string[] args) {
-            // XK.SearchEngine.IndexManage.CreateIndex("中秋节快乐", "这是一个节日，中秋节哦");
-            // Console.WriteLine("ok");
+            //XK.SearchEngine.IndexManage.CreateIndex("中秋节快乐", "这是一个节日，中节哦");
+            //Console.WriteLine("ok");
 
-            string[] fields = {"Title", "Content" };
+            string[] fields = {"Title" ,"Content" };
             int total;
-            List<News> news = XK.SearchEngine.IndexManage.Search<News>("中秋", fields,10,0, out total);
-            Console.WriteLine(news[0].Content);
+            List<News> news = XK.SearchEngine.IndexManage.Search<News>("快乐", fields, 10, 0, out total);
+            Console.WriteLine(total + "---" + news[0].Content);
             Console.Read();
         }
 
