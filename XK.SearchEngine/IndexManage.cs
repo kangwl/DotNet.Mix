@@ -14,6 +14,9 @@ using XK.SearchEngine.Util;
 
 namespace XK.SearchEngine {
     public class IndexManage {
+        /// <summary>
+        /// 基目录
+        /// </summary>
         public string BasePath = "LuceneData";
         public IndexManage(string filePath) {
             _luceneDir = $"{BasePath}\\{filePath}";
@@ -40,7 +43,7 @@ namespace XK.SearchEngine {
                 return _directoryTemp;
             }
         }
-
+ 
         /// <summary>
         /// 创建索引文档
         /// </summary>
@@ -93,16 +96,7 @@ namespace XK.SearchEngine {
             DeleteLuceneIndexRecord(dicPos);
             CreateLuceneIndex(dic);
         }
-
-        public void DeleteLuceneIndexRecord(string field,string text) {
-            //var analyzer = new StandardAnalyzer(Version.LUCENE_30);
-            var analyzer = GetAnalyzer();
-            using (var writer = new IndexWriter(Directory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED)) {
-                writer.DeleteDocuments(new Term(field, text));
-                writer.Commit();
-                analyzer.Close();
-            }
-        }
+ 
 
         public void DeleteLuceneIndexRecord(Dictionary<string, string> dic) {
             var analyzer = GetAnalyzer();
@@ -174,12 +168,12 @@ namespace XK.SearchEngine {
 
             string kwords = result.ToString().Trim();
             var terms = kwords.Trim().Replace("-", " ").Split(' ')
-                .Where(x => !string.IsNullOrEmpty(x)).Select(x => x.Trim());
+                .Where(x => !string.IsNullOrEmpty(x)).Select(x => x.Trim() + "*");
             return string.Join(" ", terms);
         }
 
 
-       
+
 
     }
 }

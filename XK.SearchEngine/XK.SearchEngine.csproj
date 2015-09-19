@@ -56,10 +56,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoFac\OperateQueue.cs" />
     <Compile Include="Doc.cs" />
-    <Compile Include="Search_Model.cs" />
-    <Compile Include="SearchResult_Model.cs" />
-    <Compile Include="test.cs" />
+    <Compile Include="AutoFac\Enter.cs" />
+    <Compile Include="Model\Search_Model.cs" />
+    <Compile Include="Model\SearchResult_Model.cs" />
     <Compile Include="Util\JiebaAnalyzer.cs" />
     <Compile Include="Util\JiebaTokenizer.cs" />
     <Compile Include="IndexManage.cs" />
@@ -81,7 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\dict.txt" />
-    <Content Include="Resources\jieba.txt" />
+    <Content Include="Resources\jieba.net.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

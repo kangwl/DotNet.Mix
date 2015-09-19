@@ -1,4 +1,4 @@
-﻿namespace XK.SearchEngine {
+﻿namespace XK.SearchEngine.Model {
     public class Search_Model {
 
         public Search_Model() {

@@ -7,6 +7,7 @@ using Lucene.Net.Search;
 using Lucene.Net.Search.Highlight;
 using XK.Common;
 using XK.Common.json;
+using XK.SearchEngine.Model;
 using Version = Lucene.Net.Util.Version;
 
 namespace XK.SearchEngine {
@@ -86,7 +87,7 @@ namespace XK.SearchEngine {
         }
 
  
-        protected Query query(Analyzer analyzer) { 
+        protected Query Query(Analyzer analyzer) { 
             var parser = new MultiFieldQueryParser(Version.LUCENE_30, SearchModel.Fields, analyzer);
             return ParseQuery(SearchModel.Words, parser); 
         }
@@ -103,7 +104,7 @@ namespace XK.SearchEngine {
         
                 TopScoreDocCollector collector = TopScoreDocCollector.Create(hitsLimit, true);
                 Analyzer analyzer = GetAnalyzer();
-                searcher.Search(query(analyzer), null, collector);
+                searcher.Search(Query(analyzer), null, collector);
                 
                 searchResult.Total = collector.TotalHits;
 
@@ -125,7 +126,7 @@ namespace XK.SearchEngine {
         private List<Document> ScoreDocs2Doc(IndexSearcher searcher, IEnumerable<ScoreDoc> scoreDocs) {
             Lucene.Net.Search.Highlight.SimpleHTMLFormatter htmlFormatter = new SimpleHTMLFormatter("<b>", "</b>");
             Analyzer analyzer = GetAnalyzer();
-            Highlighter highlighter = new Highlighter(htmlFormatter, new QueryScorer(query(analyzer)));
+            Highlighter highlighter = new Highlighter(htmlFormatter, new QueryScorer(Query(analyzer)));
  
             using (analyzer) {
                 return scoreDocs.Select(one => ScoreDoc2Document(searcher, one, highlighter, analyzer)).ToList();
