@@ -9,9 +9,10 @@ using XK.SearchEngine.Model;
 namespace XK.SearchEngine.Test {
     class Program {
         private static void Main(string[] args) {
-           // XK.SearchEngine.AutoFac.Enter.InitLuceneWorkThread();
-           // XK.SearchEngine.IndexManage indexManage=new IndexManage("Test");
-            //indexManage.ClearLuceneIndex();
+         
+            //XK.SearchEngine.AutoFac.Enter.InitLuceneWorkThread();
+            // XK.SearchEngine.IndexManage indexManage=new IndexManage("Test");
+          
             //indexManage.CreateLuceneIndex(new Dictionary<string, string>() { {"ID","1"},{ "Title", "中秋节快乐" }, { "Content", "这是一个节日，中秋节哦" } });
             //indexManage.CreateLuceneIndex(new Dictionary<string, string>() { { "ID", "2" }, { "Title", "中秋节快乐" }, { "Content", "这是一个节日，中秋节哦" } });
 
@@ -20,8 +21,27 @@ namespace XK.SearchEngine.Test {
 
             //XK.SearchEngine.AutoFac.Enter enter = new Enter("Test");
             //XK.SearchEngine.AutoFac.OperateModel operateModel = new OperateModel();
+
+            ////add
+            //operateModel.OperateEnum = OperateEnum.Add;
+            //operateModel.Dic = new Dictionary<string, string>() {
+            //    {"ID", "1"},
+            //    {"Title", "中秋节快乐"},
+            //    {"Content", "这是一个节日，中秋节哦"}
+            //};
+            //enter.Add(operateModel);
+
+            //operateModel = new OperateModel();
+            //operateModel.OperateEnum = OperateEnum.Add;
+            //operateModel.Dic = new Dictionary<string, string>() {
+            //    {"ID", "2"},
+            //    {"Title", "中秋节快乐2"},
+            //    {"Content", "这是一个节日，中秋节哦2"}
+            //};
+            //enter.Add(operateModel);
+            //delete
             //operateModel.OperateEnum = OperateEnum.Delete;
-            //operateModel.Dic = new Dictionary<string, string>() { { "ID", "2" } };
+            //operateModel.Dic = new Dictionary<string, string>() { { "ID", "1" } };
             //enter.Add(operateModel);
             while (true) {
 
@@ -32,7 +52,7 @@ namespace XK.SearchEngine.Test {
                     Fields = new string[] { "Title", "Content" },
                     Words = keyword
                 };
-                XK.SearchEngine.Doc doc = new Doc("Test", searchModel);
+                XK.SearchEngine.DocSearch doc = new DocSearch(searchModel);
                 //doc.CreateLuceneIndex(new Dictionary<string, dynamic>() { { "Title", "中秋节快乐" }, { "Content", "这是一个节日，中秋节哦" } });
 
 

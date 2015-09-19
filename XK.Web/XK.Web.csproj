@@ -150,6 +150,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\bs.alert.js" />
     <Content Include="Scripts\bs.modal.js" />
+    <Content Include="xk\Search.aspx" />
     <Content Include="_Sql\table.sql" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
@@ -836,6 +837,13 @@
     <Compile Include="xk\replace\test.aspx.designer.cs">
       <DependentUpon>test.aspx</DependentUpon>
     </Compile>
+    <Compile Include="xk\Search.aspx.cs">
+      <DependentUpon>Search.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="xk\Search.aspx.designer.cs">
+      <DependentUpon>Search.aspx</DependentUpon>
+    </Compile>
     <Compile Include="xk\Upload.aspx.cs">
       <DependentUpon>Upload.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -859,6 +867,10 @@
     <ProjectReference Include="..\XK.DataProcess\XK.DataProcess.csproj">
       <Project>{13de9bfd-a790-481c-bbd1-ad5e4ab3a547}</Project>
       <Name>XK.DataProcess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XK.SearchEngine\XK.SearchEngine.csproj">
+      <Project>{801fd1e0-d7ae-4d59-b9e7-925170b9bd0d}</Project>
+      <Name>XK.SearchEngine</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

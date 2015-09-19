@@ -3,56 +3,63 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using JiebaNet.Segmenter;
-using Lucene.Net.Analysis;  
+using Lucene.Net.Analysis;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
+using Lucene.Net.Search.Highlight;
 using Lucene.Net.Store;
+using XK.Common;
+using XK.Common.json;
+using XK.SearchEngine.Model;
 using XK.SearchEngine.Util;
+using Version = Lucene.Net.Util.Version;
 
 namespace XK.SearchEngine {
-    public class IndexManage {
+    public class DocIndex {
+        public DocIndex(string filePath, string dataBasePath= "LuceneData") {
+            BaseDataPath = dataBasePath;
+            FilePath = filePath;
+        }
+
         /// <summary>
-        /// 基目录
+        /// 默认 LuceneData
         /// </summary>
-        public string BasePath = "LuceneData";
-        public IndexManage(string filePath) {
-            _luceneDir = $"{BasePath}\\{filePath}";
-        }
+        public string BaseDataPath { get; set; }
+        /// <summary>
+        /// 默认Test
+        /// </summary>
+        public string FilePath { get; set; }
 
-        private readonly string _luceneDir;
+        protected FSDirectory GetLuceneDirectory() {
+            string luceneDir = $"{BaseDataPath}\\{FilePath}";
 
-        private  FSDirectory _directoryTemp;
+            FSDirectory fsDirectory = FSDirectory.Open(new DirectoryInfo(luceneDir));
 
-        protected  FSDirectory Directory {
-            get {
-                if (_directoryTemp == null) {
-                    _directoryTemp = FSDirectory.Open(new DirectoryInfo(_luceneDir));
-                }
-                if (IndexWriter.IsLocked(_directoryTemp)) {
-                    IndexWriter.Unlock(_directoryTemp);
-                }
-
-                var lockFilePath = Path.Combine(_luceneDir, "write.lock");
-                if (File.Exists(lockFilePath)) {
-                    File.Delete(lockFilePath);
-                }
-
-                return _directoryTemp;
+            if (IndexWriter.IsLocked(fsDirectory)) {
+                IndexWriter.Unlock(fsDirectory);
             }
+
+            //var lockFilePath = Path.Combine(luceneDir, "write.lock");
+            //if (File.Exists(lockFilePath)) {
+            //    File.Delete(lockFilePath);
+            //}
+
+            return fsDirectory;
         }
- 
+
         /// <summary>
         /// 创建索引文档
         /// </summary>
         /// <param name="dic"></param>
-        public  void CreateLuceneIndex(Dictionary<string, string> dic) {
+        public void CreateLuceneIndex(Dictionary<string, string> dic) {
             //var analyzer = new StandardAnalyzer(Version.LUCENE_30);
             var analyzer = GetAnalyzer();
-
-            using (var writer = new IndexWriter(Directory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED)) {
+            using (var directory = GetLuceneDirectory())
+            using (var writer = new IndexWriter(directory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED)) {
                 var doc = new Document();
                 foreach (KeyValuePair<string, string> pair in dic) {
                     // add new index entry
@@ -72,12 +79,11 @@ namespace XK.SearchEngine {
             }
         }
 
-        private static List<string> _notAnalyzeFields = new List<string>() {"id"};
+        private static List<string> _notAnalyzeFields = new List<string>() { "id" };
         /// <summary>
         /// 不进行分词保存
         /// </summary>
-        public static List<string> NotAnalyzeFields
-        {
+        public static List<string> NotAnalyzeFields {
             get { return _notAnalyzeFields; }
         }
 
@@ -85,22 +91,23 @@ namespace XK.SearchEngine {
         /// 批量创建
         /// </summary>
         /// <param name="dicList"></param>
-        public  void CreateLuceneIndex(List<Dictionary<string,string>> dicList) {
+        public void CreateLuceneIndex(List<Dictionary<string, string>> dicList) {
             foreach (Dictionary<string, string> dictionary in dicList) {
                 CreateLuceneIndex(dictionary);
             }
         }
 
-        public void UpdateLuceneIndex(Dictionary<string,string> dicPos,Dictionary<string,string> dic) {
-     
+        public void UpdateLuceneIndex(Dictionary<string, string> dicPos, Dictionary<string, string> dic) {
+
             DeleteLuceneIndexRecord(dicPos);
             CreateLuceneIndex(dic);
         }
- 
+
 
         public void DeleteLuceneIndexRecord(Dictionary<string, string> dic) {
             var analyzer = GetAnalyzer();
-            using (var writer = new IndexWriter(Directory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED)) {
+            using (var directory = GetLuceneDirectory())
+            using (var writer = new IndexWriter(directory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED)) {
                 foreach (KeyValuePair<string, string> pair in dic) {
                     Term[] terms = dic.Select(one => new Term(one.Key, one.Value)).ToArray();
                     writer.DeleteDocuments(terms);
@@ -114,7 +121,8 @@ namespace XK.SearchEngine {
             try {
                 //var analyzer = new StandardAnalyzer(Version.LUCENE_30);
                 var analyzer = GetAnalyzer();
-                using (var writer = new IndexWriter(Directory, analyzer, true, IndexWriter.MaxFieldLength.UNLIMITED)) {
+                using (var directory = GetLuceneDirectory())
+                using (var writer = new IndexWriter(directory, analyzer, true, IndexWriter.MaxFieldLength.UNLIMITED)) {
                     writer.DeleteAll();
                     writer.Commit();
                     analyzer.Close();
@@ -130,7 +138,8 @@ namespace XK.SearchEngine {
         public void OptimizeLuceneIndex() {
             //var analyzer = new StandardAnalyzer(Version.LUCENE_30);
             var analyzer = GetAnalyzer();
-            using (var writer = new IndexWriter(Directory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED)) {
+            using (var directory = GetLuceneDirectory())
+            using (var writer = new IndexWriter(directory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED)) {
                 analyzer.Close();
                 writer.Commit();
                 writer.Optimize();
@@ -138,12 +147,15 @@ namespace XK.SearchEngine {
         }
 
 
-        protected static Analyzer GetAnalyzer() {
- 
+
+        //util
+
+        protected Analyzer GetAnalyzer() {
+
             return new JiebaAnalyzer();
         }
 
-        protected static Query ParseQuery(string searchQuery, QueryParser parser) {
+        protected Query ParseQuery(string searchQuery, QueryParser parser) {
             Query query;
             try {
                 query = parser.Parse(searchQuery.Trim());
@@ -167,13 +179,17 @@ namespace XK.SearchEngine {
             }
 
             string kwords = result.ToString().Trim();
+            //var terms = kwords.Trim().Replace("-", " ").Split(' ')
+            //   .Where(x => !string.IsNullOrEmpty(x)).Select(x => x.Trim());
+
             var terms = kwords.Trim().Replace("-", " ").Split(' ')
                 .Where(x => !string.IsNullOrEmpty(x)).Select(x => x.Trim() + "*");
             return string.Join(" ", terms);
         }
 
 
-
-
     }
+
+
+  
 }

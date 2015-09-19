@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,8 +12,8 @@ namespace XK.SearchEngine.AutoFac {
 
         public static OperateQueue Instance = new OperateQueue();
 
-        private readonly Queue<OperateModel> _operateQueue = new Queue<OperateModel>();
-        public Queue<OperateModel> OperateQueueModels { get { return _operateQueue; } }
+        private static readonly ConcurrentQueue<OperateModel> _operateQueue = new ConcurrentQueue<OperateModel>();
+        public ConcurrentQueue<OperateModel> OperateQueueModels { get { return _operateQueue; } }
 
     }
 }

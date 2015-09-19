@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -6,11 +7,6 @@ using System.Threading;
 namespace XK.SearchEngine.AutoFac {
 
     /*例子：
-            //XK.SearchEngine.AutoFac.Enter enter = new Enter("Test");
-            //XK.SearchEngine.AutoFac.OperateModel operateModel = new OperateModel();
-            //operateModel.OperateEnum = OperateEnum.Delete;
-            //operateModel.Dic = new Dictionary<string, string>() { { "ID", "1" } };
-            //enter.Enqueue(operateModel);
         
         */
 
@@ -18,43 +14,67 @@ namespace XK.SearchEngine.AutoFac {
     /// 自动化处理
     /// </summary>
     public class Enter {
+    
+       private Enter() { }
+
+        static Enter() { }
+
+        private static Enter _enter = new Enter();
+
+        public static Enter Instance {
+            get { return _enter; }
+        }
 
         /// <summary>
-        /// 
+        /// 外部调用入口
+        /// 调用即可，会自动处理
         /// </summary>
-        /// <param name="dataPath">用于不同类别存放不同目录下</param>
-        public Enter(string dataPath) {
-            IndexManage indexManage = new IndexManage(dataPath);
-            dicFunc.Add(OperateEnum.Add, indexManage.CreateLuceneIndex);
-            dicFunc.Add(OperateEnum.Delete, indexManage.DeleteLuceneIndexRecord);
-        }
-
-
+        /// <param name="operateModel"></param>
         public void Add(OperateModel operateModel) {
-            Enqueue(new List<OperateModel>() {operateModel});
+            Add(new List<OperateModel>() {operateModel});
         }
 
-        public void Enqueue(List<OperateModel> operateModel) {
+        /// <summary>
+        /// 外部调用入口
+        /// 调用即可，会自动处理
+        /// </summary>
+        /// <param name="operateModel"></param>
+        public void Add(List<OperateModel> operateModel) {
             operateModel.ForEach(OperateQueue.Instance.OperateQueueModels.Enqueue); 
         }
 
         /// <summary>
-        /// 启动lucene工作线程
+        /// 在程序启动时调用此方法即可
+        /// 例如：global.asax
+        /// 启动lucene自动工作线程
         /// </summary>
         public static void InitLuceneWorkThread() {
             new Thread(DoWork).Start();
         }
 
-        private static Dictionary<OperateEnum, Action<Dictionary<string, string>>> dicFunc =
-            new Dictionary<OperateEnum, Action<Dictionary<string, string>>>();
+
 
         private static void DoWork() {
             while (true) {
                 try {
-                    if (OperateQueue.Instance.OperateQueueModels.Count > 0) {
-                        OperateModel model = OperateQueue.Instance.OperateQueueModels.Dequeue();
-                        var func = dicFunc[model.OperateEnum];
-                        func(model.Dic);
+
+                    while (OperateQueue.Instance.OperateQueueModels.Count > 0) {
+                        OperateModel model;
+                        bool success = OperateQueue.Instance.OperateQueueModels.TryDequeue(out model);
+                        if (success) {
+                            if (string.IsNullOrEmpty(model.DataBasePath) || string.IsNullOrEmpty(model.FilePath)) {
+                                throw new ArgumentNullException("DataBasePath,FilePath", "不能缺少"); 
+                            }
+                            DocIndex docIndex = new DocIndex(model.FilePath, model.DataBasePath);
+                            switch (model.OperateEnum) {
+                                case OperateEnum.Add:
+                                    docIndex.CreateLuceneIndex(model.Dic);
+                                    break;
+                                case OperateEnum.Delete:
+                                    docIndex.DeleteLuceneIndexRecord(model.Dic);
+                                    break;
+                            }
+                        }
                     }
                     Thread.Sleep(200);
                 }
@@ -66,9 +86,12 @@ namespace XK.SearchEngine.AutoFac {
 
     }
 
-    public class OperateModel { 
+    public class OperateModel {
+ 
         public OperateEnum OperateEnum { get; set; }
         public Dictionary<string, string> Dic { get; set; }
+        public string DataBasePath { get; set; }
+        public string FilePath { get; set; }
     }
 
 

@@ -57,13 +57,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoFac\OperateQueue.cs" />
-    <Compile Include="Doc.cs" />
     <Compile Include="AutoFac\Enter.cs" />
+    <Compile Include="DocIndex.cs" />
+    <Compile Include="DocSearch.cs" />
     <Compile Include="Model\Search_Model.cs" />
     <Compile Include="Model\SearchResult_Model.cs" />
-    <Compile Include="Util\JiebaAnalyzer.cs" />
-    <Compile Include="Util\JiebaTokenizer.cs" />
-    <Compile Include="IndexManage.cs" />
+    <Compile Include="Util\jieba\JiebaAnalyzer.cs" />
+    <Compile Include="Util\jieba\JiebaTokenizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -73,16 +73,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\char_state_tab.json" />
-    <None Include="Resources\pos_prob_emit.json" />
-    <None Include="Resources\pos_prob_start.json" />
-    <None Include="Resources\pos_prob_trans.json" />
-    <None Include="Resources\prob_emit.json" />
-    <None Include="Resources\prob_trans.json" />
+    <Content Include="说明.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\dict.txt" />
-    <Content Include="Resources\jieba.net.txt" />
+    <Folder Include="NewFolder1\" />
+    <Folder Include="Util\lucene\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

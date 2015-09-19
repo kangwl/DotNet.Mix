@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Lucene.Net.Analysis;
 using Lucene.Net.Documents;
 using Lucene.Net.QueryParsers;
@@ -11,30 +14,16 @@ using XK.SearchEngine.Model;
 using Version = Lucene.Net.Util.Version;
 
 namespace XK.SearchEngine {
-    /* 用例：
-            Search_Model searchModel = new Search_Model {
-                Fields = new string[] { "Title", "Content" },
-                Words = "中秋"
-            };
-            XK.SearchEngine.Doc doc = new Doc("Test", searchModel);
-            //doc.CreateLuceneIndex(new Dictionary<string, dynamic>() { { "Title", "中秋节快乐" }, { "Content", "这是一个节日，中秋节哦" } });
-             
-            
-            var result = doc.Search<News>();
-            List<News> news = result.Data;
-        */
-
-    public class Doc : IndexManage {
-
-        public Doc(string dataPath, Search_Model searchModel) : base(dataPath) {
-            SearchModel = searchModel;
-            InitSearchModel();
+    public class DocSearch : DocIndex {
+        public DocSearch(Model.Search_Model searchModel, string filePath = "Test", string baseDataPath = "LuceneData")
+            : base(filePath, baseDataPath) {
+            InitSearchModel(searchModel);
         }
 
         private Search_Model SearchModel { get; set; }
 
-        private void InitSearchModel() {
- 
+        private void InitSearchModel(Search_Model searchModel) {
+            SearchModel = searchModel;
             SearchModel.Words = GetKeyWordsSplitBySpace(SearchModel.Words);
         }
 
@@ -49,6 +38,7 @@ namespace XK.SearchEngine {
             SearchResult_Model<IEnumerable<Dictionary<string, string>>> searchResult = SearchDic();
             return searchResult.ToJson();
         }
+
         /// <summary>
         /// 返回list dic
         /// </summary>
@@ -66,6 +56,7 @@ namespace XK.SearchEngine {
             searchResult.Total = searchedDoc.Total;
             return searchResult;
         }
+
         /// <summary>
         /// 返回强类型
         /// </summary>
@@ -86,12 +77,6 @@ namespace XK.SearchEngine {
             return searchResultModel;
         }
 
- 
-        protected Query Query(Analyzer analyzer) { 
-            var parser = new MultiFieldQueryParser(Version.LUCENE_30, SearchModel.Fields, analyzer);
-            return ParseQuery(SearchModel.Words, parser); 
-        }
-
         /// <summary>
         /// 不对外开放
         /// </summary>
@@ -99,24 +84,31 @@ namespace XK.SearchEngine {
         private SearchedDocResult SearchInter() {
 
             SearchedDocResult searchResult = new SearchedDocResult();
-            using (var searcher = new IndexSearcher(Directory, false)) {
-                var hitsLimit = 1000;
-        
-                TopScoreDocCollector collector = TopScoreDocCollector.Create(hitsLimit, true);
-                Analyzer analyzer = GetAnalyzer();
-                searcher.Search(Query(analyzer), null, collector);
-                
-                searchResult.Total = collector.TotalHits;
+            using (var directory = GetLuceneDirectory()) {
+                using (var searcher = new IndexSearcher(directory, true)) {
+                    var hitsLimit = 1000;
 
-                //TopDocs 指定0到GetTotalHits() 即所有查询结果中的文档 如果TopDocs(20,10)则意味着获取第20-30之间文档内容 达到分页的效果
-                int start = SearchModel.PageIndex*SearchModel.PageSize;
-                ScoreDoc[] scoreDocs = collector.TopDocs(start, SearchModel.PageSize).ScoreDocs;
+                    TopScoreDocCollector collector = TopScoreDocCollector.Create(hitsLimit, true);
+                    Analyzer analyzer = GetAnalyzer();
+                    searcher.Search(Query(analyzer), null, collector);
 
-                searchResult.Documents = ScoreDocs2Doc(searcher, scoreDocs);
+                    searchResult.Total = collector.TotalHits;
 
-                analyzer.Close(); 
-                return searchResult;
+                    //TopDocs 指定0到GetTotalHits() 即所有查询结果中的文档 如果TopDocs(20,10)则意味着获取第20-30之间文档内容 达到分页的效果
+                    int start = SearchModel.PageIndex*SearchModel.PageSize;
+                    ScoreDoc[] scoreDocs = collector.TopDocs(start, SearchModel.PageSize).ScoreDocs;
+
+                    searchResult.Documents = ScoreDocs2Doc(searcher, scoreDocs);
+
+                    analyzer.Close();
+                    return searchResult;
+                }
             }
+        }
+
+        private Query Query(Analyzer analyzer) {
+            var parser = new MultiFieldQueryParser(Version.LUCENE_30, SearchModel.Fields, analyzer);
+            return ParseQuery(SearchModel.Words, parser);
         }
 
         private IEnumerable<Dictionary<string, string>> Docs2Dic(List<Document> documents) {
@@ -124,10 +116,11 @@ namespace XK.SearchEngine {
         }
 
         private List<Document> ScoreDocs2Doc(IndexSearcher searcher, IEnumerable<ScoreDoc> scoreDocs) {
-            Lucene.Net.Search.Highlight.SimpleHTMLFormatter htmlFormatter = new SimpleHTMLFormatter("<b>", "</b>");
+            Lucene.Net.Search.Highlight.SimpleHTMLFormatter htmlFormatter =
+                new SimpleHTMLFormatter("<b class='search_key'>", "</b>");
             Analyzer analyzer = GetAnalyzer();
             Highlighter highlighter = new Highlighter(htmlFormatter, new QueryScorer(Query(analyzer)));
- 
+
             using (analyzer) {
                 return scoreDocs.Select(one => ScoreDoc2Document(searcher, one, highlighter, analyzer)).ToList();
             }
@@ -141,7 +134,8 @@ namespace XK.SearchEngine {
             foreach (IFieldable field in fields) {
                 string name = field.Name;
                 string value = field.StringValue;
-                string text = highlighter.GetBestFragment(analyzer, name, value)??"";
+                string text = highlighter.GetBestFragment(analyzer, name, value) ?? (value ?? "");
+
                 newdoc.Add(new Field(name, text, Field.Store.YES, Field.Index.ANALYZED));
             }
             return newdoc;
@@ -171,6 +165,7 @@ namespace XK.SearchEngine {
                 Total = 0;
                 Documents = new List<Document>();
             }
+
             /// <summary>
             /// 搜索总数
             /// </summary>
@@ -178,7 +173,5 @@ namespace XK.SearchEngine {
 
             public List<Document> Documents { get; set; }
         }
-
-
     }
 }
