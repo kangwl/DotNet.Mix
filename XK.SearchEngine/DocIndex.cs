@@ -3,24 +3,18 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using JiebaNet.Segmenter;
 using Lucene.Net.Analysis;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
-using Lucene.Net.Search.Highlight;
 using Lucene.Net.Store;
-using XK.Common;
-using XK.Common.json;
-using XK.SearchEngine.Model;
 using XK.SearchEngine.Util;
-using Version = Lucene.Net.Util.Version;
 
 namespace XK.SearchEngine {
     public class DocIndex {
-        public DocIndex(string filePath, string dataBasePath= "LuceneData") {
+        public DocIndex(string filePath, string dataBasePath= Static.Config.LuceneBasePath) {
             BaseDataPath = dataBasePath;
             FilePath = filePath;
         }
@@ -55,7 +49,7 @@ namespace XK.SearchEngine {
         /// 创建索引文档
         /// </summary>
         /// <param name="dic"></param>
-        public void CreateLuceneIndex(Dictionary<string, string> dic) {
+        public void AddLuceneIndex(Dictionary<string, string> dic) {
             //var analyzer = new StandardAnalyzer(Version.LUCENE_30);
             var analyzer = GetAnalyzer();
             using (var directory = GetLuceneDirectory())
@@ -66,7 +60,7 @@ namespace XK.SearchEngine {
                     //Field.Store.YES:表示是否存储原值。
                     //只有当Field.Store.YES在后面才能用doc.Get("number")取出值来
                     //Field.Index. NOT_ANALYZED:不进行分词保存
-                    if (NotAnalyzeFields.Contains(pair.Key.ToLower())) {
+                    if (NotAnalyzeFields.Exists(one => one == pair.Key)) {
                         doc.Add(new Field(pair.Key, pair.Value, Field.Store.YES, Field.Index.NOT_ANALYZED));
                     }
                     else {
@@ -75,6 +69,7 @@ namespace XK.SearchEngine {
                 }
                 writer.AddDocument(doc);
                 writer.Commit();
+                writer.Optimize();
                 analyzer.Close();
             }
         }
@@ -93,14 +88,14 @@ namespace XK.SearchEngine {
         /// <param name="dicList"></param>
         public void CreateLuceneIndex(List<Dictionary<string, string>> dicList) {
             foreach (Dictionary<string, string> dictionary in dicList) {
-                CreateLuceneIndex(dictionary);
+                AddLuceneIndex(dictionary);
             }
         }
 
         public void UpdateLuceneIndex(Dictionary<string, string> dicPos, Dictionary<string, string> dic) {
 
             DeleteLuceneIndexRecord(dicPos);
-            CreateLuceneIndex(dic);
+            AddLuceneIndex(dic);
         }
 
 
@@ -181,7 +176,7 @@ namespace XK.SearchEngine {
             string kwords = result.ToString().Trim();
             //var terms = kwords.Trim().Replace("-", " ").Split(' ')
             //   .Where(x => !string.IsNullOrEmpty(x)).Select(x => x.Trim());
-
+            //匹配
             var terms = kwords.Trim().Replace("-", " ").Split(' ')
                 .Where(x => !string.IsNullOrEmpty(x)).Select(x => x.Trim() + "*");
             return string.Join(" ", terms);

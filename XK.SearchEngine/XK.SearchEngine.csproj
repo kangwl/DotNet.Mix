@@ -37,7 +37,7 @@
       <HintPath>Dll\JiebaNet.Segmenter.dll</HintPath>
     </Reference>
     <Reference Include="Lucene.Net, Version=3.0.3.0, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lucene.Net.3.0.3\lib\NET40\Lucene.Net.dll</HintPath>
+      <HintPath>Dll\Lucene.Net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Lucene.Net.Contrib.Highlighter">
@@ -62,6 +62,7 @@
     <Compile Include="DocSearch.cs" />
     <Compile Include="Model\Search_Model.cs" />
     <Compile Include="Model\SearchResult_Model.cs" />
+    <Compile Include="Static\Config.cs" />
     <Compile Include="Util\jieba\JiebaAnalyzer.cs" />
     <Compile Include="Util\jieba\JiebaTokenizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -76,7 +77,6 @@
     <Content Include="说明.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="NewFolder1\" />
     <Folder Include="Util\lucene\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

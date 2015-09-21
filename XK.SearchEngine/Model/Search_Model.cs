@@ -3,9 +3,7 @@
 
         public Search_Model() {
             PageIndex = 0;
-            PageSize = 10;
-            //BasePath = "LuceneData";
-            //DocFilePath = "Test";
+            PageSize = 10; 
         }
         
         public string Words { get; set; }
@@ -14,14 +12,6 @@
         /// 从0开始
         /// </summary>
         public int PageIndex { get; set; }
-        public int PageSize { get; set; }
-        ///// <summary>
-        ///// 默认LuceneData
-        ///// </summary>
-        //public string BasePath { get; set; }
-        ///// <summary>
-        ///// 默认Test
-        ///// </summary>
-        //public string DocFilePath { get; set; }
+        public int PageSize { get; set; } 
     }
 }

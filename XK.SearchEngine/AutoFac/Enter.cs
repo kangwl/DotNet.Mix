@@ -68,7 +68,7 @@ namespace XK.SearchEngine.AutoFac {
                             DocIndex docIndex = new DocIndex(model.FilePath, model.DataBasePath);
                             switch (model.OperateEnum) {
                                 case OperateEnum.Add:
-                                    docIndex.CreateLuceneIndex(model.Dic);
+                                    docIndex.AddLuceneIndex(model.Dic);
                                     break;
                                 case OperateEnum.Delete:
                                     docIndex.DeleteLuceneIndexRecord(model.Dic);

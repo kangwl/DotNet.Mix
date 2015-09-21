@@ -15,7 +15,7 @@ using Version = Lucene.Net.Util.Version;
 
 namespace XK.SearchEngine {
     public class DocSearch : DocIndex {
-        public DocSearch(Model.Search_Model searchModel, string filePath = "Test", string baseDataPath = "LuceneData")
+        public DocSearch(Model.Search_Model searchModel, string filePath = "Test", string baseDataPath = Static.Config.LuceneBasePath)
             : base(filePath, baseDataPath) {
             InitSearchModel(searchModel);
         }
