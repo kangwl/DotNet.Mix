@@ -60,6 +60,7 @@ namespace XK.SearchEngine {
                     //Field.Store.YES:表示是否存储原值。
                     //只有当Field.Store.YES在后面才能用doc.Get("number")取出值来
                     //Field.Index. NOT_ANALYZED:不进行分词保存
+                    //todo:boost
                     if (NotAnalyzeFields.Exists(one => one == pair.Key)) {
                         doc.Add(new Field(pair.Key, pair.Value, Field.Store.YES, Field.Index.NOT_ANALYZED));
                     }
@@ -67,6 +68,7 @@ namespace XK.SearchEngine {
                         doc.Add(new Field(pair.Key, pair.Value, Field.Store.YES, Field.Index.ANALYZED));
                     }
                 }
+                //doc.Boost
                 writer.AddDocument(doc);
                 writer.Commit();
                 writer.Optimize();

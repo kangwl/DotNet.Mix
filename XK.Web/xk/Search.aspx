@@ -19,10 +19,10 @@
             <asp:Repeater runat="server" ID="rpt_SearchResult">
                 <ItemTemplate>
                     <div class="well">
-                        <div class="row">
+                        <p>
                             <%#Eval("ID") %>. <%#Eval("Title") %>
-                        </div>
-                        <div class="row">
+                        </p>
+                        <p>
                             <%#Eval("Content") %>
                         </div>
                     </div>

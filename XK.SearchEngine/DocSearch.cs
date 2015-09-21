@@ -97,7 +97,7 @@ namespace XK.SearchEngine {
                     //TopDocs 指定0到GetTotalHits() 即所有查询结果中的文档 如果TopDocs(20,10)则意味着获取第20-30之间文档内容 达到分页的效果
                     int start = SearchModel.PageIndex*SearchModel.PageSize;
                     ScoreDoc[] scoreDocs = collector.TopDocs(start, SearchModel.PageSize).ScoreDocs;
-
+                   
                     searchResult.Documents = ScoreDocs2Doc(searcher, scoreDocs);
 
                     analyzer.Close();
