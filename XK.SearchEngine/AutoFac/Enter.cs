@@ -46,13 +46,11 @@ namespace XK.SearchEngine.AutoFac {
         /// <summary>
         /// 在程序启动时调用此方法即可
         /// 例如：global.asax
-        /// 启动lucene自动工作线程
+        /// 启动lucene的文档自动化工作线程
         /// </summary>
         public static void InitLuceneWorkThread() {
             new Thread(DoWork).Start();
         }
-
-
 
         private static void DoWork() {
             while (true) {

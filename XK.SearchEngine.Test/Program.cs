@@ -46,38 +46,35 @@ namespace XK.SearchEngine.Test {
 
             //DocIndex docIndex = new DocIndex("Test");
             //Dictionary<string, string> dic = new Dictionary<string, string>();
-            //dic.Add("ID", "1");
-            //dic.Add("Title","这是中秋节");
-            //dic.Add("Content", "中秋节快乐，这是一个阖家团圆的日子");
+            //dic.Add("ID", "2");
+            //dic.Add("Title", "这是中秋节2");
+            //dic.Add("Content", "中秋节快乐2，这是一个阖家团圆的日子2");
             //docIndex.AddLuceneIndex(dic);
 
-            //while (true) {
+            while (true) {
 
-            //    Console.WriteLine("请输入关键词：");
-            //    string keyword = Console.ReadLine();
+                Console.WriteLine("请输入关键词：");
+                string keyword = Console.ReadLine();
 
-            //    Search_Model searchModel = new Search_Model {
-            //        Fields = new string[] { "Title", "Content" },
-            //        Words = keyword
-            //    };
-            //    XK.SearchEngine.DocSearch doc = new DocSearch(searchModel);
-            //    //doc.CreateLuceneIndex(new Dictionary<string, dynamic>() { { "Title", "中秋节快乐" }, { "Content", "这是一个节日，中秋节哦" } });
+                Search_Model searchModel = new Search_Model {
+                    Fields = new string[] { "Title", "Content" },
+                    Words = keyword
+                };
+                XK.SearchEngine.DocSearch doc = new DocSearch(searchModel,"Test");
+                //doc.CreateLuceneIndex(new Dictionary<string, dynamic>() { { "Title", "中秋节快乐" }, { "Content", "这是一个节日，中秋节哦" } });
 
 
-            //    var result = doc.Search<News>();
-            //    List<News> news = result.Data;
+                var result = doc.Search<News>();
+                List<News> news = result.Data;
 
-            //    if (news.Count < 1) {
-            //        Console.WriteLine("null");
-            //    }
-            //    else {
-            //        Console.WriteLine(result.Total + "---" + news[0].Title + Environment.NewLine + news[0].Content);
-            //    }
-            //}
-
-        Console.WriteLine(12);
-
-            Console.ReadLine();
+                if (news.Count < 1) {
+                    Console.WriteLine("null");
+                }
+                else {
+                    Console.WriteLine(result.Total + "---" + news[0].Title + Environment.NewLine + news[0].Content);
+                }
+            }
+             
         }
 
         class News {

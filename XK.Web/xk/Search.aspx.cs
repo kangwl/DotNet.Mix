@@ -11,7 +11,7 @@ using XK.SearchEngine.Model;
 
 namespace XK.Web.xk {
     public partial class Search : System.Web.UI.Page {
-        string basepath = @"E:\QuickVisit\Document\GITProject\DotNet.Mix\XK.SearchEngine.Test\bin\Debug\LuceneData";
+        string basepath = @"D:\GITProjects\DotNet.Mix\XK.SearchEngine.Test\bin\Debug\LuceneData";
         protected void Page_Load(object sender, EventArgs e) {
            
  
@@ -21,7 +21,7 @@ namespace XK.Web.xk {
             searchModel.Fields = new string[] { "Title", "Content" };
             searchModel.PageIndex = 0;
             searchModel.PageSize = 100;
-            XK.SearchEngine.DocSearch doc = new DocSearch(searchModel, baseDataPath: basepath);
+            XK.SearchEngine.DocSearch doc = new DocSearch(searchModel,filePath:"Test", baseDataPath: basepath);
 
             SearchResult_Model<List<News>> searchResult = doc.Search<News>();
             List<News> news = searchResult.Data;
@@ -69,7 +69,7 @@ namespace XK.Web.xk {
             searchModel.Fields = new string[] { "Title", "Content" };
             searchModel.PageIndex = 0;
             searchModel.PageSize = 10;
-            XK.SearchEngine.DocSearch doc = new DocSearch(searchModel,baseDataPath:basepath);
+            XK.SearchEngine.DocSearch doc = new DocSearch(searchModel, filePath: "Test", baseDataPath: basepath);
 
             SearchResult_Model<List<News>> searchResult = doc.Search<News>();
             List<News> news = searchResult.Data;

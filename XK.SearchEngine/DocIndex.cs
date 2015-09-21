@@ -36,7 +36,7 @@ namespace XK.SearchEngine {
             if (IndexWriter.IsLocked(fsDirectory)) {
                 IndexWriter.Unlock(fsDirectory);
             }
-
+         
             //var lockFilePath = Path.Combine(luceneDir, "write.lock");
             //if (File.Exists(lockFilePath)) {
             //    File.Delete(lockFilePath);
