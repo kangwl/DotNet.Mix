@@ -55,16 +55,7 @@
         </div>
     </div>
     <script>
-        function checkInput() {
-            var userid = $("#txtUserID").val();
-            var password = $("#txtPassword").val();
-            var name = $("#txtName").val();
-            var sex = $("#selSex").val();
-            var birthday = $("#txtBirthday").val();
-            var email = $("#txtEmail").val();
-
-             
-        }
+ 
        // $("#reguser").serializeArray
         $(document).on("click", "#btnAdd", function(e) {
             $.ajax({

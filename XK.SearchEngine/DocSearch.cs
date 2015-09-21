@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Lucene.Net.Analysis;
 using Lucene.Net.Documents;
+using Lucene.Net.Index;
 using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
 using Lucene.Net.Search.Highlight;
@@ -77,11 +75,59 @@ namespace XK.SearchEngine {
             return searchResultModel;
         }
 
+        private void SetDocBoost(Lucene.Net.Documents.Document document, float boost) {
+            document.Boost = boost;
+        }
         /// <summary>
-        /// 不对外开放
+        /// 设置权重
+        /// 值越大，显示越靠前
         /// </summary>
+        /// <param name="boost"></param>
+        public bool SetBoost(float boost) { 
+            SearchedDocResult result = SearchInter();
+            List<Document> documents = result.Documents;
+            documents.ForEach(doc => SetDocBoost(doc, boost));
+            return true;
+        }
+
+        /// <summary>
+        /// 根据field,fieldVal更新权重boost
+        /// </summary>
+        /// <param name="ID">field</param>
+        /// <param name="IDVal">fieldVal</param>
+        /// <param name="boost"></param>
         /// <returns></returns>
-        private SearchedDocResult SearchInter() {
+        public bool SetDocBoost(string ID, string IDVal, float boost) {
+            using (var directory = GetLuceneDirectory()) {
+                using (var searcher = new IndexSearcher(directory, true)) {
+                    Analyzer analyzer = GetAnalyzer();
+                    Filter filter = new QueryWrapperFilter(new TermQuery(new Term(ID, IDVal)));
+      
+                    TopDocs topDocs = searcher.Search(Query(analyzer), filter, 10);
+                    ScoreDoc[] scoreDocs = topDocs.ScoreDocs;
+                    List<Document> documents = ScoreDocs2Doc(searcher, scoreDocs);
+                   
+                    using (var writer = new IndexWriter(directory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED)) {
+                        documents.ForEach(doc => {
+                            doc.Boost = boost;
+                            writer.DeleteDocuments(new Term(ID, IDVal));
+                            writer.AddDocument(doc); 
+                        });
+                        writer.Commit();
+                        writer.Optimize();
+                    }
+                    analyzer.Close();
+                    return true;
+                }
+            }
+        }
+
+        /// <summary>
+                /// 不对外开放
+                /// </summary>
+                /// <returns></returns>
+            private
+            SearchedDocResult SearchInter() {
 
             SearchedDocResult searchResult = new SearchedDocResult();
             using (var directory = GetLuceneDirectory()) {

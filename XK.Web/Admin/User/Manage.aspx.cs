@@ -4,10 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using XK.Web.App;
 
 namespace XK.Web.Admin.User {
-    public partial class List : BasePage {
+    public partial class Manage : System.Web.UI.Page {
         protected void Page_Load(object sender, EventArgs e) {
 
         }

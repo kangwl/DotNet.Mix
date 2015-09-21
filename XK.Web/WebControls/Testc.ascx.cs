@@ -4,12 +4,13 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using XK.Web.App;
 
-namespace XK.Web.Admin.User {
-    public partial class List : BasePage {
+namespace XK.Web.WebControls {
+    public partial class Testc : System.Web.UI.UserControl {
         protected void Page_Load(object sender, EventArgs e) {
 
         }
+
+     
     }
 }

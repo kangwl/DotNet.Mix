@@ -70,6 +70,9 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Admin\User1\add.html" />
+    <Content Include="Admin\User1\Manage.aspx" />
+    <Content Include="Admin\User\Manage.aspx" />
     <Content Include="packages.config" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
@@ -115,6 +118,7 @@
     <Content Include="WebControls\JPlayer\src\skin\pink.flag\scss\jplayer.pink.flag.scss" />
     <Content Include="WebControls\Select\css\bootstrap-select.css.map" />
     <Content Include="WebControls\Select\js\bootstrap-select.js.map" />
+    <Content Include="WebControls\Testc.ascx" />
     <Content Include="WebControls\ueditor\net\config.json" />
     <Content Include="WebControls\ueditor\net\controller.ashx" />
     <Content Include="WebControls\ueditor\net\Web.config" />
@@ -707,6 +711,13 @@
     <Content Include="xk\UpRecieve.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Admin\User1\Manage.aspx.cs">
+      <DependentUpon>Manage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\User1\Manage.aspx.designer.cs">
+      <DependentUpon>Manage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\User\Add.aspx.cs">
       <DependentUpon>Add.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -727,6 +738,13 @@
     </Compile>
     <Compile Include="Admin\User\List.aspx.designer.cs">
       <DependentUpon>List.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\User\Manage.aspx.cs">
+      <DependentUpon>Manage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\User\Manage.aspx.designer.cs">
+      <DependentUpon>Manage.aspx</DependentUpon>
     </Compile>
     <Compile Include="App\BasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
@@ -792,6 +810,13 @@
     </Compile>
     <Compile Include="WebControls\Select\test.aspx.designer.cs">
       <DependentUpon>test.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebControls\Testc.ascx.cs">
+      <DependentUpon>Testc.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebControls\Testc.ascx.designer.cs">
+      <DependentUpon>Testc.ascx</DependentUpon>
     </Compile>
     <Compile Include="WebControls\Test\html5upload.aspx.cs">
       <DependentUpon>html5upload.aspx</DependentUpon>

@@ -1,7 +1,7 @@
 ﻿基于lucene的全文搜索
 使用：
-IndexManage：用于创建文档索引
-Doc：用来查询
+DocIndex：用于创建文档索引
+DocSearch：用来查询
 Util：jieba 解析
 Model：搜索模型
 AutoFac：自动化工厂，用于外部调用

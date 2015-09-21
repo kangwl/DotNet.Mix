@@ -9,10 +9,10 @@ using XK.SearchEngine.Model;
 namespace XK.SearchEngine.Test {
     class Program {
         static void Main(string[] args) {
-         
+
             //XK.SearchEngine.AutoFac.Enter.InitLuceneWorkThread();
             // XK.SearchEngine.IndexManage indexManage=new IndexManage("Test");
-          
+
             //indexManage.CreateLuceneIndex(new Dictionary<string, string>() { {"ID","1"},{ "Title", "中秋节快乐" }, { "Content", "这是一个节日，中秋节哦" } });
             //indexManage.CreateLuceneIndex(new Dictionary<string, string>() { { "ID", "2" }, { "Title", "中秋节快乐" }, { "Content", "这是一个节日，中秋节哦" } });
 
@@ -45,10 +45,16 @@ namespace XK.SearchEngine.Test {
             //enter.Add(operateModel);
 
             //DocIndex docIndex = new DocIndex("Test");
+            //docIndex.ClearLuceneIndex();
             //Dictionary<string, string> dic = new Dictionary<string, string>();
-            //dic.Add("ID", "2");
-            //dic.Add("Title", "这是中秋节2");
-            //dic.Add("Content", "中秋节快乐2，这是一个阖家团圆的日子2");
+            //dic.Add("ID", "1");
+            //dic.Add("Title", "这是中秋节1");
+            //dic.Add("Content", "中秋节快乐1，这是一个阖家团圆的日子1");
+            //docIndex.AddLuceneIndex(dic);
+            //dic.Clear();
+            //dic.Add("ID", "3");
+            //dic.Add("Title", "这是中秋节3");
+            //dic.Add("Content", "中秋节快乐3，这是一个阖家团圆的日子3");
             //docIndex.AddLuceneIndex(dic);
 
             while (true) {
@@ -61,8 +67,9 @@ namespace XK.SearchEngine.Test {
                     Words = keyword
                 };
                 XK.SearchEngine.DocSearch doc = new DocSearch(searchModel,"Test");
-                //doc.CreateLuceneIndex(new Dictionary<string, dynamic>() { { "Title", "中秋节快乐" }, { "Content", "这是一个节日，中秋节哦" } });
 
+               // bool success = doc.SetDocBoost("ID", "1", 5);
+              //  Console.WriteLine(success);
 
                 var result = doc.Search<News>();
                 List<News> news = result.Data;

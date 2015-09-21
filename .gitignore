@@ -121,3 +121,9 @@
 /XK.SearchEngine.Test/obj/Debug
 /XK.SearchEngine/bin/Debug
 /XK.SearchEngine/obj/Debug
+/.localhistory/XK.SearchEngine
+/.localhistory/XK.SearchEngine.Test
+/.localhistory/XK.Web/xk
+/.vs/DotNet.UserControls/v14
+/.vs/DotNet.Web/v14/*.suo
+/.vs/DotNet.LuceneSearch/v14/*.suo
