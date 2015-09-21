@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XK.SearchEngine", "XK.SearchEngine\XK.SearchEngine.csproj", "{801FD1E0-D7AE-4D59-B9E7-925170B9BD0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XK.SearchEngine.Test", "XK.SearchEngine.Test\XK.SearchEngine.Test.csproj", "{973C4B34-2A75-48E3-A725-2846824E5260}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{801FD1E0-D7AE-4D59-B9E7-925170B9BD0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{801FD1E0-D7AE-4D59-B9E7-925170B9BD0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{801FD1E0-D7AE-4D59-B9E7-925170B9BD0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{801FD1E0-D7AE-4D59-B9E7-925170B9BD0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{973C4B34-2A75-48E3-A725-2846824E5260}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{973C4B34-2A75-48E3-A725-2846824E5260}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{973C4B34-2A75-48E3-A725-2846824E5260}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{973C4B34-2A75-48E3-A725-2846824E5260}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
