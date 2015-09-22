@@ -1,13 +1,19 @@
 ﻿//操作对象
-var dataMainOperate = {};
+var dmo = {};
+
+dmo.logic = {};//储存处理操作的js
+dmo.logic.userJS = "/scripts/logic/user.js";
 //设置分页
-dataMainOperate.setPager = function(pageContentID, pageIndex, maxPage, fn) {
-    $.mypage(pageContentID, pageIndex, maxPage, fn);
+dmo.setPager = function(pageContentId, pageIndex, maxPage, fn) {
+    $.mypage(pageContentId, pageIndex, maxPage, fn);
 }
 //动态加载JS文件
 //fn 函数有两个参数(scriptText,state)
 //当state==="success"时，调用成功
-dataMainOperate.require= function(scriptUrl, fn) {
-    myJQUtil.cacheScript(scriptUrl).done(fn);
+dmo.require= function(scriptUrl, fn) {
+    myJQUtil.cacheScript(scriptUrl).done(function(scriptText, state) {
+        var success = (state === "success");
+        fn(success);
+    });
 }
 

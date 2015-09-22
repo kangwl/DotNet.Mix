@@ -40,8 +40,11 @@
                 success: function (res) {
                     if (res.code === 1) {
                         //登录成功
+                        $.bsAlertSuccess("登录成功，跳转中...");
+                        location.href = "/admin/user/list.aspx";
+                    } else {
+                        alert(res.msg);
                     }
-                    alert(res.msg);
                 },
                 error: function(e) {
                     console.error(e);

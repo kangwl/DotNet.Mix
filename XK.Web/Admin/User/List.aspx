@@ -4,7 +4,6 @@
         .panel-footer{padding: 0 15px}
         .panel-footer .pagination{ margin: 15px 0;margin-bottom: 10px}
     </style>
-    <script src="/Scripts/bootstrap.page.js"></script> 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="panel panel-default">
@@ -32,15 +31,14 @@
             
         </div>
     </div>
-    <script> 
-       
-        dataMainOperate.require("/Scripts/logic/user.js", function(script, state) {
-            if (state === "success") {
-                var userOperateObj = dataMainOperate.getUserOperateObj();
+    
+    <script src="/Scripts/bootstrap.page.js"></script> 
+    <script>
+        dmo.require(dmo.logic.userJS, function(success) {
+            if (success) {
+                var userOperateObj = dmo.getUserOperateObj();
                 userOperateObj.getUserList();
             }
         });
-       
-
     </script>
 </asp:Content>

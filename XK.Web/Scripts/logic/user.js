@@ -1,4 +1,7 @@
-﻿dataMainOperate.getUserOperateObj = function() {
+﻿/*
+操作user
+*/
+dmo.getUserOperateObj = function () {
 
     var userOperateObj = {};
 
@@ -11,11 +14,16 @@
         }
         return "未知";
     }
-    userOperateObj.getBirthday = function(val) {
+    userOperateObj.getBirthday = function (val) {
+        var birthday = "";
         if (val === "9999-12-31 23:59:59") {
-            return "";
+            return birthday;
         }
-        return val;
+        var arr = val.split(" ");
+        if (arr.length > 1) {
+            birthday = arr[0];
+        }
+        return birthday;
     }
     userOperateObj.getUserList = function() {
         $("#tabe_list").find("tbody").html("<h4>数据加载中...</h4>");
@@ -39,7 +47,7 @@
                 $("#tabe_list").find("tbody").html(trs.join(""));
                 var max = Math.ceil(parseInt(res.total) / parseInt(userOperateObj.data.pageSize));
 
-                dataMainOperate.setPager("pageContent", userOperateObj.data.pageIndex, max, userOperateObj.onPageClick);
+                dmo.setPager("pageContent", userOperateObj.data.pageIndex, max, userOperateObj.onPageClick);
             } else {
                 bootbox.alert(res.msg);
             }
@@ -51,11 +59,11 @@
     }
     //add
 
-    userOperateObj.addUser= function(fn_success, fn_error,fn_complete) {
+    userOperateObj.addUser= function(data, fn_success, fn_error, fn_complete) {
         $.ajax({
             type: "post",
             url: "/api/user/add",
-            data: $("#reguser input,select").serialize(),
+            data: data,
             dataType: "json",
             success: fn_success,
             error: function(e) {
@@ -64,14 +72,13 @@
                 }
                 console.error(e);
             },
-            complete:function(e) {
+            complete: function(e) {
                 if (typeof fn_complete === "function") {
                     fn_complete(e);
                 }
             }
         });
     }
-
 
     return userOperateObj;
 }

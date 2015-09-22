@@ -362,6 +362,9 @@
         } else {
             return "";
         }
+    },
+    isHtml5:function() {
+        return window.applicationCache;
     }
 }
 

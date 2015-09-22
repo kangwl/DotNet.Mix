@@ -57,11 +57,13 @@
     <script>
  
        // $("#reguser").serializeArray
-        $(document).on("click", "#btnAdd", function(e) {
-            dataMainOperate.require("/scripts/logic/user.js", function(text, state) {
-                if (state === "success") {
-                    var userOperate = dataMainOperate.getUserOperateObj();
-                    userOperate.addUser(function(res) {
+        $(document).on("click", "#btnAdd", function () {
+            //需要 /scripts/logic/user.js
+            dmo.require(dmo.logic.userJS, function(success) {
+                if (success) {
+                    var userOperate = dmo.getUserOperateObj();
+                    var data = $("#reguser input,select").serialize();//序列化需要的数据
+                    userOperate.addUser(data, function (res) {
                         if (res.code === 1) {
                             //success 
                         }

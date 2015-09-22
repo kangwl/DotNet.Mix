@@ -16,12 +16,9 @@
     <script src="/Scripts/logic/main.logic.js"></script>
     <script>
         
-        function isHtml5() {
-            return window.applicationCache;
-        }
-
+ 
         window.onload = function() {
-            if (isHtml5()) {
+            if (myJQUtil.isHtml5()) {
             } else {
                 var downloadChrome = "你的浏览器较旧，建议升级，请 <a style=\"font-weight:800\" href=\"http://dlsw.baidu.com/sw-search-sp/soft/9d/14744/ChromeStandalone_v44.0.2403.157_Setup.1440142013.exe\">点此</a> 下载安装浏览器后浏览";
                 //document.write(downloadChrome);
@@ -32,20 +29,48 @@
         //bootbox 语言
         bootbox.setLocale("zh_CN");
 
-
-
     </script>
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
 <body>
     <form id="form1" runat="server">
-    
-    <div class="container" style="padding-top: 20px">
-        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+        <div class="navbar navbar-default navbar-custom navbar-top-none" role="navigation">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/Admin/User/List.aspx"><span class="glyphicon glyphicon-leaf"></span> &nbsp;API</a>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul id="headnav" class="nav navbar-nav">
+                        <li><a href="">主页</a></li>
+                        <li><a href="">帮助</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/Admin/User/List.aspx">首页</a></li>
+                                <li class="divider"></li>
+                                <li><a href="/Pages/Logout.aspx">退出</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
         
-        </asp:ContentPlaceHolder>
-    </div>
+            </asp:ContentPlaceHolder>
+        </div>
     </form>
 </body>
 </html>
