@@ -12,6 +12,8 @@
     <script src="/Scripts/bootstrap.min.js"></script>
     <script src="/Scripts/bs.alert.js"></script>
     <script src="/Scripts/bootbox.min.js"></script>
+    <script src="/Scripts/myJQUtils.js"></script>
+    <script src="/Scripts/logic/main.logic.js"></script>
     <script>
         
         function isHtml5() {
@@ -26,8 +28,12 @@
                 $.bsAlertWarn(downloadChrome);
             }
         }
+
         //bootbox 语言
         bootbox.setLocale("zh_CN");
+
+
+
     </script>
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>

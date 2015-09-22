@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using XK.Common.web;
+using XK.DataProcess.Logic;
 using XK.Web.WebControls;
 
 namespace XK.Web.Admin.User1 {
@@ -28,6 +31,7 @@ namespace XK.Web.Admin.User1 {
             List<Data> datas = new List<Data> { new Data() { ID = 1 }, new Data() { ID = 2 } };
             WebControls.Testc testc=LoadControl("/WebControls/Testc.ascx") as Testc;
             Repeater rptList = testc.FindControl("rptList") as Repeater;
+         
             rptList.BindExt(datas);
             System.Web.UI.Page page = new Page();
             page.Controls.Add(testc);
@@ -38,8 +42,13 @@ namespace XK.Web.Admin.User1 {
             //Response.Write();
         }
 
+
         private class Data {
             public int ID { get; set; }
+            public string Name { get; set; }
         }
+
+ 
+ 
     }
 }

@@ -2,7 +2,7 @@
     select: {
         //使用jQuery和Ajax填充选择框
         init: function(select_id, url, paramsJson, optName) {
-            myJQAjax.getJson(url, paramsJson, function(json) {
+            $.getJSON(url, paramsJson, function(json) {
                 var len = json.length;
                 var options = '';
                 for (var i = 0; i < len; i++) {
@@ -161,7 +161,7 @@
         if (!strP.test(oNum)) return false;
 
         return true;
-    },
+    }, 
     getObjsVals: function (objs) {
         var vals = [];
         $(objs).each(function(i, n) {

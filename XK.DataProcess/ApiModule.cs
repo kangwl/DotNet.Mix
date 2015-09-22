@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text;
 using System.Web;
-using XK.DataProcess.Logic;
+using XK.DataProcess.DataModel;
 
 namespace XK.DataProcess {
     public class ApiModule : IHttpModule {
@@ -37,7 +37,7 @@ namespace XK.DataProcess {
                 if (apiSignIndex >= 0) {
                     //属于api访问
                     json = arr.Length < 4
-                        ? Common.json.JsonFac.Serialize2Json(new Logic.ApiInfo(2, "api 参数不对"))
+                        ? Common.json.JsonFac.Serialize2Json(new ApiInfo(2, "api 参数不对"))
                         : GetDataJson(application.Context);
                     Responser(application.Context, json);
                 }
@@ -54,7 +54,7 @@ namespace XK.DataProcess {
             string json = "";
             try {
                 //exp:/api/user/list
-                string url = context.Request.RawUrl;
+                string url = context.Request.FilePath;
                 string[] urlitm = url.Split('/');
                 int apiSignIndex = urlitm.ToList().FindIndex(a => a == ApiSign);
                 string source = urlitm[apiSignIndex + 1]; //对应处理的类（XK.DataProcess.Source 中）

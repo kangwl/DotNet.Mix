@@ -70,9 +70,6 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Admin\User1\add.html" />
-    <Content Include="Admin\User1\Manage.aspx" />
-    <Content Include="Admin\User\Manage.aspx" />
     <Content Include="packages.config" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
@@ -82,12 +79,15 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Main.Master" />
     <Content Include="Scripts\jquery-1.9.1.min.map" />
+    <Content Include="Scripts\bootstrap.page.js" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+    <Content Include="Scripts\logic\main.logic.js" />
+    <Content Include="Scripts\logic\user.js" />
     <Content Include="WebControls\JPlayer\.gitignore" />
     <Content Include="WebControls\JPlayer\.jamignore" />
     <Content Include="WebControls\JPlayer\artwork\jplayer.blue.monday.psd" />
@@ -711,13 +711,6 @@
     <Content Include="xk\UpRecieve.aspx" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Admin\User1\Manage.aspx.cs">
-      <DependentUpon>Manage.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\User1\Manage.aspx.designer.cs">
-      <DependentUpon>Manage.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Admin\User\Add.aspx.cs">
       <DependentUpon>Add.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -738,13 +731,6 @@
     </Compile>
     <Compile Include="Admin\User\List.aspx.designer.cs">
       <DependentUpon>List.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\User\Manage.aspx.cs">
-      <DependentUpon>Manage.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\User\Manage.aspx.designer.cs">
-      <DependentUpon>Manage.aspx</DependentUpon>
     </Compile>
     <Compile Include="App\BasePage.cs">
       <SubType>ASPXCodeBehind</SubType>

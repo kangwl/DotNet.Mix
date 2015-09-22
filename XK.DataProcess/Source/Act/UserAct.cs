@@ -5,9 +5,10 @@ using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using FreedomDB.Bridge;
 using XK.Common;
 using XK.DataProcess.Core;
-using XK.DataProcess.Logic;
+using XK.DataProcess.DataModel;
 using XK.Model;
 
 namespace XK.DataProcess.Source.Act {
@@ -37,14 +38,16 @@ namespace XK.DataProcess.Source.Act {
             user.Sex = sex.ToInt(0);
              
 
-            Logic.JsonTpl<string> jsonTemplate = new JsonTpl<string>();
-            jsonTemplate.info = new ApiInfo(-11, "添加失败");
+            JsonTpl<string> jsonTemplate = new JsonTpl<string>();
+            jsonTemplate.msg = "添加失败";
+            jsonTemplate.code = -11;
             jsonTemplate.data = "";
 
 
             bool addSucess = Bll.User_Bll.InsertUser(user);
             if (addSucess) {
-                jsonTemplate.info = new ApiInfo(1, "添加成功");
+                jsonTemplate.msg = "添加成功";
+                jsonTemplate.code = 1;
             }
             string jsonResult = Common.json.JsonHelper<JsonTpl<string>>.Serialize2Object(jsonTemplate);
             return jsonResult;
@@ -54,14 +57,19 @@ namespace XK.DataProcess.Source.Act {
 
             if (string.IsNullOrEmpty(App.UserID))
                 throw new AuthenticationException("用户未登录");
+            int pageIndex = context.Request.QueryString["pageIndex"].ToInt(0);
+            int pageSize = context.Request.QueryString["pageSize"].ToInt(10);
+            FreedomDB.Bridge.Where where = new Where();
+            where.Add(new Where.Item("1", "=", "1"));
+            var listUser = Bll.User_Bll.GetListUser(where, "*", "ID DESC", pageIndex, pageSize);
+            PageJsonTpl<List<XK.Model.User_Model>> listJsonTpl = new PageJsonTpl<List<User_Model>>();
+            listJsonTpl.data = listUser;
+            listJsonTpl.msg = "";
+            listJsonTpl.code = 1;
+            listJsonTpl.total = Bll.User_Bll.GetRecordCount(where);
+            listJsonTpl.pageindex = pageIndex;
 
-            Logic.JsonTpl<List<XK.Model.User_Model>> json = new JsonTpl<List<XK.Model.User_Model>>();
-            json.info = new ApiInfo(1, "操作成功");
-            json.data = new List<XK.Model.User_Model>() {
-                new XK.Model.User_Model() {ID = 1, Name = "k1", Email = "kangwl2009@163.com", Sex = 1},
-                new XK.Model.User_Model() {ID = 2, Name = "k2", Email = "kangwl2009@163.com", Sex = 1}
-            };
-            string extjson = Common.json.JsonHelper<JsonTpl<List<XK.Model.User_Model>>>.Serialize2Object(json);
+            string extjson = Common.json.JsonHelper<PageJsonTpl<List<XK.Model.User_Model>>>.Serialize2Object(listJsonTpl);
             return extjson;
         }
 

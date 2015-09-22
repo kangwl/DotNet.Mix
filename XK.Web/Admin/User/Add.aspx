@@ -58,20 +58,15 @@
  
        // $("#reguser").serializeArray
         $(document).on("click", "#btnAdd", function(e) {
-            $.ajax({
-                type: "post",
-                url: "/api/user/add",
-                data: $("#reguser input,select").serialize(),
-                dataType: "json",
-                success: function(res) {
-                    if (res.code === 1) {
-                        //success
-                       
-                    }
-                    bootbox.alert(res.info.msg);
-                },
-                error: function(e) {
-                    console.error(e);
+            dataMainOperate.require("/scripts/logic/user.js", function(text, state) {
+                if (state === "success") {
+                    var userOperate = dataMainOperate.getUserOperateObj();
+                    userOperate.addUser(function(res) {
+                        if (res.code === 1) {
+                            //success 
+                        }
+                        bootbox.alert(res.msg);
+                    });
                 }
             });
         });

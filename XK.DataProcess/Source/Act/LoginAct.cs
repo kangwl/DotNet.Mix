@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Web;
 using XK.Common;
 using XK.DataProcess.Core;
-using XK.DataProcess.Logic;
+using XK.DataProcess.DataModel;
 
 namespace XK.DataProcess.Source.Act {
     public class LoginAct {

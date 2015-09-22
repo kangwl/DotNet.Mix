@@ -179,12 +179,16 @@ namespace XK.Dal {
         }
 
         public int GetRecordCount(Where @where) {
-            string sql = $"select count(1) from {Table} where {where.Result};";
+            string sql = $"select count(1) total from {Table} where {where.Result};";
             using (SqlCommand command = new DbHelper().Command) {
                 command.CommandText = sql;
                 command.CommandType = CommandType.Text;
-                object objCount = command.ExecuteScalar();
-                return objCount.ToInt();
+                IDataReader reader = command.ExecuteReaderExt(sql, where);
+                if (reader.Read()) {
+                    object countObj = reader["total"];
+                    return countObj.ToInt();
+                }
+                return 0;
             }
         }
     }

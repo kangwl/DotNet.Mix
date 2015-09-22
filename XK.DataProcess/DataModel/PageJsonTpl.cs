@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace XK.DataProcess.Logic {
+﻿namespace XK.DataProcess.DataModel {
     /// <summary>
     /// 输出带分页的json模板
     /// </summary>

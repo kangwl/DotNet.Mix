@@ -1,4 +1,4 @@
-﻿namespace XK.DataProcess.Logic {
+﻿namespace XK.DataProcess.DataModel {
     /// <summary>
     /// 处理结果
     /// </summary>

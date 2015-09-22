@@ -348,16 +348,11 @@ namespace XK.Common {
 
             WebClient webClient = new WebClient();
             webClient.QueryString.Add("name", fileName);
-             //webClient.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
-             //webClient.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
-             //webClient.QueryString["fame"] = fileName;
-             var buffer = new byte[fielLen];
+            var buffer = new byte[fielLen];
             using (stream) {
                 stream.Read(buffer, 0, fielLen);
-
-                //readCount = stream.Read(buffer, 0, bufferSize);
+                
                 byte[] responseArray = webClient.UploadData(serverRecieve, "POST", buffer);
-                //return Encoding.GetEncoding("gb2312").GetString(responseArray);
             }
         }
 

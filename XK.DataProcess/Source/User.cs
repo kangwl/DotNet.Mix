@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web;
-using XK.DataProcess.Logic;
 
 namespace XK.DataProcess.Source {
     public class User {
