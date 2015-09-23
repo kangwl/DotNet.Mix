@@ -20,16 +20,7 @@
 
     <script src="/Scripts/logic/main.logic.js"></script>
     <script>
-        function setDatePicker() {
-            $('.input_datePicker').datepicker({
-                format: "yyyy-mm-dd",
-                autoclose: true,
-                language: 'zh-CN',
-                todayHighlight: true
-            });
-        }
-
- 
+         
         window.onload = function() {
             if (myJQUtil.isHtml5()) {
             } else {
@@ -85,9 +76,7 @@
     <script>
         //bootbox 语言
         bootbox.setLocale("zh_CN");
-
- 
-        setDatePicker();
+         
     </script>
 </body>
 </html>
