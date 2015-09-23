@@ -39,7 +39,7 @@
             <tr>
                 <td class="text-right">Birthday</td>
                 <td>
-                    <input type="text" id="txtBirthday" name="birthday" class="form-control" />
+                    <input type="text" id="txtBirthday" name="birthday" class="form-control input_datePicker" />
                 </td>
             </tr>
             <tr>
@@ -50,20 +50,28 @@
             </tr>
         </table>
         <div class="panel-footer text-center">
-            <button type="button" id="btnAdd" class="btn btn-sm btn-primary">添加</button> &nbsp;
-            <button class="btn btn-sm btn-default">返回</button>
+            <button type="button" id="btnAdd" class="btn btn btn-primary">添加</button> &nbsp;
+            <a class="btn btn btn-default" href="List.aspx">返回</a>
         </div>
     </div>
     <script>
  
        // $("#reguser").serializeArray
         $(document).on("click", "#btnAdd", function () {
+            bootbox.confirm("确定添加？", function(sure) {
+                if (sure) { 
+                    addUser();
+                }
+            });
+        });
+
+        function addUser() {
             //需要 /scripts/logic/user.js
             dmo.require(dmo.logic.userJS, function(success) {
-                if (success) {
+                if (success) { //如果引用JS成功
                     var userOperate = dmo.getUserOperateObj();
-                    var data = $("#reguser input,select").serialize();//序列化需要的数据
-                    userOperate.addUser(data, function (res) {
+                    var data = $("#reguser input,select").serialize(); //序列化需要的数据
+                    userOperate.addUser(data, function(res) {
                         if (res.code === 1) {
                             //success 
                         }
@@ -71,6 +79,6 @@
                     });
                 }
             });
-        });
+        }
     </script>
 </asp:Content>

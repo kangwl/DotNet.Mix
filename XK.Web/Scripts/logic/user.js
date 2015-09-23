@@ -2,11 +2,13 @@
 操作user
 */
 dmo.getUserOperateObj = function () {
-
+    /// <summary>获取用户操作对象</summary>
     var userOperateObj = {};
 
     userOperateObj.data = { pageIndex: 1, pageSize: 5 }
-    userOperateObj.getSex = function(sex) {
+    userOperateObj.getSex = function (sex) {
+        /// <summary>获取用户性别</summary>
+        /// <param name="sex" type="Int">性别代码值</param>
         if (sex === 1) {
             return "男";
         } else if (sex === 2) {
@@ -15,6 +17,8 @@ dmo.getUserOperateObj = function () {
         return "未知";
     }
     userOperateObj.getBirthday = function (val) {
+        /// <summary>获取用户生日，只保留年月日</summary>
+        /// <param name="val" type="String">生日值</param>
         var birthday = "";
         if (val === "9999-12-31 23:59:59") {
             return birthday;
@@ -22,63 +26,64 @@ dmo.getUserOperateObj = function () {
         var arr = val.split(" ");
         if (arr.length > 1) {
             birthday = arr[0];
+        } else {
+            birthday = val;
         }
-        return birthday;
+        return $.trim(birthday);
     }
-    userOperateObj.getUserList = function() {
-        $("#tabe_list").find("tbody").html("<h4>数据加载中...</h4>");
-        $.getJSON("/api/user/list", this.data, function(res) {
+    userOperateObj.getUserList = function (fnGetRes,fnBeforeSend) {
+        /// <summary>获取用户列表</summary>
+        /// <param name="fnGetRes" type="Function">处理请求到数据的回调函数</param>
+        /// <param name="fnBeforeSend" type="Function">处理请求前执行的方法</param>
+
+        dmo.reqServer("/api/user/list", "get", this.data, function(res) {
             if (res.code === 1) {
                 //success
-                var trs = [];
-
-                var userJsonArr = res.data;
-                $(userJsonArr).each(function(i, n) {
-                    var trContainer = [];
-                    trContainer.push("<tr>");
-                    trContainer.push("<td>" + n.UserID + "</td>");
-                    trContainer.push("<td>" + n.Name + "</td>");
-                    trContainer.push("<td>" + userOperateObj.getSex(n.Sex) + "</td>");
-                    trContainer.push("<td>" + userOperateObj.getBirthday(n.Birthday) + "</td>");
-                    trContainer.push("</tr>");
-                    var tr = trContainer.join("");
-                    trs.push(tr);
-                });
-                $("#tabe_list").find("tbody").html(trs.join(""));
-                var max = Math.ceil(parseInt(res.total) / parseInt(userOperateObj.data.pageSize));
-
-                dmo.setPager("pageContent", userOperateObj.data.pageIndex, max, userOperateObj.onPageClick);
+                fnGetRes(res);
             } else {
                 bootbox.alert(res.msg);
             }
-        });
+        }, fnBeforeSend);
     }
-    userOperateObj.onPageClick = function(pageIndex) {
-        userOperateObj.data.pageIndex = pageIndex;
-        userOperateObj.getUserList();
-    }
-    //add
+    userOperateObj.onPageClick = function (pageIndex, fnGetRes, fnBeforeSend) {
+        /// <summary>用于点击分页</summary>
+        /// <param name="pageIndex" type="Int">要请求的页码值</param>
+        /// <param name="fnGetRes" type="Function">处理请求到数据的回调函数</param>
+        /// <param name="fnBeforeSend" type="Function">处理请求前执行的方法</param>
 
-    userOperateObj.addUser= function(data, fn_success, fn_error, fn_complete) {
-        $.ajax({
-            type: "post",
-            url: "/api/user/add",
-            data: data,
-            dataType: "json",
-            success: fn_success,
-            error: function(e) {
-                if (typeof fn_error === "function") {
-                    fn_error(e);
-                }
-                console.error(e);
-            },
-            complete: function(e) {
-                if (typeof fn_complete === "function") {
-                    fn_complete(e);
-                }
-            }
-        });
+        userOperateObj.data.pageIndex = pageIndex;
+        userOperateObj.getUserList(fnGetRes, fnBeforeSend);
     }
+
+    //add
+    userOperateObj.addUser = function (data, fnSuccess,fnBeforeSend, fnError, fnComplete) {
+        /// <summary>添加用户</summary>
+        /// <param name="fnSuccess" type="Function">成功后回调函数</param>
+        /// <param name="fnBeforeSend" type="Function">处理请求前执行的方法</param>
+        /// <param name="fnError" type="Function">失败后回调函数</param>
+        /// <param name="fnComplete" type="Function">完成后回调函数</param>
+
+        dmo.reqServer("/api/user/add", "post", data, fnSuccess, fnBeforeSend, fnError, fnComplete);
+    }
+
+    userOperateObj.editUser = function(data, fnSuccess,fnBeforeSend, fnError, fnComplete) {
+        /// <summary>修改用户</summary>
+        /// <param name="fn_success" type="Function">成功后回调函数</param>
+        /// <param name="fnBeforeSend" type="Function">处理请求前执行的方法</param>
+        /// <param name="fn_error" type="Function">失败后回调函数</param>
+        /// <param name="fn_complete" type="Function">完成后回调函数</param>
+        
+        dmo.reqServer("/api/user/edit", "post", data, fnSuccess, fnBeforeSend, fnError, fnComplete);
+    }
+
+    userOperateObj.getUser= function(data,fnSuccess,fnBeforeSend, fnError, fnComplete) {
+        /// <summary>根据用户ID获取用户信息</summary>
+        /// <param name="data" type="Object">请求参数</param>
+        /// <returns type="Object">用户json</returns>
+       
+        dmo.reqServer("/api/user/getone", "get", data, fnSuccess, fnBeforeSend, fnError, fnComplete);
+    }
+
 
     return userOperateObj;
 }

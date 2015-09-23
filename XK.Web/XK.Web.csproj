@@ -86,6 +86,7 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+    <Content Include="Scripts\logic\login.js" />
     <Content Include="Scripts\logic\main.logic.js" />
     <Content Include="Scripts\logic\user.js" />
     <Content Include="WebControls\JPlayer\.gitignore" />
@@ -735,7 +736,6 @@
     <Compile Include="App\BasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="App\UploadHelper.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

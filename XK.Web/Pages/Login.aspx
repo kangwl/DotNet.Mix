@@ -31,25 +31,28 @@
         </div> 
     </div>
     <script>
-        $(document).on("click", "#login",function() {
-            $.ajax({
-                type: "post",
-                url: "/api/login/check",
-                data: { uid: $("#uid").val(), pwd: $("#pwd").val() },
-                dataType: "json",
-                success: function (res) {
-                    if (res.code === 1) {
-                        //登录成功
-                        $.bsAlertSuccess("登录成功，跳转中...");
-                        location.href = "/admin/user/list.aspx";
-                    } else {
-                        alert(res.msg);
-                    }
-                },
-                error: function(e) {
-                    console.error(e);
+        $(document).on("click", "#login", function() {
+            login();
+        });
+
+        function login() {
+            dmo.require(dmo.logic.loginJS, function(ok) {
+                if (ok) {
+                    var loginOperate = dmo.getLoginOperatObj();
+                    var data = { uid: $("#uid").val(), pwd: $("#pwd").val() };
+                    loginOperate.login(data, function(res) {
+                        if (res.code === 1) {
+                            //登录成功
+                            $.bsAlertSuccess("登录成功，跳转中...");
+                            location.href = "/admin/user/list.aspx";
+                        } else {
+                            bootbox.alert(res.msg);
+                        }
+                    }, function(e) {
+                        console.error(e);
+                    });
                 }
             });
-        })
+        }
     </script>
 </asp:Content>

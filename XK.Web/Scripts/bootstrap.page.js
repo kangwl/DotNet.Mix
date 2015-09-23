@@ -49,23 +49,23 @@
                 var mainbox = $(this).html("");
                 var page_box = $("<ul></ul>").addClass("pagination").appendTo(mainbox);
                 if (options.style != null) page_box.addClass(options.style === "big" ? "pagination-lg" : options.style === "small" ? "pagination-sm" : options.style);
-                var page_first = $("<li><a href=\"javascript:void(0)\">" + options.first + "</a></li>").appendTo(page_box);
+                var page_first = $("<li><a href=\"javascript:void(0)\" title='首页'>" + options.first + "</a></li>").appendTo(page_box);
                 if (options.now === 1) page_first.addClass("disabled");
                 else page_first.on("click", function() { if (typeof options.callback === "function") options.callback(1); });
-                var pagePrev = $("<li><a href=\"javascript:void(0)\">" + options.prev + "</a></li>").appendTo(page_box);
+                var pagePrev = $("<li><a href=\"javascript:void(0)\" title='上一页'>" + options.prev + "</a></li>").appendTo(page_box);
                 if (options.now === 1) pagePrev.addClass("disabled");
                 else pagePrev.on("click", function() { if (typeof options.callback === "function") options.callback(options.now - 1); });
 
-                var page_last = $("<li><a href=\"javascript:void(0)\">" + options.last + "</a></li>");
+                var page_last = $("<li><a href=\"javascript:void(0)\" title='末页'>" + options.last + "</a></li>");
                 if (options.now === options.max) page_last.addClass("disabled");
                 else page_last.on("click", function() { if (typeof options.callback === "function") options.callback(options.max); });
 
-                var pageNext = $("<li><a href=\"javascript:void(0)\">" + options.next + "</a></li>");
+                var pageNext = $("<li><a href=\"javascript:void(0)\" title='下一页'>" + options.next + "</a></li>");
                 if (options.now === options.max) pageNext.addClass("disabled");
                 else pageNext.on("click", function() { if (typeof options.callback === "function") options.callback(options.now + 1); });
 
 
-                var page_now = $("<li><a href=\"javascript:void(0)\">" + options.now + "</a></li>").addClass("active");
+                var page_now = $("<li><a href=\"javascript:void(0)\" title='当前页'>" + options.now + "</a></li>").addClass("active");
                 if (options.max <= 10)
                     for (var i = 1; i <= options.max; i++) $.mypageInsertItem(i, options.now, page_now, page_box, options.callback);
                 else if (options.now < 5) {

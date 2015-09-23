@@ -53,8 +53,37 @@ namespace XK.DataProcess.Source.Act {
             return jsonResult;
         }
 
-        public static string List(HttpContext context) {
+        public static string Edit(HttpContext context) {
+            if (string.IsNullOrEmpty(App.UserID))
+                throw new AuthenticationException("用户未登录");
+            string id = context.Request.Form["_id"].ToStringExt();
+            if (string.IsNullOrEmpty(id))
+                throw new ArgumentNullException("id", "缺少参数_id");
+         
+            string name = context.Request.Form["name"];
+            string sex = context.Request.Form["sex"];
+            string birthday = context.Request.Form["birthday"];
+            string email = context.Request.Form["email"];
+            Where @where = new Where(new Where.Item("ID", "=", id));
+    
+            FreedomDB.Bridge.Update update = new Update();
+            update.Dic = new Dictionary<string, dynamic>() {
+                {"Email", email},
+                {"Birthday", birthday.StrToDateTime(DateTime.MaxValue)},
+                {"Name", name},
+                {"Sex", sex.ToInt(0)}
+            };
+            update.WhereCore = where;
+            bool success = Bll.User_Bll.UpdateUser(update);
+            ApiInfo apiInfo = new ApiInfo(SystemCode.Error, "更新失败");
+            if (success) {
+                apiInfo = new ApiInfo(SystemCode.Success, "更新成功");
+            }
+            return apiInfo.ToJson();
+        }
 
+        public static string List(HttpContext context) {
+     
             if (string.IsNullOrEmpty(App.UserID))
                 throw new AuthenticationException("用户未登录");
             int pageIndex = context.Request.QueryString["pageIndex"].ToInt(0);
@@ -73,16 +102,27 @@ namespace XK.DataProcess.Source.Act {
             return extjson;
         }
 
-        public static string Delete(HttpContext request) {
+        public static string Delete(HttpContext context) {
             return "delete";
         }
 
-        public static string Update(HttpContext request) {
+        public static string Update(HttpContext context) {
             return "update";
         }
 
-        public static string GetOne(HttpContext request) {
-            return "getone";
+        public static string GetOne(HttpContext context) {
+            string id = context.Request.GetReqValExt("id");
+            if (string.IsNullOrEmpty(id))
+                throw new ArgumentNullException("id", "缺少参数id");
+            Where where = new Where(new Where.Item("ID", "=", id));
+            Model.User_Model userModel = Bll.User_Bll.GetOneUser(where, "*");
+            JsonTpl<Model.User_Model> jsonTpl = new JsonTpl<User_Model>() {code = SystemCode.Error, msg = "exception"};
+            if (userModel.ID > 0) {
+                jsonTpl.data = userModel;
+                jsonTpl.code = SystemCode.Success;
+                jsonTpl.msg = "success";
+            }
+            return jsonTpl.ToJson();
         }
     }
 }

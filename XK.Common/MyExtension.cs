@@ -648,12 +648,12 @@ namespace XK.Common {
 
     public static class ModelExtension {
         public static string ToJson<T>(this T tmodel) where T : class {
-            var jsonStr = JsonConvert.SerializeObject(tmodel);
+            var jsonStr = JsonHelper<T>.Serialize2Object(tmodel);
             return jsonStr;
         }
 
         public static T ToModel<T>(this string json) where T : class {
-            T tmodel = JsonConvert.DeserializeObject<T>(json);
+            T tmodel = JsonHelper<T>.DeserializeFromStr(json);
             return tmodel;
         }
     }
@@ -684,6 +684,18 @@ namespace XK.Common {
 
         public static void SaveAsExt(this HttpPostedFile postedFile, string filePath, int bufferSize = 20480 * 5) {
             FileHelper.WriteFile(postedFile.InputStream, filePath, bufferSize);
+        }
+    }
+
+    public static class WebExtension {
+        public static string GetReqValExt(this HttpRequest request, string key) {
+            if (request.HttpMethod.ToLower() == "post") {
+                return request.Form[key].ToStringExt();
+            }
+            if (request.HttpMethod.ToLower() == "get") {
+                return request.QueryString[key].ToStringExt();
+            }
+            return "";
         }
     }
      

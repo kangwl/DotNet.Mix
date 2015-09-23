@@ -13,9 +13,22 @@
     <script src="/Scripts/bs.alert.js"></script>
     <script src="/Scripts/bootbox.min.js"></script>
     <script src="/Scripts/myJQUtils.js"></script>
+    <link href="/WebControls/Datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" />
+    <script src="/WebControls/Datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="/WebControls/Datepicker/locales/bootstrap-datepicker.zh-CN.min.js"></script>
+
+
     <script src="/Scripts/logic/main.logic.js"></script>
     <script>
-        
+        function setDatePicker() {
+            $('.input_datePicker').datepicker({
+                format: "yyyy-mm-dd",
+                autoclose: true,
+                language: 'zh-CN',
+                todayHighlight: true
+            });
+        }
+
  
         window.onload = function() {
             if (myJQUtil.isHtml5()) {
@@ -25,9 +38,6 @@
                 $.bsAlertWarn(downloadChrome);
             }
         }
-
-        //bootbox 语言
-        bootbox.setLocale("zh_CN");
 
     </script>
     <asp:ContentPlaceHolder ID="head" runat="server">
@@ -72,5 +82,12 @@
             </asp:ContentPlaceHolder>
         </div>
     </form>
+    <script>
+        //bootbox 语言
+        bootbox.setLocale("zh_CN");
+
+ 
+        setDatePicker();
+    </script>
 </body>
 </html>

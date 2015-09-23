@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using XK.Common;
 using XK.Web.App;
 
 namespace XK.Web.Admin.User {

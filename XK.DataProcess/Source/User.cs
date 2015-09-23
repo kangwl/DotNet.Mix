@@ -11,6 +11,7 @@ namespace XK.DataProcess.Source {
         private static readonly Dictionary<string, Func<HttpContext, string>> dicJsonRes =
             new Dictionary<string, Func<HttpContext, string>> {
                 {"add", Act.UserAct.Add},
+                {"edit",Act.UserAct.Edit },
                 {"list", Act.UserAct.List},
                 {"del", Act.UserAct.Delete},
                 {"getone", Act.UserAct.GetOne},
