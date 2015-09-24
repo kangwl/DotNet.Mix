@@ -39,7 +39,7 @@
                 <tr>
                     <td class="text-right">Birthday</td>
                     <td>
-                        <input type="text" id="txtBirthday" name="birthday" class="form-control input_datePicker" />
+                        <input type="text" id="txtBirthday" name="birthday" class="form-control date" />
                     </td>
                 </tr>
                 <tr>
@@ -88,7 +88,8 @@
                 return true;
             });
         }
-        //req
+
+            //req
         getUser();
 
         $(document).on("click", "#btnEdit", function(e) {
@@ -122,5 +123,12 @@
             $("#btnEdit").text("修改");
             $("#btnEdit").removeAttr("disabled");
         }
+        $('input,.date').datepicker({
+            format: "yyyy-mm-dd",
+            autoclose: true,
+            language: 'zh-CN',
+            todayBtn: "linked",
+            todayHighlight: true
+        });
     </script>
 </asp:Content>

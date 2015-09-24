@@ -28,6 +28,7 @@
         </div>
     </div>
     <script>
+        $("#default").val("1990-06-06");
         $('input,.date').datepicker({
             format: "yyyy-mm-dd",
             autoclose: true,
