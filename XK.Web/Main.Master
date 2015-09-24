@@ -11,6 +11,7 @@
     <script src="/Scripts/jquery-1.9.1.min.js"></script>
     <script src="/Scripts/bootstrap.min.js"></script>
     <script src="/Scripts/bs.alert.js"></script>
+    <script src="/Scripts/bs.modal.js"></script>
     <script src="/Scripts/bootbox.min.js"></script>
     <script src="/Scripts/myJQUtils.js"></script>
     <link href="/WebControls/Datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" />
@@ -75,8 +76,7 @@
     </form>
     <script>
         //bootbox 语言
-        bootbox.setLocale("zh_CN");
-         
+        bootbox.setLocale("zh_CN"); 
     </script>
 </body>
 </html>

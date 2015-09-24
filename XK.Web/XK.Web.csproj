@@ -70,6 +70,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Admin\User\detail.html" />
     <Content Include="packages.config" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
@@ -156,6 +157,7 @@
     <Content Include="Scripts\bs.alert.js" />
     <Content Include="Scripts\bs.modal.js" />
     <Content Include="xk\Search.aspx" />
+    <Content Include="_Sql\power.sql" />
     <Content Include="_Sql\table.sql" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />

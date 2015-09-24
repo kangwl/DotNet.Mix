@@ -47,8 +47,11 @@
             modalOpt.remote = bsModalOpt.url;
         }
         $modal.modal(modalOpt);
-        $modal.on('hidden.bs.modal', this.bsModalAfterHideFunc);
-        $modal.on('shown.bs.modal', this.bsModalShowFunc);
+        //可以写到外面调用
+        //todo:建议每次消失的时候删除$modal对象，以免bug
+        //$modal.on('hidden.bs.modal', function(){$modal.remove();});
+        //
+        // $modal.on('shown.bs.modal', function(){});
         return $modal;
     },
     bsModalIframe: function (title, url, width, height, opt) {
@@ -74,11 +77,5 @@
     },
     bsModalShow: function ($modal) {
         $modal.modal();
-    },
-    bsModalAfterHideFunc: function () {
-
-    },
-    bsModalShowFunc:function() {
-        
     }
 });

@@ -84,6 +84,12 @@ dmo.getUserOperateObj = function () {
         dmo.reqServer("/api/user/getone", "get", data, fnSuccess, fnBeforeSend, fnError, fnComplete);
     }
 
+    userOperateObj.deleteUser = function (data, fnSuccess, fnBeforeSend, fnError, fnComplete) {
+        /// <summary>删除用户</summary>
+
+        dmo.reqServer("/api/user/del", "post", data, fnSuccess, fnBeforeSend, fnError, fnComplete);
+    }
+
 
     return userOperateObj;
 }

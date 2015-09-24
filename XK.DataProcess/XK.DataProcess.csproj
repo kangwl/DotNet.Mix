@@ -43,6 +43,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiModule.cs" />
+    <Compile Include="Constraint\MyAuthCheckAttribute.cs" />
+    <Compile Include="Constraint\PowerCst.cs" />
     <Compile Include="Core\App.cs" />
     <Compile Include="Core\SystemCode.cs" />
     <Compile Include="Enter.cs" />

@@ -103,15 +103,29 @@ namespace XK.DataProcess.Source.Act {
         }
 
         public static string Delete(HttpContext context) {
-            return "delete";
+
+            if (string.IsNullOrEmpty(App.UserID))
+                throw new AuthenticationException("用户未登录");
+            int uid = context.Request.GetValExt("uid").ToInt();
+            if (uid < 1)
+                throw new ArgumentNullException("uid", "用户ID不能为空");
+            Where where=new Where();
+            where.Add(new Where.Item("ID", "=", uid));
+            bool success = Bll.User_Bll.DeleteUser(where);
+            ApiInfo apiInfo = new ApiInfo(SystemCode.Error, "删除失败");
+            if (success) {
+                apiInfo = new ApiInfo(SystemCode.Success, "删除成功");
+            }
+
+            return apiInfo.ToJson();
         }
 
         public static string Update(HttpContext context) {
-            return "update";
+            return Edit(context);
         }
 
         public static string GetOne(HttpContext context) {
-            string id = context.Request.GetReqValExt("id");
+            string id = context.Request.GetValExt("id");
             if (string.IsNullOrEmpty(id))
                 throw new ArgumentNullException("id", "缺少参数id");
             Where where = new Where(new Where.Item("ID", "=", id));

@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web;
+using XK.Common;
+using XK.DataProcess.Constraint;
+using XK.DataProcess.Core;
+using XK.DataProcess.DataModel;
 
 namespace XK.DataProcess.Source {
     public class User {
@@ -25,6 +29,11 @@ namespace XK.DataProcess.Source {
         /// <param name="context"></param>
         /// <returns></returns>
         public static string Init(string _act, HttpContext context) {
+            //check power
+            if (!Constraint.PowerCst.HasPower) {
+                return new ApiInfo(SystemCode.Error, "你没有操作权限").ToJson();
+            }
+
             Func<HttpContext, string> actFunc = dicJsonRes.FirstOrDefault(dic => dic.Key == _act).Value;
             return actFunc(context);
         }

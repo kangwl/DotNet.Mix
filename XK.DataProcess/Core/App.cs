@@ -9,7 +9,9 @@ using XK.Common.json;
 
 namespace XK.DataProcess.Core {
     public class App {
-
+        /// <summary>
+        /// 用户ID 唯一，没实际意义
+        /// </summary>
         public static int User_ID
         {
             get
@@ -19,7 +21,9 @@ namespace XK.DataProcess.Core {
                 return user.ID;
             }
         }
-
+        /// <summary>
+        /// 用户账号
+        /// </summary>
         public static string UserID
         {
             get
@@ -29,7 +33,9 @@ namespace XK.DataProcess.Core {
                 return user.UserID;
             }
         }
-
+        /// <summary>
+        /// 角色ID
+        /// </summary>
         public static int RoleID
         {
             get

@@ -392,7 +392,7 @@ namespace XK.Common {
         /// <param name="request"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public static string GetVal(this HttpRequest request, string key) {
+        public static string GetValExt(this HttpRequest request, string key) {
             var method = request.HttpMethod.ToUpper();
             var val = "";
             if (method == "POST") {
@@ -684,18 +684,6 @@ namespace XK.Common {
 
         public static void SaveAsExt(this HttpPostedFile postedFile, string filePath, int bufferSize = 20480 * 5) {
             FileHelper.WriteFile(postedFile.InputStream, filePath, bufferSize);
-        }
-    }
-
-    public static class WebExtension {
-        public static string GetReqValExt(this HttpRequest request, string key) {
-            if (request.HttpMethod.ToLower() == "post") {
-                return request.Form[key].ToStringExt();
-            }
-            if (request.HttpMethod.ToLower() == "get") {
-                return request.QueryString[key].ToStringExt();
-            }
-            return "";
         }
     }
      

@@ -4,6 +4,11 @@ dmo.logic = {};//储存处理操作的js,方便调用
 dmo.logic.loginJS = "/scripts/logic/login.js";
 dmo.logic.userJS = "/scripts/logic/user.js";
 
+dmo.button = {};
+dmo.button.editButton = "<button type='button' class='btn btn-xs btn-info edit'><span class=\"glyphicon glyphicon-edit\"></span> 修改</button>";
+dmo.button.deleteButton = "<button type='button' class='btn btn-xs btn-danger delete'><span class=\"glyphicon glyphicon-remove\"></span> 删除</button>";
+dmo.button.detailButton = "<button type='button' class='btn btn-xs btn-success detail'><span class=\"glyphicon glyphicon-info-sign\"></span> 详细</button>";
+
 dmo.setPager = function(pageContentId, pageIndex, pageSize, total, fnPageClick) {
     /// <summary>设置分页</summary>
     /// <param name="pageContentId" type="String">存放分页的地方，比如是div的ID</param>
@@ -26,11 +31,13 @@ dmo.require = function (scriptUrl, fn) {
         fn(success);
     });
 }
-dmo.reqServer = function(reqUrl, reqType, reqData,fnSuccess,fnBeforeSend, fnError, fnComplete) {
-    /// <summary>统一请求函数 json</summary>
+
+dmo.reqServerCommon = function(reqUrl, reqType, reqData, dataType, fnSuccess, fnBeforeSend, fnError, fnComplete) {
+    /// <summary>统一请求函数</summary>
     /// <param name="reqUrl" type="String">请求地址</param>
     /// <param name="reqType" type="String">请求类型 get/post</param>
     /// <param name="reqData" type="String">请求参数</param>
+    /// <param name="dataType" type="String">返回类型 json/text</param>
     /// <param name="fnSuccess" type="Function">成功后回调函数</param>
     /// <param name="fnError" type="Function">失败后回调函数</param>
     /// <param name="fnComplete" type="Function">完成后回调函数</param>
@@ -38,29 +45,40 @@ dmo.reqServer = function(reqUrl, reqType, reqData,fnSuccess,fnBeforeSend, fnErro
         type: reqType,
         url: reqUrl,
         data: reqData,
-        dataType: "json",
-        beforeSend: function() {
+        dataType: dataType,
+        beforeSend: function () {
             if (typeof fnBeforeSend === "function") {
                 fnBeforeSend();
             }
         },
-        success: function(res) {
+        success: function (res) {
             if (typeof fnSuccess === "function") {
                 fnSuccess(res);
             }
         },
-        error: function(e) {
+        error: function (e) {
             if (typeof fnError === "function") {
                 fnError(e);
             }
             console.error(e);
         },
-        complete: function() {
+        complete: function () {
             if (typeof fnComplete === "function") {
                 fnComplete();
             }
         }
     });
+}
+
+dmo.reqServer = function (reqUrl, reqType, reqData, fnSuccess, fnBeforeSend, fnError, fnComplete) {
+    /// <summary>请求json数据</summary>
+    dmo.reqServerCommon(reqUrl, reqType, reqData, "json", fnSuccess, fnBeforeSend, fnError, fnComplete);
+}
+
+
+dmo.reqServerAuto = function (reqUrl, reqType, reqData, fnSuccess, fnBeforeSend, fnError, fnComplete) {
+    /// <summary>请求数据</summary>
+    dmo.reqServerCommon(reqUrl, reqType, reqData, "", fnSuccess, fnBeforeSend, fnError, fnComplete);
 }
 
 dmo.getQueryParamValue = function (paramKey) {
