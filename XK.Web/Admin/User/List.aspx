@@ -39,8 +39,9 @@
     <script src="/Scripts/bootstrap.page.js"></script> 
     <script>
         var useroperate;
-        function loadTip() { 
-            $("#tabe_list").find("tbody").html("<h4>数据加载中...</h4>");
+        function loadTip() {
+
+            $("#tabe_list").find("tbody").prepend("<h4>数据加载中...</h4>");
         }
 
         dmo.require(dmo.logic.userJS, function (success) {
@@ -73,7 +74,8 @@
             });
             $("#tabe_list").find("tbody").html(trs.join(""));
             //设置分页
-            dmo.setPager("pageContent", useroperate.data.pageIndex, useroperate.data.pageSize, parseInt(res.total), function(pageIndex) {
+            dmo.setPager("pageContent", useroperate.data.pageIndex, useroperate.data.pageSize, parseInt(res.total), function (pageIndex) {
+                location.hash = pageIndex;
                 useroperate.onPageClick(pageIndex, getRes, loadTip);
             }); 
         }

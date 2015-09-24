@@ -86,3 +86,12 @@ dmo.getQueryParamValue = function (paramKey) {
     return "";
 }
 
+dmo.setDatePicker= function(selector) {
+    $(selector).datepicker({
+        format: "yyyy-mm-dd",
+        autoclose: true,
+        language: 'zh-CN',
+        todayHighlight: true
+    });
+}
+

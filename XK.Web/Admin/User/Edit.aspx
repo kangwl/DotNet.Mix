@@ -39,7 +39,7 @@
                 <tr>
                     <td class="text-right">Birthday</td>
                     <td>
-                        <input type="text" id="txtBirthday" name="birthday" class="form-control date" />
+                        <input type="text" id="txtBirthday" name="birthday" class="form-control" />
                     </td>
                 </tr>
                 <tr>
@@ -58,6 +58,7 @@
     <script> 
         var _id = dmo.getQueryParamValue("uid");
         $("#hidUID").val(_id);
+
         function startReq() {
             $("#reguser").hide();
             $(".panel-footer").find("button").hide();
@@ -67,6 +68,7 @@
             $("#reguser").show();
             $(".panel-footer").find("button").show();
             $("#reguser").next("h4").remove();
+            dmo.setDatePicker("#txtBirthday");
         }
 
         function getUser() {
@@ -88,8 +90,7 @@
                 return true;
             });
         }
-
-            //req
+        //req
         getUser();
 
         $(document).on("click", "#btnEdit", function(e) {
@@ -123,12 +124,6 @@
             $("#btnEdit").text("修改");
             $("#btnEdit").removeAttr("disabled");
         }
-        $('input,.date').datepicker({
-            format: "yyyy-mm-dd",
-            autoclose: true,
-            language: 'zh-CN',
-            todayBtn: "linked",
-            todayHighlight: true
-        });
+ 
     </script>
 </asp:Content>
