@@ -11,7 +11,9 @@ namespace XK.Web
     {
         protected void Application_Start(object sender, EventArgs e) {
             Common.Log4net.Init();
-            XK.SearchEngine.AutoFac.Enter.InitLuceneWorkThread();
+           // XK.SearchEngine.AutoFac.Enter.InitLuceneWorkThread();
         }
+
+        
     }
 }

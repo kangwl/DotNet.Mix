@@ -108,9 +108,7 @@ namespace XK.Redis.Extension {
                 redisValues = get.Select(one => (RedisValue) one.ToJson()).ToArray();
             }
             RedisValue[] sortValueses = db.Sort(key, skip, take, order, sortType, @by, redisValues, flags);
-            return sortValueses.Select(one => one.ToModel<TModel>()).ToList();
-
-          
+            return sortValueses.Select(one => one.ToModel<TModel>()).ToList();  
         }
 
         public static long ListSortAndStoreModels<TModel>(this IDatabase db, string destinationKey, string key,

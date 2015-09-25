@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using FreedomDB.Bridge;
+using XK.Redis;
 
 namespace ConsoleApp_Redis {
     class Program {
@@ -52,9 +55,38 @@ namespace ConsoleApp_Redis {
 
             //DapperTest();
 
-           // A();
+            // A();
+            //XK.Redis.RedisHelper.HashGetMuti("user.767474055", "name", "age", "sex");
+            //Dictionary<string, string> dic = XK.Redis.RedisHelper.HashGetDic("user.767474055", "name", "age", "sex");
+            //foreach (KeyValuePair<string, string> pair in dic) {
+            //    Console.WriteLine(pair.Key + " : " + pair.Value);
+            //}
+            //var users = XK.Redis.RedisHelper.ListRange("users",0,2);
+            //foreach (string user in users) {
+            //    Console.WriteLine(user);
+            //}
 
-            
+            string sortedSetRankKey = "user.score.rank";
+            //var removeCount = RedisHelper.SortedSetIncrement(sortedSetRankKey, "xiaoming", 12);
+           // Console.WriteLine(removeCount);
+            //bool success = RedisHelper.SortedSetAdd(sortedSetRankKey, new Dictionary<string, double>() {
+            //    {"xiaoming", 90},
+            //    {"xiaokang", 100},
+            //    {"xiaosan", 80},
+            //    {"xiaoqiang", 88}
+            //});
+            //Console.WriteLine(success);
+            // RedisHelper.SortedSetAdd(sortedSetRankKey, "xiaoming", 90);
+            //RedisHelper.SortedSetAdd(sortedSetRankKey, "xiaoming1", 50);
+            //RedisHelper.SortedSetAdd(sortedSetRankKey, "xiaoming2", 100);
+            //var len = RedisHelper.SortedSetRemove(sortedSetRankKey, new List<string>() {"xiaoming1", "xiaoming2"});
+            //Console.WriteLine(len);
+            //bool success = RedisHelper.SortedSetRemove(sortedSetRankKey, "xiaoming");
+            // Console.WriteLine(success);
+            IEnumerable<string> entities = RedisHelper.SortedSetRangeByScore(sortedSetRankKey,false);
+            foreach (string entity in entities) {
+                Console.WriteLine(entity);
+            }
             Console.Read(); 
         }
 

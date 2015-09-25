@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using StackExchange.Redis;
@@ -17,9 +18,29 @@ namespace XK.Redis.Extension {
 
             return db.HashSet(key, hashField, value.ToJson(), when, flags);
         }
+        /// <summary>
+        /// 存在会覆盖，不在会创建
+        /// </summary>
+        /// <param name="db"></param>
+        /// <param name="dic"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static bool HashSet(this IDatabase db, Dictionary<string, dynamic> dic, string key) {
+            int count = dic.Count;
+            db.HashSet(key, dic.Select(pair => new HashEntry(pair.Key, pair.Value)).ToArray());
+            return true;
+        }
 
         public static TModel HashGetModel<TModel>(this IDatabase db, string key, string hashField, CommandFlags flags = CommandFlags.None) where TModel:class {
             return db.HashGet(key, hashField, flags).ToModel<TModel>();
+        }
+
+
+        public static string[] HashGetMuti(this IDatabase db, string key, params string[] fieldList) {
+
+            string[] redisValues = db.HashGet(key, fieldList.Select(one=>(RedisValue)one).ToArray())
+                                    .Select(one => one.ToStringExt()).ToArray();
+            return redisValues;
         }
 
         public static void HashSetModels<TModel>(this IDatabase db, string key, Dictionary<string, TModel> dicModels,
