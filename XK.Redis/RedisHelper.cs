@@ -7,6 +7,10 @@ using XK.Common;
 using XK.Redis.Extension;
 
 namespace XK.Redis {
+    /// <summary>
+    /// redis操作帮助类
+    /// 不建议使用有序列化的方法
+    /// </summary>
     public class RedisHelper {
 
         #region main
@@ -54,10 +58,57 @@ namespace XK.Redis {
 
         #region hash
         public static bool HashSet(string hashKey, Dictionary<string, dynamic> dic) {
-            
+          
             return Db.HashSet(dic, hashKey);
         }
 
+        public static bool HashDelete(string key, string field) {
+            return Db.HashDelete(key, field); 
+        }
+        public static bool HashDelete(string key,params string[] fields) {
+            long removedCount = Db.HashDelete(key, fields.Select(one => (RedisValue) one).ToArray());
+            return removedCount == fields.Length;
+        }
+
+        public static double HashIncrement(string key, string field, double val) {
+            return Db.HashIncrement(key, field, val);
+        }
+
+        public static long HashIncrement(string key, string field, long val=1L) {
+            return Db.HashIncrement(key, field, val);
+        }
+
+        public static double HashDecrement(string key, string field, double val) {
+            return Db.HashDecrement(key, field, val);
+        }
+
+        public static long HashDecrement(string key, string field, long val=1L) {
+            return Db.HashDecrement(key, field, val);
+        }
+
+        public static bool HashExists(string key, string field) {
+            return Db.HashExists(key, field);
+        }
+
+        public static Dictionary<string, string> HashGetAll(string key) {
+            HashEntry[] hashEntries = Db.HashGetAll(key);
+            return hashEntries.ToDictionary<HashEntry, string, string>(entry => entry.Name, entry => entry.Value);
+        }
+
+        public static IEnumerable<string> HashKeys(string key) {
+            RedisValue[] redisValues = Db.HashKeys(key);
+            return redisValues.Select(one => one.ToStringExt());
+        }
+
+        public static IEnumerable<string> HashValues(string key) {
+            RedisValue[] redisValues = Db.HashValues(key);
+            return redisValues.Select(one => one.ToStringExt());
+        }
+
+        public static long HashLength(string key) {
+            return Db.HashLength(key);
+        }
+ 
 
         public static string HashGet(string hashkey, string hashField) {
             return Db.HashGet(hashkey, hashField);
@@ -132,8 +183,9 @@ namespace XK.Redis {
             return Db.ListGetByIndex(key, index);
         }
 
-        public static IEnumerable<string> ListSort(string key, long skip = 0, long take = -1, Order order = Order.Ascending, SortType sortType = SortType.Numeric) {
-            RedisValue[] redisValues = Db.Sort(key, skip, take, order, sortType);
+        public static IEnumerable<string> ListSort(string key, long skip = 0, long take = -1,bool asc=true,bool sortNumeric=true) {
+            RedisValue[] redisValues = Db.Sort(key, skip, take, asc ? Order.Ascending : Order.Descending,
+                sortNumeric ? SortType.Numeric : SortType.Alphabetic);
             return redisValues.Select(one => one.ToStringExt());
         }
         #endregion
@@ -182,8 +234,9 @@ namespace XK.Redis {
             return redisValues.Select(one => one.ToStringExt()).ToList();
         }
 
-        public static IEnumerable<string> SetSort(string key, long skip = 0, long take = -1, Order order = Order.Ascending, SortType sortType = SortType.Numeric) {
-            RedisValue[] redisValues = Db.Sort(key, skip, take, order, sortType);
+        public static IEnumerable<string> SetSort(string key, long skip = 0, long take = -1, bool asc = true, bool sortNumeric = true) {
+            RedisValue[] redisValues = Db.Sort(key, skip, take, asc ? Order.Ascending : Order.Descending,
+                sortNumeric ? SortType.Numeric : SortType.Alphabetic);
             return redisValues.Select(one => one.ToStringExt());
         }
 

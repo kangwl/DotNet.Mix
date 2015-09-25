@@ -66,7 +66,11 @@ namespace ConsoleApp_Redis {
             //    Console.WriteLine(user);
             //}
 
-            string sortedSetRankKey = "user.score.rank";
+            string hashKey = "user.767474055";
+          //var d=  RedisHelper.HashIncrement(hashKey, "name", 3D);
+          //  Console.WriteLine(d);
+ 
+           // string sortedSetRankKey = "user.score.rank";
             //var removeCount = RedisHelper.SortedSetIncrement(sortedSetRankKey, "xiaoming", 12);
            // Console.WriteLine(removeCount);
             //bool success = RedisHelper.SortedSetAdd(sortedSetRankKey, new Dictionary<string, double>() {
@@ -83,10 +87,10 @@ namespace ConsoleApp_Redis {
             //Console.WriteLine(len);
             //bool success = RedisHelper.SortedSetRemove(sortedSetRankKey, "xiaoming");
             // Console.WriteLine(success);
-            IEnumerable<string> entities = RedisHelper.SortedSetRangeByScore(sortedSetRankKey,false);
-            foreach (string entity in entities) {
-                Console.WriteLine(entity);
-            }
+         //   IEnumerable<string> entities = RedisHelper.SortedSetRangeByScore(sortedSetRankKey,false);
+          //  foreach (string entity in entities) {
+          //      Console.WriteLine(entity);
+          //  }
             Console.Read(); 
         }
 
