@@ -58,7 +58,7 @@ namespace XK.SearchEngine.Test {
             //docIndex.AddLuceneIndex(dic);
 
             while (true) {
-
+               
                 Console.WriteLine("请输入关键词：");
                 string keyword = Console.ReadLine();
 
@@ -81,7 +81,7 @@ namespace XK.SearchEngine.Test {
                     Console.WriteLine(result.Total + "---" + news[0].Title + Environment.NewLine + news[0].Content);
                 }
             }
-             
+           
         }
 
         class News {

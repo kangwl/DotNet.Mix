@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace XK.SearchEngine.Static {
+﻿namespace XK.SearchEngine.Static {
     public class Config {
         public const string LuceneBasePath = "LuceneData";
     }

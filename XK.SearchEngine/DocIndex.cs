@@ -10,7 +10,7 @@ using Lucene.Net.Index;
 using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
-using XK.SearchEngine.Util;
+using XK.SearchEngine.Util.jieba;
 
 namespace XK.SearchEngine {
     public class DocIndex {

@@ -3,7 +3,7 @@ using System.IO;
 using JiebaNet.Segmenter;
 using Lucene.Net.Analysis;
 
-namespace XK.SearchEngine.Util
+namespace XK.SearchEngine.Util.jieba
 {
     public class JiebaAnalyzer : Analyzer
     {

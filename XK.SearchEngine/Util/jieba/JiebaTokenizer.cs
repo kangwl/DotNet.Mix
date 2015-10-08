@@ -6,7 +6,7 @@ using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.Tokenattributes;
 using Token = JiebaNet.Segmenter.Token;
 
-namespace XK.SearchEngine.Util
+namespace XK.SearchEngine.Util.jieba
 {
     public class JiebaTokenizer : Tokenizer
     {

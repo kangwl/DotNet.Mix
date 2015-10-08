@@ -9,7 +9,6 @@ using Lucene.Net.Search.Highlight;
 using XK.Common;
 using XK.Common.json;
 using XK.SearchEngine.Model;
-using Version = Lucene.Net.Util.Version;
 
 namespace XK.SearchEngine {
     public class DocSearch : DocIndex {
@@ -153,7 +152,7 @@ namespace XK.SearchEngine {
         }
 
         private Query Query(Analyzer analyzer) {
-            var parser = new MultiFieldQueryParser(Version.LUCENE_30, SearchModel.Fields, analyzer);
+            var parser = new MultiFieldQueryParser(Lucene.Net.Util.Version.LUCENE_30, SearchModel.Fields, analyzer);
             return ParseQuery(SearchModel.Words, parser);
         }
 
